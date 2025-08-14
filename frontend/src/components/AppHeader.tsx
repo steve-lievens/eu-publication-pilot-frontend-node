@@ -21,7 +21,7 @@ const AppHeader: React.FC = () => {
             marginLeft: "16px",
           }}
         >
-          Publications Office of the European Union
+          Publications Office of the European Union (v.1.0.0)
         </div>
       </HeaderName>
       <HeaderGlobalBar>
