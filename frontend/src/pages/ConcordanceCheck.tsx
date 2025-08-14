@@ -30,6 +30,7 @@ interface ExtractedEntities {
   };
   regdirs?: {
     regulation?: string[];
+    directive?: string[];
   };
   caselaw?: {};
 }
@@ -156,6 +157,11 @@ const renderEntities = (entities: ExtractedEntities) => {
           {entities.regdirs.regulation?.map((regdir, i) => (
             <div key={`regdirs-${i}`} className={styles.entity}>
               - {regdir}
+            </div>
+          ))}
+          {entities.regdirs.directive?.map((directive, i) => (
+            <div key={`directive-${i}`} className={styles.entity}>
+              - {directive}
             </div>
           ))}
         </div>
