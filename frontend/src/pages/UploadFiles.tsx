@@ -218,18 +218,23 @@ const UploadFiles: React.FC = () => {
                   />
                 </Column>
               </Grid>
-              <Button
-                onClick={handleStartAnalysis(false)}
-                disabled={!primaryFile || !secondaryFile || loading}
-              >
-                {loading ? "Analyzing..." : "Start Analysis Approach 1"}
-              </Button>
-              <Button
-                onClick={handleStartAnalysis(true)}
-                disabled={!primaryFile || !secondaryFile || loading}
-              >
-                {loading ? "Analyzing..." : "Start Analysis Approach 2"}
-              </Button>
+              <div className={styles.analysisButton}>
+                <Button
+                  onClick={handleStartAnalysis(false)}
+                  disabled={!primaryFile || !secondaryFile || loading}
+                >
+                  {loading ? "Analyzing..." : "Start Analysis Approach 1"}
+                </Button>
+              </div>
+              <div className={styles.analysisButton}>
+                <Button
+                  className={styles.analysisButton}
+                  onClick={handleStartAnalysis(true)}
+                  disabled={!primaryFile || !secondaryFile || loading}
+                >
+                  {loading ? "Analyzing..." : "Start Analysis Approach 2"}
+                </Button>
+              </div>
               {loading && (
                 <Loading description="Processing files" withOverlay={true} />
               )}
