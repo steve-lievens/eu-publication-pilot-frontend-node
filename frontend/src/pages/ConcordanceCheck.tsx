@@ -176,12 +176,20 @@ const renderDocuments = (
   doc1: string,
   doc2: string,
   allParagraphs: ParagraphItem[],
-  paraRef: React.RefObject<(HTMLDivElement | null)[]>
+  paraRef: React.RefObject<(HTMLDivElement | null)[]>,
+  highlightedPara: number | null
 ) => {
   return allParagraphs.map((para, index) => {
     console.log("Rendering paragraph", para);
     return (
-      <TableRow key={index} className={false ? styles.highlight : ""}>
+      <TableRow
+        key={index}
+        className={
+          highlightedPara !== null && highlightedPara - 1 === index
+            ? styles.highlight
+            : ""
+        }
+      >
         <TableCell>
           <div
             key={index}
@@ -273,6 +281,9 @@ const ConcordanceCheck = () => {
       behavior: "smooth",
       block: "center",
     });
+
+    // Highlight the paragraph
+    setHighlightedPara(idx);
   };
 
   if (!data) {
@@ -303,7 +314,8 @@ const ConcordanceCheck = () => {
                   data.doc1,
                   data.doc2,
                   data.paragraphs,
-                  paragraphRef
+                  paragraphRef,
+                  highlightedPara
                 )}
               </TableBody>
             </Table>
