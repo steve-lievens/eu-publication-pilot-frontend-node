@@ -1,6 +1,17 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Heading, Toggle, Tag, Accordion, AccordionItem } from "@carbon/react";
-import { WarningAlt } from "@carbon/react/icons";
+import {
+  Heading,
+  Toggle,
+  Tag,
+  Accordion,
+  AccordionItem,
+  Theme,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "@carbon/react";
+import { WarningAlt, FilterEdit } from "@carbon/react/icons";
 import styles from "./ConcordanceCheck2.module.css";
 import { useLocation } from "react-router-dom";
 
@@ -44,8 +55,8 @@ const ConcordanceCheck2: React.FC = () => {
   const location = useLocation();
   const data = location.state as Data;
 
-  const [syncScrolling, setSyncScrolling] = useState(false);
   const [highlightedPara, setHighlightedPara] = useState<number | null>(null);
+  const paragraphRef = useRef<(HTMLDivElement | null)[]>([]);
   const doc1Refs = useRef<(HTMLDivElement | null)[]>([]);
   const doc2Refs = useRef<(HTMLDivElement | null)[]>([]);
   const doc1ScrollRef = useRef<HTMLDivElement>(null);
@@ -56,6 +67,16 @@ const ConcordanceCheck2: React.FC = () => {
     doc2Refs.current = new Array(data.paragraphsA.length);
   }, [data.paragraphsA.length]);
 
+  const scrollToDiv = (idx: number) => {
+    paragraphRef.current[idx]?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+
+    // Highlight the paragraph
+    setHighlightedPara(idx);
+  };
+
   // any discrepancy in a paragraph?
   const hasAnyDiff = React.useMemo(() => {
     const dMap = new Map<number, boolean>();
@@ -65,16 +86,6 @@ const ConcordanceCheck2: React.FC = () => {
     );
     return (paraNum: number) => dMap.has(paraNum);
   }, [data.comparisons]);
-
-  const handleDocScroll = useCallback(
-    (e: React.UIEvent<HTMLDivElement>, source: "doc1" | "doc2") => {
-      if (!syncScrolling) return;
-      const other =
-        source === "doc1" ? doc2ScrollRef.current : doc1ScrollRef.current;
-      if (other) other.scrollTop = e.currentTarget.scrollTop;
-    },
-    [syncScrolling]
-  );
 
   const scrollToParagraph = useCallback((paraNum: number) => {
     setHighlightedPara(paraNum);
@@ -136,232 +147,203 @@ const ConcordanceCheck2: React.FC = () => {
   const dates = data.comparisons?.dates ?? [];
   const cases = data.comparisons?.case_references ?? [];
 
+  const renderEntities = (entities: Object) => {
+    if (!entities) return null;
+
+    return <div></div>;
+  };
+
+  // Render both documents in a table, with each paragraph in a row
+  // !!!!!!!!! Still needs error handling when both docs don't have the same number of paragraphs
+  const renderDocuments = (
+    doc1: string,
+    doc2: string,
+    paragraphA: string[],
+    paragraphB: string[],
+    paraRef: React.RefObject<(HTMLDivElement | null)[]>,
+    highlightedPara: number | null
+  ) => {
+    if (paragraphA.length !== paragraphB.length) {
+      console.error("Paragraphs count mismatch between documents");
+      return <p>Error: Paragraphs count mismatch between documents.</p>;
+    }
+    return paragraphA.map((para, index) => {
+      console.log("Rendering paragraph", para);
+      return (
+        <TableRow
+          key={index}
+          className={
+            highlightedPara !== null && highlightedPara - 1 === index
+              ? styles.highlight
+              : ""
+          }
+        >
+          <TableCell>
+            <div
+              key={index}
+              ref={(el) => {
+                paraRef.current[index] = el;
+              }}
+            ></div>
+            {index + 1}
+          </TableCell>
+          <TableCell className={styles.paraTableCell}>
+            <div>{para}</div>
+          </TableCell>
+          <TableCell className={styles.paraTableCell}>
+            <div>{paragraphB[index]}</div>
+          </TableCell>
+        </TableRow>
+      );
+    });
+  };
+
   return (
-    <div className={styles.pageWrapper}>
+    <div>
       <Heading className={styles.title}>
         Comparing: {data.docA} vs {data.docB}
       </Heading>
-      <Toggle
-        id="syncScroll"
-        labelText="Synchronize scrolling"
-        toggled={syncScrolling}
-        onToggle={() => setSyncScrolling(!syncScrolling)}
-      />
 
-      <div className={styles.tableContainer}>
-        <div className={styles.documentsWrapper}>
-          {/* Left column */}
-          <div className={styles.docTableContainer}>
-            <div className={styles.docHeader}>{data.docA}</div>
-            <div
-              className={styles.tableScrollContainer}
-              ref={doc1ScrollRef}
-              onScroll={(e: React.UIEvent<HTMLDivElement>) =>
-                handleDocScroll(e, "doc1")
-              }
+      <div className={styles.pageWrapper}>
+        <div className={styles.tableWrapper}>
+          <Theme theme="g10">
+            <Table
+              aria-label="document table"
+              background-color="white"
+              className={styles.tableFixed}
             >
-              <div className={styles.tableBody}>
-                {data.paragraphsA.map((paraA, idx) => {
-                  const paraNum = idx + 1;
-                  const rowClass = `
-                    ${styles.tableRow}
-                    ${idx % 2 ? styles.oddRow : styles.evenRow}
-                    ${hasAnyDiff(paraNum) ? styles.hasDiscrepancy : ""}
-                    ${highlightedPara === paraNum ? styles.highlightedRow : ""}
-                  `;
-                  return (
-                    <div
-                      key={`A-${paraNum}`}
-                      ref={(el) => {
-                        doc1Refs.current[idx] = el;
-                      }}
-                      className={rowClass}
-                    >
-                      <div className={styles.paraNumber}>
-                        Paragraph {paraNum}
-                      </div>
-                      <div className={styles.paraContent}>{paraA}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Right column */}
-          <div className={styles.docTableContainer}>
-            <div className={styles.docHeader}>{data.docB}</div>
-            <div
-              className={styles.tableScrollContainer}
-              ref={doc2ScrollRef}
-              onScroll={(e: React.UIEvent<HTMLDivElement>) =>
-                handleDocScroll(e, "doc2")
-              }
-            >
-              <div className={styles.tableBody}>
-                {data.paragraphsB.map((paraB, idx) => {
-                  const paraNum = idx + 1;
-                  const rowClass = `
-                    ${styles.tableRow}
-                    ${idx % 2 ? styles.oddRow : styles.evenRow}
-                    ${hasAnyDiff(paraNum) ? styles.hasDiscrepancy : ""}
-                    ${highlightedPara === paraNum ? styles.highlightedRow : ""}
-                  `;
-                  return (
-                    <div
-                      key={`B-${paraNum}`}
-                      ref={(el) => {
-                        doc2Refs.current[idx] = el;
-                      }}
-                      className={rowClass}
-                    >
-                      <div className={styles.paraNumber}>
-                        Paragraph {paraNum}
-                      </div>
-                      <div className={styles.paraContent}>{paraB}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+              <TableBody>
+                {renderDocuments(
+                  data.docA,
+                  data.docB,
+                  data.paragraphsA,
+                  data.paragraphsB,
+                  paragraphRef,
+                  highlightedPara
+                )}
+              </TableBody>
+            </Table>
+          </Theme>
         </div>
 
-        {/* Sidebar of discrepancies (scrollable column) */}
-        <div className={styles.discrepanciesContainer}>
-          <div className={styles.sidebarScroll}>
-            {/* Dates group */}
-            <div className={styles.groupBlock}>
-              <div className={styles.groupHeader}>
-                Dates{" "}
-                {dates.length > 0 && (
-                  <span className={styles.countPill}>{dates.length}</span>
-                )}
-              </div>
+        <div className={styles.outputWrapper}>
+          <Heading className={styles.outputTitle}>
+            Concordance Output
+            <span className={styles.filterIcon}>
+              <FilterEdit />
+            </span>
+          </Heading>
 
-              {dates.length === 0 ? (
-                <div className={styles.noDiscrepancies}>
-                  No date discrepancies found.
+          <div className={styles.accordionContainer}>
+            <div className={styles.discrepanciesContainer}>
+              {/* Dates group */}
+              <div className={styles.groupBlock}>
+                <div className={styles.groupHeader}>
+                  Dates{" "}
+                  {dates.length > 0 && (
+                    <span className={styles.countPill}>{dates.length}</span>
+                  )}
                 </div>
-              ) : (
-                <Accordion align="start" size="lg">
-                  {dates.map((d, i) => (
-                    <AccordionItem
-                      key={`date-${i}`}
-                      title={
-                        <span
-                          className={styles.accLabel}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            scrollToParagraph(d.paragraph);
-                          }}
-                        >
-                          <WarningAlt
-                            className={`${styles.accIcon} ${
-                              d.status === "mismatch"
-                                ? styles.iconRed
-                                : d.status === "missing_in_A"
-                                ? styles.iconCyan
-                                : styles.iconPurple
-                            }`}
-                            size={16}
-                          />
-                          {dateLabel(d)}
-                        </span>
-                      }
-                    >
-                      <div className={styles.inlineDetail}>
-                        <div className={styles.detailRow}>
-                          <Tag type={tagTypeForDate(d.status)}>{d.status}</Tag>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <strong>Doc A:</strong>
-                          <pre className={styles.detailSnippet}>
-                            {d.snippetA ?? "– none –"}
-                          </pre>
-                        </div>
-                        <div className={styles.detailRow}>
-                          <strong>Doc B:</strong>
-                          <pre className={styles.detailSnippet}>
-                            {d.snippetB ?? "– none –"}
-                          </pre>
-                        </div>
-                      </div>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              )}
-            </div>
 
-            {/* Case references group */}
-            <div className={styles.groupBlock}>
-              <div className={styles.groupHeader}>
-                Case references{" "}
-                {cases.length > 0 && (
-                  <span className={styles.countPill}>{cases.length}</span>
-                )}
-              </div>
-
-              {cases.length === 0 ? (
-                <div className={styles.noDiscrepancies}>
-                  No case-reference discrepancies found.
-                </div>
-              ) : (
-                <Accordion align="start" size="lg">
-                  {cases.map((c, i) => (
-                    <AccordionItem
-                      key={`case-${i}`}
-                      title={
-                        <span
-                          className={styles.accLabel}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            scrollToParagraph(c.paragraph);
-                          }}
+                {dates.length === 0 ? (
+                  <div className={styles.noDiscrepancies}>
+                    No date discrepancies found.
+                  </div>
+                ) : (
+                  <Accordion align="start" size="lg">
+                    {dates.map((d, i) => (
+                      <AccordionItem
+                        open={true}
+                        key={`date-${i}`}
+                        title={
+                          <span className={styles.accLabel}>
+                            {"Paragraph " + d.paragraph}
+                          </span>
+                        }
+                      >
+                        <div
+                          className={styles.inlineDetail}
+                          onClick={() => scrollToDiv(d.paragraph)}
                         >
-                          <WarningAlt
-                            className={`${styles.accIcon} ${(() => {
-                              const t = tagTypeForCase(c.reason);
-                              return t === "red"
-                                ? styles.iconRed
-                                : t === "cyan"
-                                ? styles.iconCyan
-                                : t === "purple"
-                                ? styles.iconPurple
-                                : styles.iconGray;
-                            })()}`}
-                            size={16}
-                          />
-                          {caseLabel(c)}
-                        </span>
-                      }
-                    >
-                      <div className={styles.inlineDetail}>
-                        <div className={styles.detailRow}>
-                          <div className={styles.tagRow}>
-                            <Tag type={tagTypeForCase(c.reason)}>
-                              {c.reason ?? "mismatch"}
+                          <div className={styles.detailRow}>
+                            <Tag type={tagTypeForDate(d.status)}>
+                              {d.status}
                             </Tag>
-                            {c.kind && <Tag type="gray">{c.kind}</Tag>}
+                          </div>
+                          <div className={styles.detailRow}>
+                            <strong>Doc A:</strong>
+                            <pre className={styles.detailSnippet}>
+                              {d.snippetA ?? "– none –"}
+                            </pre>
+                          </div>
+                          <div className={styles.detailRow}>
+                            <strong>Doc B:</strong>
+                            <pre className={styles.detailSnippet}>
+                              {d.snippetB ?? "– none –"}
+                            </pre>
                           </div>
                         </div>
-                        <div className={styles.detailRow}>
-                          <strong>Doc A:</strong>
-                          <pre className={styles.detailSnippet}>
-                            {c.snippetA ?? "– none –"}
-                          </pre>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                )}
+              </div>
+
+              {/* Case references group */}
+              <div className={styles.groupBlock}>
+                <div className={styles.groupHeader}>
+                  Cases{" "}
+                  {cases.length > 0 && (
+                    <span className={styles.countPill}>{cases.length}</span>
+                  )}
+                </div>
+
+                {cases.length === 0 ? (
+                  <div className={styles.noDiscrepancies}>
+                    No case-reference discrepancies found.
+                  </div>
+                ) : (
+                  <Accordion align="start" size="lg">
+                    {cases.map((c, i) => (
+                      <AccordionItem
+                        open={true}
+                        key={`case-${i}`}
+                        title={
+                          <span className={styles.accLabel}>
+                            {"Paragraph " + c.paragraph}
+                          </span>
+                        }
+                      >
+                        <div
+                          className={styles.inlineDetail}
+                          onClick={() => scrollToDiv(c.paragraph)}
+                        >
+                          <div className={styles.detailRow}>
+                            <div className={styles.tagRow}>
+                              <Tag type={tagTypeForCase(c.reason)}>
+                                {c.reason ?? "mismatch"}
+                              </Tag>
+                              {c.kind && <Tag type="gray">{c.kind}</Tag>}
+                            </div>
+                          </div>
+                          <div className={styles.detailRow}>
+                            <strong>Doc A:</strong>
+                            <pre className={styles.detailSnippet}>
+                              {c.snippetA ?? "– none –"}
+                            </pre>
+                          </div>
+                          <div className={styles.detailRow}>
+                            <strong>Doc B:</strong>
+                            <pre className={styles.detailSnippet}>
+                              {c.snippetB ?? "– none –"}
+                            </pre>
+                          </div>
                         </div>
-                        <div className={styles.detailRow}>
-                          <strong>Doc B:</strong>
-                          <pre className={styles.detailSnippet}>
-                            {c.snippetB ?? "– none –"}
-                          </pre>
-                        </div>
-                      </div>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              )}
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                )}
+              </div>
             </div>
           </div>
         </div>
