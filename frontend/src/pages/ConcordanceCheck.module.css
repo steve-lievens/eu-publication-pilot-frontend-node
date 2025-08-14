@@ -36,6 +36,17 @@
   width: 48%;
 }
 
+.entitiesHeader {
+  margin-top: 15px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #161616;
+}
+.entitiesContainer {
+  font-size: 0.75rem;
+  padding-left: 10px;
+  padding-bottom: 5px;
+}
 .aiLayer {
   position: absolute;
   top: 0;

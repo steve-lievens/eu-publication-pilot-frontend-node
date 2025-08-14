@@ -28,7 +28,9 @@ interface ExtractedEntities {
   articles?: {
     reference?: string[];
   };
-  regdirs?: {};
+  regdirs?: {
+    regulation?: string[];
+  };
   caselaw?: {};
 }
 
@@ -103,27 +105,27 @@ const renderEntities = (entities: ExtractedEntities) => {
           <span className={styles.entityLabel}>Dates:</span>
           {entities.date.year?.map((year, i) => (
             <div key={`year-${i}`} className={styles.entity}>
-              {year}
+              - {year}
             </div>
           ))}
           {entities.date.date?.map((date, i) => (
             <div key={`date-${i}`} className={styles.entity}>
-              {date}
+              - {date}
             </div>
           ))}
           {entities.date.range?.map((range, i) => (
             <div key={`range-${i}`} className={styles.entity}>
-              {range}
+              - {range}
             </div>
           ))}
           {entities.date.month?.map((month, i) => (
             <div key={`month-${i}`} className={styles.entity}>
-              {month}
+              - {month}
             </div>
           ))}
           {entities.date.time?.map((time, i) => (
             <div key={`time-${i}`} className={styles.entity}>
-              {time}
+              - {time}
             </div>
           ))}
         </div>
@@ -133,7 +135,7 @@ const renderEntities = (entities: ExtractedEntities) => {
           <span className={styles.entityLabel}>Amounts:</span>
           {entities.amounts.amount?.map((amount, i) => (
             <div key={`amount-${i}`} className={styles.entity}>
-              {amount}
+              - {amount}
             </div>
           ))}
         </div>
@@ -143,7 +145,17 @@ const renderEntities = (entities: ExtractedEntities) => {
           <span className={styles.entityLabel}>Articles:</span>
           {entities.articles.reference?.map((article, i) => (
             <div key={`article-${i}`} className={styles.entity}>
-              {article}
+              - {article.replace(/\|/g, " ")}
+            </div>
+          ))}
+        </div>
+      )}
+      {entities.regdirs && (
+        <div className={styles.entityGroup}>
+          <span className={styles.entityLabel}>Regulations & Directives:</span>
+          {entities.regdirs.regulation?.map((regdir, i) => (
+            <div key={`regdirs-${i}`} className={styles.entity}>
+              - {regdir}
             </div>
           ))}
         </div>
@@ -181,7 +193,9 @@ const renderDocuments = (
             para.doc1.extracted_entities && (
               <>
                 <div className={styles.entitiesHeader}>Extracted Entities:</div>
-                <div>{renderEntities(para.doc1.extracted_entities)}</div>
+                <div className={styles.entitiesContainer}>
+                  {renderEntities(para.doc1.extracted_entities)}
+                </div>
               </>
             )
           }
@@ -192,14 +206,22 @@ const renderDocuments = (
               // Render the Extracted entities when available
               <>
                 <div>{para.doc2.para}</div>
-                {para.doc2.extracted_entities && (
-                  <>
-                    <div className={styles.entitiesHeader}>
-                      Extracted Entities:
-                    </div>
-                    <div>{renderEntities(para.doc2.extracted_entities)}</div>
-                  </>
-                )}
+                {para.doc2 &&
+                  para.doc2.extracted_entities &&
+                  Object.values(para.doc2.extracted_entities).some(
+                    (entity) =>
+                      entity &&
+                      Object.values(entity).some(
+                        (arr) => Array.isArray(arr) && arr.length > 0
+                      )
+                  ) && (
+                    <>
+                      <div className={styles.entitiesHeader}>
+                        Extracted Entities:
+                      </div>
+                      <div>{renderEntities(para.doc2.extracted_entities)}</div>
+                    </>
+                  )}
               </>
             ) : (
               <span className={styles.missingPara}>-</span>
