@@ -5,12 +5,12 @@
 
 .tableWrapper {
   max-width: 80%;
-  overflow-y: scroll;
-  height: 100vh;
   padding-top: 10px;
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 50px;
+  overflow-y: scroll;
+  max-height: 93vh;
 }
 
 .filterIcon {
@@ -20,6 +20,8 @@
 .outputWrapper {
   width: 600px;
   background-color: #ffffff;
+  overflow-y: scroll;
+  max-height: 93vh;
   right: 0;
   top: 0;
   bottom: 0;
