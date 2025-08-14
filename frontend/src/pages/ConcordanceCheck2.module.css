@@ -1,0 +1,325 @@
+.title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  padding-left: 20px;
+  padding-top: 10px;
+}
+
+.pageWrapper {
+  padding: 2rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  margin-bottom: 2rem;
+  flex-shrink: 0;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
+
+.documentNames {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #525252;
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+/* Main layout containers */
+.tableContainer {
+  display: flex;
+  flex: 1;
+  gap: 1rem;
+  min-height: 0;
+}
+
+.documentsWrapper {
+  display: flex;
+  flex: 2;
+  gap: 1rem;
+  min-height: 0;
+}
+
+/* Document columns */
+.docTableContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-width: 780px;
+}
+
+.discrepanciesContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-width: 400px;
+}
+
+/* Headers */
+.docHeader {
+  font-weight: bold;
+  padding: 0.5rem 0;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #0f62fe;
+  flex-shrink: 0;
+}
+
+/* Scroll containers */
+.tableScrollContainer {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  min-height: 0;
+}
+
+/* Table body and rows */
+.tableBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.tableRow,
+.paragraphContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100px;
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  /* transition: all 0.2s ease; */
+}
+
+/* Zebra striping */
+.evenRow {
+  background-color: #f8f8f8;
+}
+
+.oddRow {
+  background-color: #ffffff;
+}
+
+/* Paragraph content */
+.paraNumber {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #525252;
+}
+
+.paraContent {
+  flex: 1;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.missingPara {
+  color: #8d8d8d;
+  font-style: italic;
+}
+
+/* Entities styling */
+.entitiesInline {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.entityLabel {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.entity {
+  display: inline-block;
+  background-color: #e0e0e0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+}
+
+/* Discrepancies */
+.hasDiscrepancy {
+  border-left: 4px solid #ff832b;
+}
+
+.highlightedRow {
+  animation: highlightFlash 1.5s ease 2;
+  background-color: #fff8e1;
+  box-shadow: 0 0 0 2px #ff832b;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes highlightFlash {
+  0% {
+    background-color: #fff8e1;
+  }
+
+  50% {
+    background-color: #ffecb3;
+  }
+
+  100% {
+    background-color: #fff8e1;
+  }
+}
+
+.discrepancyItem {
+  padding: 1rem;
+}
+
+.discrepancyHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.discrepancyIcon {
+  margin-right: 0.5rem;
+  color: #da1e28;
+}
+
+.discrepancyTitle {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.discrepancyContent {
+  font-size: 0.9rem;
+}
+
+.discrepancyRow {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.2s ease;
+}
+
+.discrepancyRow:hover {
+  background-color: #ffd7d9;
+}
+
+.noDiscrepancies {
+  padding: 2rem;
+  text-align: center;
+  color: #8d8d8d;
+  font-style: italic;
+}
+
+.inlineDetail {
+  padding: 0.75rem 1rem;
+  background: #f4f4f4;
+}
+.detailRow {
+  margin-bottom: 0.5rem;
+}
+.detailSnippet {
+  white-space: pre-wrap;
+  margin: 0.25rem 0 0 0;
+}
+.paraNumSmall {
+  margin-left: 0.5rem;
+  color: #525252;
+  font-size: 0.85rem;
+}
+
+/* Make the right column scroll on its own */
+.discrepanciesContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-width: 400px;
+  overflow-y: auto;
+}
+
+/* Inner scroller wrapper so we can add padding without breaking flex */
+.sidebarScroll {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.25rem 0;
+  min-height: 0;
+}
+
+.groupHeader {
+  font-weight: 600;
+  padding: 0.5rem 0;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Group block wrapper */
+.groupBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Count bubble next to group title */
+.countPill {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: #e0e0e0;
+  font-size: 0.8rem;
+}
+
+/* Accordion title label styling */
+.accLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+/* Icon colors */
+.accIcon {
+  vertical-align: middle;
+}
+.iconRed {
+  color: #da1e28;
+}
+.iconCyan {
+  color: #1192e8;
+}
+.iconPurple {
+  color: #8a3ffc;
+}
+.iconGray {
+  color: #8d8d8d;
+}
+
+/* Detail panel styles */
+.inlineDetail {
+  padding: 0.75rem 1rem;
+  background: #f4f4f4;
+}
+.detailRow {
+  margin-bottom: 0.5rem;
+}
+.detailSnippet {
+  white-space: pre-wrap;
+  margin: 0.25rem 0 0 0;
+}
+.tagRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Small paragraph indicator */
+.paraNumSmall {
+  margin-left: 0.5rem;
+  color: #525252;
+  font-size: 0.85rem;
+}

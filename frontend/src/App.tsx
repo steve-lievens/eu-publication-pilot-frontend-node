@@ -5,7 +5,7 @@ import PromptTesting from "./pages/PromptTesting";
 import AppHeader from "./components/AppHeader";
 import UploadFiles from "./pages/UploadFiles";
 import ConcordanceCheck from "./pages/ConcordanceCheck";
-
+import ConcordanceCheck2 from "./pages/ConcordanceCheck2";
 const App: React.FC = () => (
   <BrowserRouter>
     <AppHeader />
@@ -14,6 +14,7 @@ const App: React.FC = () => (
       <Route path="/prompttest" element={<PromptTesting />} />
       <Route path="/newcheck" element={<UploadFiles />} />
       <Route path="/concordance-check" element={<ConcordanceCheck />} />
+      <Route path="/concordance-check-2" element={<ConcordanceCheck2 />} />
     </Routes>
   </BrowserRouter>
 );

@@ -301,6 +301,9 @@ const ConcordanceCheck = () => {
 
   return (
     <div>
+      <Heading className={styles.title}>
+        Comparing: {data.doc1} vs {data.doc2}
+      </Heading>
       <div className={styles.pageWrapper}>
         <div className={styles.tableWrapper}>
           <Theme theme="g10">

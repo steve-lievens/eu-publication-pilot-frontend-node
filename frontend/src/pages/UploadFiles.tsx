@@ -60,25 +60,34 @@ const UploadFiles: React.FC = () => {
     }
   };
 
-  const handleStartAnalysis = async () => {
+  const handleStartAnalysis = (useApproach2: boolean) => async () => {
     if (!primaryFile || !secondaryFile) {
       return;
     }
     setLoading(true);
 
+    let backendUrl = "";
+
     const formData = new FormData();
     formData.append("document1", primaryFile);
     formData.append("document2", secondaryFile);
-    formData.append("document1Language", primaryLanguage);
-    formData.append("document2Language", secondaryLanguage);
-    formData.append("institution", "");
-    formData.append("entity_list", "amounts");
-    formData.append("entity_list", "articles");
-    formData.append("entity_list", "regdirs");
-    //formData.append("entity_list", "caselaw");
-    formData.append("use_deployed_prompt", "true");
-    const backendUrl =
-      "https://eu-pub.1yqyg3g5f8e4.eu-de.codeengine.appdomain.cloud/graph/compare-documents";
+
+    if (!useApproach2) {
+      formData.append("document1Language", primaryLanguage);
+      formData.append("document2Language", secondaryLanguage);
+      formData.append("institution", "");
+      formData.append("entity_list", "amounts");
+      formData.append("entity_list", "articles");
+      formData.append("entity_list", "regdirs");
+      //formData.append("entity_list", "caselaw");
+      formData.append("use_deployed_prompt", "true");
+
+      backendUrl =
+        "https://eu-pub.1yqyg3g5f8e4.eu-de.codeengine.appdomain.cloud/graph/compare-documents";
+    } else {
+      backendUrl =
+        "https://application-eu-test.1yqyg3g5f8e4.eu-de.codeengine.appdomain.cloud/graph/compare-all";
+    }
 
     try {
       const response = await axios.post(backendUrl, formData, {
@@ -87,7 +96,11 @@ const UploadFiles: React.FC = () => {
         },
       });
       console.log(response);
-      navigate("/concordance-check", { state: response.data });
+      if (!useApproach2) {
+        navigate("/concordance-check", { state: response.data });
+      } else {
+        navigate("/concordance-check-2", { state: response.data });
+      }
     } catch (error) {
       console.error("Error starting analysis:", error);
     } finally {
@@ -206,10 +219,16 @@ const UploadFiles: React.FC = () => {
                 </Column>
               </Grid>
               <Button
-                onClick={handleStartAnalysis}
+                onClick={handleStartAnalysis(false)}
                 disabled={!primaryFile || !secondaryFile || loading}
               >
-                {loading ? "Analyzing..." : "Start Analysis"}
+                {loading ? "Analyzing..." : "Start Analysis Approach 1"}
+              </Button>
+              <Button
+                onClick={handleStartAnalysis(true)}
+                disabled={!primaryFile || !secondaryFile || loading}
+              >
+                {loading ? "Analyzing..." : "Start Analysis Approach 2"}
               </Button>
               {loading && (
                 <Loading description="Processing files" withOverlay={true} />
