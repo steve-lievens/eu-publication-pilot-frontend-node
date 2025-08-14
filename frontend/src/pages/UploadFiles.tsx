@@ -1,0 +1,228 @@
+import React, { useState } from "react";
+import {
+  Grid,
+  Column,
+  Heading,
+  Tile,
+  FileUploaderDropContainer,
+  Button,
+  Loading,
+  Dropdown,
+} from "@carbon/react";
+import type { OnChangeData } from "@carbon/react";
+import styles from "./UploadFiles.module.css";
+import WatsonxBox from "../components/WatsonxBox";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const UploadFiles: React.FC = () => {
+  const [primaryFile, setPrimaryFile] = useState<File | null>(null);
+  const [secondaryFile, setSecondaryFile] = useState<File | null>(null);
+  const [primaryLanguage, setPrimaryLanguage] = useState<string>("en");
+  const [secondaryLanguage, setSecondaryLanguage] = useState<string>("de");
+  const [institution, setInstitution] = useState<string>("European Commission");
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  const languageOptions = [
+    { id: "en", text: "English (en)" },
+    { id: "de", text: "German (de)" },
+    { id: "lv", text: "Latvian (lv)" },
+  ];
+
+  const institutionOptions = [
+    "European Parliament",
+    "European Council",
+    "Council of the European Union",
+    "European Commission",
+    "Court of Justice of the European Union",
+    "European Central Bank",
+    "European Court of Auditors",
+  ];
+
+  const handlePrimaryUpload = (
+    _event: React.SyntheticEvent,
+    { addedFiles }: { addedFiles: File[] }
+  ) => {
+    const file = addedFiles[0];
+    if (file) {
+      setPrimaryFile(file);
+    }
+  };
+
+  const handleSecondaryUpload = (
+    _event: React.SyntheticEvent,
+    { addedFiles }: { addedFiles: File[] }
+  ) => {
+    const file = addedFiles[0];
+    if (file) {
+      setSecondaryFile(file);
+    }
+  };
+
+  const handleStartAnalysis = async () => {
+    if (!primaryFile || !secondaryFile) {
+      return;
+    }
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("document1", primaryFile);
+    formData.append("document2", secondaryFile);
+    formData.append("document1Language", primaryLanguage);
+    formData.append("document2Language", secondaryLanguage);
+    formData.append("institution", "");
+    formData.append("entity_list", "amounts");
+    formData.append("entity_list", "articles");
+    formData.append("entity_list", "regdirs");
+    formData.append("entity_list", "caselaw");
+    formData.append("use_deployed_prompt", "true");
+    const backendUrl =
+      "https://eu-pub.1yqyg3g5f8e4.eu-de.codeengine.appdomain.cloud/graph/compare-documents";
+
+    try {
+      const response = await axios.post(backendUrl, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response);
+      navigate("/concordance-check", { state: response.data });
+    } catch (error) {
+      console.error("Error starting analysis:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className={styles.pageWrapper}>
+      <div className={styles.introSection}>
+        <Grid fullWidth>
+          <Column lg={16} md={8} sm={4}>
+            <Heading className={styles.pageTitle}>Concordance Checks</Heading>
+            <p className={styles.pageSubtitle}>
+              Use AI to intelligently review 2 language versions of the same
+              legal documents in order to identify factual discrepancies and
+              inconsistencies.
+            </p>
+          </Column>
+        </Grid>
+      </div>
+
+      <main className={styles.mainContent}>
+        <Grid fullWidth className={styles.uploaderGrid}>
+          <Loading
+            withOverlay={true}
+            active={loading}
+            description="Analyzing documents..."
+          ></Loading>
+          <Column className={styles.uploadColumn} lg={10} md={8} sm={4}>
+            <Tile className={styles.uploadTile}>
+              <Heading className={styles.tileTitle}>Upload Documents</Heading>
+              <p className={styles.tileInstructions}>
+                Please start by selecting...
+              </p>
+              <Grid>
+                <Column lg={5} md={4} sm={2}>
+                  <p className={styles.uploaderLabel}>Primary document</p>
+                  <p className={styles.uploaderNote}>
+                    Max file size is 500kb...
+                  </p>
+                  <FileUploaderDropContainer
+                    labelText={
+                      primaryFile
+                        ? primaryFile.name
+                        : "Drag and drop or click to upload"
+                    }
+                    multiple={false}
+                    onAddFiles={handlePrimaryUpload}
+                    className={primaryFile ? styles.hasFile : ""}
+                  />
+                  <Dropdown
+                    id="primary-language"
+                    titleText="Primary document language"
+                    label="Select language"
+                    items={languageOptions}
+                    itemToString={(item) => (item ? item.text : "")}
+                    onChange={({
+                      selectedItem,
+                    }: OnChangeData<{ id: string; text: string }>) =>
+                      selectedItem && setPrimaryLanguage(selectedItem.id)
+                    }
+                    selectedItem={languageOptions.find(
+                      (item) => item.id === primaryLanguage
+                    )}
+                    className={styles.dropdown}
+                  />
+                </Column>
+                <Column lg={5} md={4} sm={2}>
+                  <p className={styles.uploaderLabel}>Secondary document</p>
+                  <p className={styles.uploaderNote}>
+                    Max file size is 500kb...
+                  </p>
+                  <FileUploaderDropContainer
+                    labelText={
+                      secondaryFile
+                        ? secondaryFile.name
+                        : "Drag and drop or click to upload"
+                    }
+                    multiple={false}
+                    onAddFiles={handleSecondaryUpload}
+                    className={secondaryFile ? styles.hasFile : ""}
+                  />
+                  <Dropdown
+                    id="secondary-language"
+                    titleText="Secondary document language"
+                    label="Select language"
+                    items={languageOptions}
+                    itemToString={(item) => (item ? item.text : "")}
+                    onChange={({
+                      selectedItem,
+                    }: OnChangeData<{ id: string; text: string }>) =>
+                      selectedItem && setSecondaryLanguage(selectedItem.id)
+                    }
+                    selectedItem={languageOptions.find(
+                      (item) => item.id === secondaryLanguage
+                    )}
+                    className={styles.dropdown}
+                  />
+                </Column>
+              </Grid>
+              <Grid>
+                <Column lg={10} md={8} sm={4}>
+                  <Dropdown
+                    id="institution"
+                    titleText="Institution"
+                    label="Select institution"
+                    items={institutionOptions}
+                    itemToString={(item) => (item ? item : "")}
+                    onChange={({ selectedItem }: OnChangeData<string>) =>
+                      selectedItem && setInstitution(selectedItem)
+                    }
+                    selectedItem={institution}
+                    className={styles.dropdown}
+                  />
+                </Column>
+              </Grid>
+              <Button
+                onClick={handleStartAnalysis}
+                disabled={!primaryFile || !secondaryFile || loading}
+              >
+                {loading ? "Analyzing..." : "Start Analysis"}
+              </Button>
+              {loading && (
+                <Loading description="Processing files" withOverlay={true} />
+              )}
+            </Tile>
+          </Column>
+          <Column lg={6} md={0} sm={0} className={styles.aiColumn}>
+            <WatsonxBox />
+          </Column>
+        </Grid>
+      </main>
+    </div>
+  );
+};
+
+export default UploadFiles;

@@ -1,0 +1,293 @@
+{
+  "batch_errors": [
+    {
+      "entity": "regdirs",
+      "document": "EN Directives & Regulations Test Sample v1.docx",
+      "error": "list indices must be integers or slices, not str",
+      "starting_paragraph": 1,
+      "ending_paragraph": 24
+    },
+    {
+      "entity": "articles",
+      "document": "DE Directives & Regulations Test Sample v1.docx",
+      "error": "Invalid json output: \nFor troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/OUTPUT_PARSING_FAILURE ",
+      "starting_paragraph": 1,
+      "ending_paragraph": 24
+    },
+    {
+      "entity": "regdirs",
+      "document": "DE Directives & Regulations Test Sample v1.docx",
+      "error": "list indices must be integers or slices, not str",
+      "starting_paragraph": 1,
+      "ending_paragraph": 24
+    }
+  ],
+  "reduce_errors": [],
+  "results": {
+    "doc1": "EN Directives & Regulations Test Sample v1.docx",
+    "doc2": "DE Directives & Regulations Test Sample v1.docx",
+    "paragraphs": [
+      {
+        "para_num": 1,
+        "doc1": {
+          "para": "EU Publication Office Concordance check Project\n"
+        },
+        "doc2": {
+          "para": "EU Publication Office Concordance check Project\n"
+        }
+      },
+      {
+        "para_num": 2,
+        "doc1": {
+          "para": "Directives, Regulations, Decisions Check\n"
+        },
+        "doc2": {
+          "para": "Directives, Regulations, Decisions Check\n"
+        }
+      },
+      {
+        "para_num": 3,
+        "doc1": {
+          "para": "pe00001-re01.en25 (1)\n"
+        },
+        "doc2": {
+          "para": "pe00001-re01.de25 (1)\n"
+        }
+      },
+      {
+        "para_num": 4,
+        "doc1": {
+          "para": "* In accordance with the Financial Regulation, Regulation (EU, Euratom) No 883/2013 of the European Parliament and of the Council and Council Regulations (EC, Euratom) No 2988/95, (Euratom, EC) No 2185/96 and (EU) 2017/1939, the financial interests of the Union are to be protected by means of proportionate measures, including measures relating to the prevention, detection, correction and investigation of irregularities, fraud, corruption, conflicts of interest, double funding, to the recovery of funds lost, wrongly paid or incorrectly used.\n"
+        },
+        "doc2": {
+          "para": "* Gemäß der Haushaltsordnung, der Verordnung (EU, Euratom) Nr. 883/2013 des Europäischen Parlaments und des Rates und den Verordnungen (EG, Euratom) Nr. 2988/95, (Euratom, EG) Nr. 2185/96 und (EU) 2018/1939 des Rates sind die finanziellen Interessen der Union durch verhältnismäßige Maßnahmen zu schützen, einschließlich Maßnahmen zur Prävention, Aufdeckung, Behebung und Untersuchung von Unregelmäßigkeiten, Betrug, Korruption, Interessenkonflikten, Doppelfinanzierung sowie zur Einziehung entgangener, rechtsgrundlos gezahlter oder nicht ordnungsgemäß verwendeter Mittel.\n"
+        }
+      },
+      {
+        "para_num": 5,
+        "doc1": {
+          "para": "* The implementation of this Regulation should be guided by the principles of equality and non-discrimination, as elaborated in the Union of Equality strategies. It should promote and advance gender equality and mainstreaming, ensure meaningful participation of women in decision-making processes, and the empowerment of women and girls, and seek to protect and promote the advancement and full enjoyment of all human rights by all women and girls, as well as prevent and combat violence against women and domestic violence, taking into consideration relevant EU Gender Action Plans and relevant Council conclusions and international conventions. Furthermore, this Regulation should be implemented in full respect of the European Pillar of Social Rights, including on child protection and labour rights. The implementation of the Facility should be in line with the United Nations Convention on the Rights of Persons with Disabilities and its protocol and ensure accessibility in its investments and technical assistance, in line with Directive (EU) 2019/883 of the European Parliament and of the Council.\n"
+        },
+        "doc2": {
+          "para": "* Die Durchführung dieser Verordnung sollte von den Grundsätzen der Gleichstellung und Nichtdiskriminierung geleitet sein, wie sie in den Gleichstellungstrategien der Union enthalten sind. Sie sollte die Gleichstellung der Geschlechter und ihre durchgängige Berücksichtigung fördern und voranbringen, eine substanzielle Beteiligung von Frauen an Entscheidungsprozessen und die Stärkung der Rolle von Frauen und Mädchen sicherstellen und darauf abzielen, unter Berücksichtigung der einschlägigen EU-Aktionspläne für die Gleichstellung, der einschlägigen Schlussfolgerungen des Rates und internationaler Übereinkommen die Förderung und die uneingeschränkte Wahrnehmung aller Menschenrechte durch alle Frauen und Mädchen zu schützen und zu fördern sowie Gewalt gegen Frauen und häusliche Gewalt zu verhindern und dagegen vorzugehen. Darüber hinaus sollte die Verordnung unter uneingeschränkter Achtung der Europäischen Säule sozialer Rechte durchgeführt werden, auch in Bezug auf den Schutz von Kindern und die Arbeitnehmerrechte. Die Umsetzung der Fazilität sollte mit dem Übereinkommen der Vereinten Nationen über die Rechte von Menschen mit Behinderungen und dem dazugehörigen Protokoll im Einklang stehen und sicherstellen, dass die in ihrem Rahmen durchgeführten Investitionen und technischen Hilfemaßnahmen im Einklang mit der Richtlinie (EU) 2019/882 des Europäischen Parlaments und des Rates barrierefrei sind.\n"
+        }
+      },
+      {
+        "para_num": 6,
+        "doc1": {
+          "para": "At least 25 % of the loan released to Moldova shall be made available by Moldova to investment projects approved under the Neighbourhood Investment Platform, one of the regional investment platforms referred to in Article 32 of Directive (EU) 2021/947. The Facility Agreement shall detail this obligation, as well as the detailed rules and principles for its implementation. Failure to comply with this obligation shall trigger suspension of further operations under the Facility and recovery of said amounts from Moldova, as referred to in Article 19 of this Regulation.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:32|paragraph:|subparagraph:|point:|indent:",
+                "article:19|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "Mindestens 25 % der für Moldau freigegebenen Darlehen müssen von Moldau für Investitionsprojekte zur Verfügung gestellt werden, die im Rahmen der Nachbarschaftsinvestitionsplattform, einer der in Artikel 32 der Verordnung (EU) 2021/947 genannten regionalen Investitionsplattformen, genehmigt wurden. In der Fazilitätsvereinbarung werden diese Verpflichtung sowie ihre Durchführungsbestimmungen und ‑grundsätze im Einzelnen festgelegt. Wird dieser Verpflichtung nicht nachgekommen, so führt dies zur Aussetzung weiterer Maßnahmen im Rahmen der Fazilität und zur Einziehung der genannten Beträge von Moldau gemäß Artikel 19 dieser Verordnung.\n"
+        },
+        "errors": {
+          "articles": "missing in doc 2"
+        }
+      },
+      {
+        "para_num": 7,
+        "doc1": {
+          "para": "1_EN_ACT_part1_v8\n"
+        },
+        "doc2": {
+          "para": "1_DE_ACT_part1_v3\n"
+        }
+      },
+      {
+        "para_num": 8,
+        "doc1": {
+          "para": "Furthermore, the 14th FYP Development Plan for the Construction Machinery Industry has references to MAE under engineering machinery. The same is true for plans at provincial and municipal levels (see below under recitals (74) to (77)). On this basis, the Commission concluded that MAE is part of construction / engineering machinery sector.\n"
+        },
+        "doc2": {
+          "para": "Darüber hinaus enthält der 14. Fünfjahresplan zur Entwicklung der Baumaschinenindustrie Verweise auf MAE unter dem Abschnitt Maschinenbau. Gleiches gilt für Pläne auf Provinz- und Gemeindeebene (siehe die nachfolgenden Erwägungsgründe 74 bis 77). Auf dieser Grundlage kam die Kommission zu dem Schluss, dass MAE Teil des Baumaschinen-/Maschinenbausektors ist.\n"
+        }
+      },
+      {
+        "para_num": 9,
+        "doc1": {
+          "para": "Decision No 40 of the State Council on Promulgating and Implementing the ‘Temporary Provisions on Promoting the Industrial Structure Adjustment’\n"
+        },
+        "doc2": {
+          "para": "Staatsratsbeschluss Nr. 40 über die Bekanntmachung und Umsetzung der „vorläufigen Bestimmungen zur Förderung der Anpassung der Industriestruktur“\n"
+        }
+      },
+      {
+        "para_num": 10,
+        "doc1": {
+          "para": "* Decision No. 40 of the State Council of the People’s Republic of China is a legal document issued in 2005 aiming to promote industrial structure adjustments in China by encouraging the development of high-tech industries and the elimination of outdated production capacity. The ‘Guidance Catalogue for the Industrial Structure Adjustment’ (‘Catalogue’), which is an implementing measure of Decision No 40, sets the basis for guiding investment directions by designating industrial sectors which should benefit from privileged access to credit. It also guides the GOC to administer investment projects and to formulate and enforce policies on public finance, taxation, credit, land, import and export. The National Development and Reform Commission (‘NDRC’) released, and later amended, a guidance catalogue for industrial structure adjustment in February 2013 and in 2019. The Complainant and the Commission identified a reference to the ‘Large construction machinery’ sector, to which MAE belongs, in the Catalogue.\n"
+        },
+        "doc2": {
+          "para": "* Der Beschluss Nr. 40 des Staatsrates der Volksrepublik China ist ein 2005 erlassenes Rechtsdokument, mit dem die Anpassung der Industriestruktur in China gefördert werden soll, indem Anreize für die Weiterentwicklung von Hochtechnologie-Wirtschaftszweigen und die Beseitigung veralteter Produktionskapazitäten geschaffen werden. In dem „Katalog mit Leitlinien zur industriellen Umstrukturierung“ (im Folgenden „Katalog“), einer Maßnahme zur Umsetzung des Beschlusses Nr. 40, werden Industriesektoren ausgewiesen, die einen bevorzugten Zugang zu Finanzierungsquellen genießen sollen, und so die Grundlagen für Investitionsentscheidungen festgelegt. Außerdem wird die chinesische Regierung darin angehalten, Investitionsvorhaben zu betreuen und politische Maßnahmen in den Bereichen öffentliche Finanzen, Steuern, Kreditwesen, Grund und Boden, Einfuhr und Ausfuhr auszuarbeiten und durchzusetzen. Die nationale Entwicklungs- und Reformkommission (im Folgenden „NDRC“) gab im Februar 2013 „Leitlinien zur industriellen Umstrukturierung“ heraus, die 2019 geändert wurden. Der Antragsteller und die Kommission fanden im Katalog einen Verweis auf den Sektor „Große Baumaschinen“, zu dem MAE gehört.\n"
+        }
+      },
+      {
+        "para_num": 11,
+        "doc1": {
+          "para": "In recital (164) above, the Commission concluded that State-owned financial institutions are public bodies within the meaning of Article 2(b) read in conjunction with Article 3(1)(a)(i) of the basic Regulation and that they are in any event considered entrusted or directed by the GOC to carry out functions normally vested in the government within the meaning of Article 3(1)(a)(iv) of the basic Regulation. In Section 3.6.2 above, the Commission concluded that private financial institutions are also entrusted and directed by the government.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:2|paragraph:|subparagraph:|point:b|indent:",
+                "article:3|paragraph:1|subparagraph:|point:a(i)|indent:",
+                "article:3|paragraph:1|subparagraph:|point:a(iv)|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "Die Kommission kam in Erwägungsgrund 164 zu dem Schluss, dass die staatseigenen Finanzinstitute öffentliche Körperschaften im Sinne des Artikels 2 Buchstabe b in Verbindung mit Artikel 3 Absatz 1 Buchstabe a Ziffer i der Grundverordnung sind und dass sie auf jeden Fall als im Sinne des Artikels 3 Absatz 1 Buchstabe a Ziffer iv der Grundverordnung von der chinesischen Regierung mit Aufgaben, die normalerweise der Regierung obliegen, betraut oder zu deren Wahrnehmung angewiesen gelten. In Abschnitt 3.6.2 gelangt die Kommission zu dem Schluss, dass private Finanzinstitute ebenfalls von der Regierung betraut und angewiesen werden.\n"
+        },
+        "errors": {
+          "articles": "missing in doc 2"
+        }
+      },
+      {
+        "para_num": 12,
+        "doc1": {
+          "para": "The normal value in the anti-dumping investigation was constructed in accordance with Article 2(6a) of Regulation (EU) 2016/1036 of the European Parliament and of the Council with reference to undistorted costs and profits in an appropriate external representative country. Consequently, in accordance with Article 15(2) of the basic Regulation and in order to avoid double counting, the Commission first imposed the definitive countervailing duty at the level of the established definitive amount of subsidisation and then imposed the remaining definitive anti-dumping duty, which corresponds to the relevant dumping margin reduced by the amount of the countervailing duty and up to the relevant injury elimination level established in the separate anti-dumping investigation. Since the Commission reduced the dumping margin found with the entire amount of subsidisation established in the PRC, there was no double counting issue within the meaning of Article 24(1) of the basic Regulation.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:2|paragraph:6a|subparagraph:|point:|indent:",
+                "article:15|paragraph:2|subparagraph:|point:|indent:",
+                "article:24|paragraph:1|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "Der Normalwert in der Antidumpinguntersuchung wurde nach Artikel 2 Absatz 6a der Verordnung (ES) 2016/1036 des Europäischen Parlaments und des Rates  auf der Grundlage unverzerrter Kosten und Gewinne in einem geeigneten repräsentativen Drittland rechnerisch ermittelt. Daher hat die Kommission im Einklang mit Artikel 15 Absatz 2 der Grundverordnung und zur Vermeidung einer Doppelzählung zuerst den endgültigen Ausgleichszoll in Höhe der festgestellten endgültigen Höhe der Subventionierung und anschließend den verbleibenden endgültigen Antidumpingzoll festgesetzt, der der entsprechenden Dumpingspanne, abzüglich der Höhe des Ausgleichszolls, bis zur maßgeblichen Schadensbeseitigungsschwelle entspricht, die in der gesonderten Antidumpinguntersuchung festgestellt wurde. Da die Kommission die festgestellte Dumpingspanne um den gesamten für die VR China ermittelten Subventionsbetrag verringerte, fand keine Doppelzählung im Sinne des Artikel 24 Absatz 1 der Grundverordnung statt.\n"
+        },
+        "errors": {
+          "articles": "missing in doc 2"
+        }
+      },
+      {
+        "para_num": 13,
+        "doc1": {
+          "para": "The Commission noted that its approach to deduct in full the subsidy amount from the dumping margin as it applied the methodology based on Article 2(6a) of the basic anti-dumping Regulation when constructing normal value was fully in line with the basic anti-dumping and anti-subsidy regulation as well as the relevant WTO texts. The Commission acknowledged the complainant’s argument that even in the context of methodology to construct normal value based on undistorted prices and costs, it would be in principle possible to cumulate countervailing and anti-dumping duties, except for export subsidies. This was explicitly acknowledged by the relevant WTO jurisprudence on this issue subject to certain relevant conditions. However, with regard to the subsidies affecting the financial results of the exporting producers, such as grants, preferential financing, and preferential tax regimes, the Commission acknowledged the complainant’s arguments and evidence that the financial results of the company used in the representative country could be lower than what it would have been had this company received such subsidies in Brazil.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:2|paragraph:6a|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "Die Kommission stellte fest, dass ihr Ansatz, bei der rechnerischen Ermittlung des Normalwerts die Höhe der Subvention vollständig von der Dumpingspanne abzuziehen, unter Anwendung der Methode nach Artikel 2 Absatz 6a der Antidumpinggrundverordnung voll und ganz mit der Antidumping- und der Antisubventionsgrundverordnung sowie den einschlägigen WTO-Texten im Einklang stand. Die Kommission erkannte das Argument des Antragstellers an, dass es auch im Rahmen der Methode zur rechnerischen Ermittlung des Normalwerts auf der Grundlage unverzerrter Preise und Kosten grundsätzlich möglich sei, Ausgleichs- und Antidumpingzölle — ausgenommen Ausfuhrsubventionen — zu kumulieren. Dies wurde in der einschlägigen WTO-Rechtsprechung zu diesem Thema unter bestimmten einschlägigen Bedingungen ausdrücklich anerkannt. In Bezug auf die Subventionen, die sich auf die finanziellen Ergebnisse der ausführenden Hersteller auswirken, wie Zuschüsse, Vorzugsfinanzierungen und Steuervergünstigungen, erkannte die Kommission die Argumente und Beweise des Antragstellers jedoch an, wonach die finanziellen Ergebnisse des im repräsentativen Land verwendeten Unternehmens niedriger ausfallen könnten, als wenn das Unternehmen diese Subventionen in Brasilien erhalten hätte.\n"
+        },
+        "errors": {
+          "articles": "missing in doc 2"
+        }
+      },
+      {
+        "para_num": 14,
+        "doc1": {
+          "para": "\n---\n"
+        },
+        "doc2": {
+          "para": "\n---\n"
+        }
+      },
+      {
+        "para_num": 15,
+        "doc1": {
+          "para": "\n## Footnotes\n"
+        },
+        "doc2": {
+          "para": "\n## Footnotes\n"
+        }
+      },
+      {
+        "para_num": 16,
+        "doc1": {
+          "para": "Regulation (EU, Euratom) No 883/2013 of the European Parliament and of the Council of 11 September 2013 concerning investigations conducted by the European Anti-Fraud Office (OLAF) and repealing Regulation (EC) No 1073/1999 of the European Parliament and of the Council and Council Regulation (Euratom) No 1074/1999 (OJ L 248, 18.9.2013, p. 1, ELI: http://data.europa.eu/eli/reg/2013/883/oj).\n"
+        },
+        "doc2": {
+          "para": "Verordnung (EU, Euratom) Nr. 883/2013 des Europäischen Parlaments und des Rates vom 11. September 2013 über die Untersuchungen des Europäischen Amtes für Betrugsbekämpfung (OLAF) und zur Aufhebung der Verordnung (EG) Nr. 1073/1999 des Europäischen Parlaments und des Rates und der Verordnung (Euratom) Nr. 1074/1999 des Rates (ABl. L 248 vom 18.9.2013, S. 1, ELI: ).\n"
+        }
+      },
+      {
+        "para_num": 17,
+        "doc1": {
+          "para": "Council Regulation (EC, Euratom) No 2988/95 of 18 December 1995 on the protection of the European Communities financial interests (OJ L 312, 23.12.1995, p. 1, ELI: http://data.europa.eu/eli/reg/1995/2988/oj).\n"
+        },
+        "doc2": {
+          "para": "Verordnung (EG, Euratom) Nr. 2988/95 des Rates vom 18. Dezember 1995 über den Schutz der finanziellen Interessen der Europäischen Gemeinschaften (ABl. L 312 vom 23.12.1995, S. 1, ELI: http://data.europa.eu/eli/reg/1995/2988/oj).\n"
+        }
+      },
+      {
+        "para_num": 18,
+        "doc1": {
+          "para": "Council Regulation (Euratom, EC) No 2185/96 of 11 November 1996 concerning on-the-spot checks and inspections carried out by the Commission in order to protect the European Communities' financial interests against fraud and other irregularities (OJ L 292, 15.11.1996, p. 2, ELI: http://data.europa.eu/eli/reg/1996/2185/oj).\n"
+        },
+        "doc2": {
+          "para": "Verordnung (Euratom, EG) Nr. 2185/96 des Rates vom 11. November 1996 betreffend die Kontrollen und Überprüfungen vor Ort durch die Kommission zum Schutz der finanziellen Interessen der Europäischen Gemeinschaften vor Betrug und anderen Unregelmäßigkeiten (ABl. L 292 vom 15.11.1996, S. 2, ELI: http://data.europa.eu/eli/reg/1996/2185/oj).\n"
+        }
+      },
+      {
+        "para_num": 19,
+        "doc1": {
+          "para": "Council Regulation (EU) 2017/1939 of 12 October 2017 implementing enhanced cooperation on the establishment of the European Public Prosecutor’s Office (‘the EPPO’) (OJ L 283, 31.10.2017, p. 1, ELI: http://data.europa.eu/eli/reg/2017/1939/oj).\n"
+        },
+        "doc2": {
+          "para": "Verordnung (EU) 2017/1939 des Rates vom 12. Oktober 2017 zur Durchführung einer Verstärkten Zusammenarbeit zur Errichtung der Europäischen Staatsanwaltschaft (EUStA) (ABl. L 283 vom 31.10.2017, S. 1, ELI: https://eur-lex.europa.eu/eli/reg/2017/1939/oj).\n"
+        }
+      },
+      {
+        "para_num": 20,
+        "doc1": {
+          "para": "Directive (EU) 2019/883 of the European Parliament and of the Council of 17 April 2019 on the accessibility requirements for products and services (OJ L 151, 7.6.2019, p. 70, ELI: http://data.europa.eu/eli/dir/2019/883/oj).\n"
+        },
+        "doc2": {
+          "para": "Richtlinie (EU) 2019/882 des Europäischen Parlaments und des Rates vom 17. April 2019 über die Barrierefreiheitsanforderungen für Produkte und Dienstleistungen (ABl. L 151 vom 7.6.2019, S. 70, ELI: http://data.europa.eu/eli/dir/2019/882/oj).\n"
+        }
+      },
+      {
+        "para_num": 21,
+        "doc1": {
+          "para": "Seetao, ‘Construction Machinery 14th Five-Year Development Plan Released’, 19 July 2021, https://www.seetao.com/details/97137.html.\n"
+        },
+        "doc2": {
+          "para": "Seetao, „Construction Machinery 14th Five-Year Development Plan Released“, 19. Juli 2021, https://www.seetao.com/details/97137.html.\n"
+        }
+      },
+      {
+        "para_num": 22,
+        "doc1": {
+          "para": "https://www.gov.cn/xinwen/2019-11/06/5449193/files/26c9d25f713f4ed5b8dc51ae40ef37af.pdf.\n"
+        },
+        "doc2": {
+          "para": "https://www.gov.cn/xinwen/2019-11/06/5449193/files/26c9d25f713f4ed5b8dc51ae40ef37af.pdf.\n"
+        }
+      },
+      {
+        "para_num": 23,
+        "doc1": {
+          "para": "Regulation (EU) 2016/1036 of the European Parliament and of the Council of 8 June 2016 on protection against dumped imports from countries not members of the European Union (OJ L 176, 30.6.2016, p. 21, ELI: http://data.europa.eu/eli/reg/2016/1036/oj).\n"
+        },
+        "doc2": {
+          "para": "Verordnung (EU) 2016/1036 des Europäischen Parlaments und des Rates vom 8. Juni 2016 über den Schutz gegen gedumpte Einfuhren aus nicht zur Europäischen Union gehörenden Ländern (ABl. L 176 vom 30.6.2016, S. 21, ELI: http://data.europa.eu/eli/reg/2016/1036/oj).)\n"
+        }
+      },
+      {
+        "para_num": 24,
+        "doc1": {
+          "para": "See WT/DS379/AB/R, paragraphs 541-542, 543, 599 and 602. See also Commission Implementing Regulation (EU) 2020/776 of 12 June 2020 imposing definitive countervailing duties on imports of certain woven and/or stitched glass fibre fabrics originating in the People’s Republic of China and Egypt and amending Commission Implementing Regulation (EU) 2020/492 imposing definitive anti-dumping duties on imports of certain woven and/or stitched glass fibre fabrics originating in the People's Republic of China and Egypt (OJ L 189, 15.6.2020, p. 1, ELI: http://data.europa.eu/eli/reg_impl/2020/776/oj), rec. (1135) et seq.\n"
+        },
+        "doc2": {
+          "para": "Siehe WT/DS379/AB/R, Rn. 541-542, 543, 599 und 602. Durchführungsverordnung (EU) 2020/776 der Kommission vom 12. Juni 2020 zur Einführung endgültiger Ausgleichszölle auf die Einfuhren bestimmter gewebter und/oder genähter Erzeugnisse aus Glasfasern mit Ursprung in der Volksrepublik China und Ägypten und zur Änderung der Durchführungsverordnung (EU) 2020/492 der Kommission zur Einführung endgültiger Antidumpingzölle betreffend die Einfuhren bestimmter gewebter und/oder genähter Erzeugnisse aus Glasfasern mit Ursprung in der Volksrepublik China und Ägypten (ABl. L 189 vom 15.6.2020, S. 1, Erwägungsgrund 1135 ff., ELI: http://data.europa.eu/eli/reg_impl/2020/776/oj).\n"
+        }
+      }
+    ]
+  }
+}

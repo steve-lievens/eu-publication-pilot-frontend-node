@@ -1,0 +1,805 @@
+{
+  "batch_errors": [
+    {
+      "entity": "regdirs",
+      "document": "1_EN_ACT_part1_v1_comparison.docx",
+      "error": "list indices must be integers or slices, not str",
+      "starting_paragraph": 1,
+      "ending_paragraph": 25
+    },
+    {
+      "entity": "regdirs",
+      "document": "1_EN_ACT_part1_v1_comparison.docx",
+      "error": "list indices must be integers or slices, not str",
+      "starting_paragraph": 26,
+      "ending_paragraph": 50
+    },
+    {
+      "entity": "regdirs",
+      "document": "1_EN_ACT_part1_v1_comparison.docx",
+      "error": "list indices must be integers or slices, not str",
+      "starting_paragraph": 51,
+      "ending_paragraph": 58
+    },
+    {
+      "entity": "caselaw",
+      "document": "1_EN_ACT_part1_v1_comparison.docx",
+      "error": "Invalid json output: Input:  {\n        \"paragraphs\": [\n            {\n                \"para_number\": 1,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 2,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 3,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 4,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 5,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 6,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 7,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 8,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 9,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 10,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 11,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 12,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 13,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 14,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 15,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 16,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 17,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 18,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 19,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 20,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            }\n        ]\n    }\n\nOutput:  {\n    \"extracted_entities\": [\n        {\n            \"para_number\": 1,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 2,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 3,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 4,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 5,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 6,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 7,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 8,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 9,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 10,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 11,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 12,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 13,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 14,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 15,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 16,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 17,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 18,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 19,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 20,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        }\n    ]\n}\nFor troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/OUTPUT_PARSING_FAILURE ",
+      "starting_paragraph": 1,
+      "ending_paragraph": 25
+    },
+    {
+      "entity": "caselaw",
+      "document": "1_EN_ACT_part1_v1_comparison.docx",
+      "error": "Invalid json output: Input:  {\n        \"paragraphs\": [\n            {\n                \"para_number\": 1,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 2,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 3,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 4,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 5,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 6,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 7,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 8,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 9,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 10,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 11,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 12,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 13,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 14,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 15,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 16,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 17,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 18,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 19,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 20,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 21,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 22,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 23,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 24,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 25,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 26,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 27,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 28,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 29,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 30,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 31,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 32,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 33,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 34,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 35,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 36,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 37,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 38,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 39,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 40,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 41,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 42,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 43,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 44,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 45,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 46,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 47,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 48,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 49,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 50,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 51,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 52,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 53,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 54,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 55,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 56,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 57,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 58,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 59,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 60,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 61,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 62,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 63,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 64,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 65,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 66,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 67,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 68,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 69,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 70,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 71,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 72,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 73,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 74,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 75,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 76,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 77,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 78,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 79,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 80,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 81,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 82,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 83,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 84,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 85,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 86,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 87,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 88,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 89,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 90,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 91,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 92,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 93,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 94,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 95,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 96,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 97,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 98,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 99,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 100,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            }\n        ]\n    }\n\nOutput:  {\n    \"extracted_entities\": [\n        {\n            \"para_number\": 1,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 2,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 3,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 4,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 5,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 6,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 7,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 8,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 9,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 10,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 11,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 12,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 13,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 14,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 15,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 16,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 17,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"E\nFor troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/OUTPUT_PARSING_FAILURE ",
+      "starting_paragraph": 26,
+      "ending_paragraph": 50
+    },
+    {
+      "entity": "caselaw",
+      "document": "1_EN_ACT_part1_v1_comparison.docx",
+      "error": "Invalid json output: Input:  {\n        \"paragraphs\": [\n            {\n                \"para_number\": 1,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 2,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 3,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 4,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 5,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 6,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 7,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 8,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 9,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 10,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 11,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 12,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 13,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 14,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 15,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 16,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            },\n            {\n                \"para_number\": 17,\n                \"para\": \"Judgment of 12 July 2005, Schempp, C-403/03, ECLI:EU:C:2005:446, paragraph 19\"\n            },\n            {\n                \"para_number\": 18,\n                \"para\": \"Judgment of 19 October 2023, Aquino v Parliament, C-534/22 P, ECLI:EU:C:2023:802, paragraph 69\"\n            },\n            {\n                \"para_number\": 19,\n                \"para\": \"Judgment of 5 September 2024, SE v Commission, C-309/23 P, ECLI:EU:C:2024:693\"\n            },\n            {\n                \"para_number\": 20,\n                \"para\": \"Judgment of 6 June 2007, Walderdorff v Commission, T-442/04, not published, ECLI:EU:T:2007:161\"\n            }\n        ]\n    }\n\nOutput:  {\n    \"extracted_entities\": [\n        {\n            \"para_number\": 1,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 2,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 3,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 4,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 5,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 6,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 7,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 8,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 9,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 10,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 11,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 12,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 13,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 14,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 15,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 16,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        },\n        {\n            \"para_number\": 17,\n            \"entities\": {\n                \"date\": [\"20050712\"],\n                \"name\": [\"Schempp\"],\n                \"caseNumber\": [\"C-403/03\"],\n                \"ECLI\": [\"ECLI:EU:C:2005:446\"],\n                \"paragraph\": [\"19\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 18,\n            \"entities\": {\n                \"date\": [\"20231019\"],\n                \"name\": [\"Aquino v Parliament\"],\n                \"caseNumber\": [\"C-534/22 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2023:802\"],\n                \"paragraph\": [\"69\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 19,\n            \"entities\": {\n                \"date\": [\"20240905\"],\n                \"name\": [\"SE v Commission\"],\n                \"caseNumber\": [\"C-309/23 P\"],\n                \"ECLI\": [\"ECLI:EU:C:2024:693\"],\n                \"published\": [\"True\"]\n            }\n        },\n        {\n            \"para_number\": 20,\n            \"entities\": {\n                \"date\": [\"20070606\"],\n                \"name\": [\"Walderdorff v Commission\"],\n                \"caseNumber\": [\"T-442/04\"],\n                \"ECLI\": [\"ECLI:EU:T:2007:161\"],\n                \"published\": [\"False\"]\n            }\n        }\n    ]\n}\nFor troubleshooting, visit: https://python.langchain.com/docs/troubleshooting/errors/OUTPUT_PARSING_FAILURE ",
+      "starting_paragraph": 51,
+      "ending_paragraph": 58
+    },
+    {
+      "entity": "amounts",
+      "document": "1_DE_ACT_part1_v1_comparison.docx",
+      "error": "'extracted_entities'",
+      "starting_paragraph": 51,
+      "ending_paragraph": 58
+    },
+    {
+      "entity": "regdirs",
+      "document": "1_DE_ACT_part1_v1_comparison.docx",
+      "error": "list indices must be integers or slices, not str",
+      "starting_paragraph": 1,
+      "ending_paragraph": 25
+    },
+    {
+      "entity": "regdirs",
+      "document": "1_DE_ACT_part1_v1_comparison.docx",
+      "error": "list indices must be integers or slices, not str",
+      "starting_paragraph": 26,
+      "ending_paragraph": 50
+    },
+    {
+      "entity": "regdirs",
+      "document": "1_DE_ACT_part1_v1_comparison.docx",
+      "error": "list indices must be integers or slices, not str",
+      "starting_paragraph": 51,
+      "ending_paragraph": 58
+    }
+  ],
+  "reduce_errors": [],
+  "results": {
+    "doc1": "1_EN_ACT_part1_v1_comparison.docx",
+    "doc2": "1_DE_ACT_part1_v1_comparison.docx",
+    "paragraphs": [
+      {
+        "para_num": 1,
+        "doc1": {
+          "para": "COMMISSION IMPLEMENTING REGULATION (EU) …/…\n"
+        },
+        "doc2": {
+          "para": "DURCHFÜHRUNGSVERORDNUNG (EU) …/… DER KOMMISSION\n"
+        }
+      },
+      {
+        "para_num": 2,
+        "doc1": {
+          "para": "of XXX\n"
+        },
+        "doc2": {
+          "para": "vom XXX\n"
+        }
+      },
+      {
+        "para_num": 3,
+        "doc1": {
+          "para": "concerning the non-renewal of the approval of the active substance S-metolachlor, in accordance with Regulation (EC) No 1107/2009 of the European Parliament and of the Council, and amending Commission Implementing Regulation (EU) No 540/2011\n"
+        },
+        "doc2": {
+          "para": "zur Nichterneuerung der Genehmigung für den Wirkstoff S-Metolachlor gemäß der Verordnung (EG) Nr. 1107/2009 des Europäischen Parlaments und des Rates und zur Änderung der Durchführungsverordnung (EU) Nr. 540/2011 der Kommission\n"
+        }
+      },
+      {
+        "para_num": 4,
+        "doc1": {
+          "para": "(Text with EEA relevance)\n"
+        },
+        "doc2": {
+          "para": "(Text von Bedeutung für den EWR)\n"
+        }
+      },
+      {
+        "para_num": 5,
+        "doc1": {
+          "para": "THE EUROPEAN COMMISSION,\n"
+        },
+        "doc2": {
+          "para": "DIE EUROPÄISCHE KOMMISSION —\n"
+        }
+      },
+      {
+        "para_num": 6,
+        "doc1": {
+          "para": "Having regard to the Treaty on the Functioning of the European Union,\n"
+        },
+        "doc2": {
+          "para": "gestützt auf den Vertrag über die Arbeitsweise der Europäischen Union,\n"
+        }
+      },
+      {
+        "para_num": 7,
+        "doc1": {
+          "para": "Having regard to Regulation (EC) No 1107/2009 of the European Parliament and of the Council of 21 October 2009 concerning the placing of plant protection products on the market and repealing Council Directives 79/117/EEC and 91/414/EEC , and in particular Article 20(1) and Article 78(2) thereof,\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:20|paragraph:1|subparagraph:|point:|indent:",
+                "article:78|paragraph:2|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "gestützt auf die Verordnung (EG) Nr. 1107/2009 des Europäischen Parlaments und des Rates vom 21. Oktober 2009 über das Inverkehrbringen von Pflanzenschutzmitteln und zur Aufhebung der Richtlinien 79/117/EWG und 91/414/EWG des Rates , insbesondere auf Artikel 20 Absatz 1 und Artikel 78 Absatz 2,\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:20|paragraph:1|subparagraph:|point:|indent:",
+                "article:78|paragraph:2|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "para_num": 8,
+        "doc1": {
+          "para": "Whereas:\n"
+        },
+        "doc2": {
+          "para": "in Erwägung nachstehender Gründe:\n"
+        }
+      },
+      {
+        "para_num": 9,
+        "doc1": {
+          "para": "1. (1)\tCommission Directive 2005/3/EC  included S-metolachlor as an active substance in Annex I to Council Directive 91/414/EEC .\n"
+        },
+        "doc2": {
+          "para": "1. (1)\tMit der Richtlinie 2005/3/EG der Kommission  wurde der Wirkstoff S-Metolachlor in Anhang I der Richtlinie 91/414/EWG des Rates  aufgenommen.\n"
+        }
+      },
+      {
+        "para_num": 10,
+        "doc1": {
+          "para": "1. (2)\tAccording to Article 78(3) of Regulation (EC) No 1107/2009, active substances included in Annex I to Directive 91/414/EEC are deemed to have been approved under Regulation (EC) No 1107/2009 and are listed in Part A of the Annex to Commission Implementing Regulation (EU) No 540/2011 .\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:78|paragraph:3|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (2)\tGemäß Artikel 78 Absatz 3 der Verordnung (EG) Nr. 1107/2009 gelten in Anhang I der Richtlinie 91/414/EWG aufgenommene Wirkstoffe als gemäß der Verordnung (EG) Nr. 1107/2009 genehmigt und sind in Teil A des Anhangs der Durchführungsverordnung (EU) Nr. 540/2011 der Kommission  aufgeführt.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:78|paragraph:3|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "para_num": 11,
+        "doc1": {
+          "para": "1. (3)\tThe approval of the active substance S-metolachlor, as set out in Part A of the Annex to Implementing Regulation (EU) No 540/2011, expires on 15 November 2024.\n"
+        },
+        "doc2": {
+          "para": "1. (3)\tDie Genehmigung für den Wirkstoff S-Metolachlor gemäß Teil A des Anhangs der Durchführungsverordnung (EU) Nr. 540/2011 läuft am 15. November 2024 aus.\n"
+        }
+      },
+      {
+        "para_num": 12,
+        "doc1": {
+          "para": "1. (4)\tApplications for the renewal of the approval of S-metolachlor were submitted to Germany, the rapporteur Member State and France, to the co-rapporteur Member State, in accordance with Article 1 of Commission Implementing Regulation (EU) No 844/2012  within the time period provided for in that Article.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:1|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (4)\tAnträge auf Erneuerung der Genehmigung für den Wirkstoff S-Metolachlor wurden Deutschland, dem Bericht erstattenden Mitgliedstaat, und Frankreich, dem mitberichterstattenden Mitgliedstaat, gemäß Artikel 1 der Durchführungsverordnung (EU) Nr. 844/2012 der Kommission  innerhalb der in dem genannten Artikel festgesetzten Frist übermittelt.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:1|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "para_num": 13,
+        "doc1": {
+          "para": "1. (5)\tThe applicants submitted the supplementary dossiers required to the rapporteur Member State, the co-rapporteur Member State, the Commission and the European Food Safety Authority (‘the Authority’), in accordance with Article 6 of Implementing Regulation (EU) No 844/2012. The applications were found to be complete by the rapporteur Member State.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:6|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (5)\tDie Antragsteller haben dem Bericht erstattenden Mitgliedstaat, dem mitberichterstattenden Mitgliedstaat, der Kommission und der Europäischen Behörde für Lebensmittelsicherheit (im Folgenden „Behörde“) die gemäß Artikel 6 der Durchführungsverordnung (EU) Nr. 844/2012 erforderlichen ergänzenden Dossiers vorgelegt. Die Anträge wurden vom Bericht erstattenden Mitgliedstaat für vollständig befunden.\n"
+        },
+        "errors": {
+          "articles": "missing in doc 2"
+        }
+      },
+      {
+        "para_num": 14,
+        "doc1": {
+          "para": "1. (6)\tThe rapporteur Member State prepared a draft renewal assessment report in consultation with the co-rapporteur Member State and submitted it to the Authority and the Commission on 6 September 2018.\n"
+        },
+        "doc2": {
+          "para": "1. (6)\tDer Bericht erstattende Mitgliedstaat hat in Absprache mit dem mitberichterstattenden Mitgliedstaat einen Entwurf eines Bewertungsberichts im Hinblick auf die Erneuerung erstellt und ihn am 6. September 2018 der Behörde und der Kommission vorgelegt.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:6|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "errors": {
+          "articles": "missing in doc 1"
+        }
+      },
+      {
+        "para_num": 15,
+        "doc1": {
+          "para": "1. (7)\tThe Authority made the supplementary summary dossier available to the public. The Authority also circulated the draft renewal assessment report to the applicants and to the Member States for comments and launched a public consultation on it. The Authority forwarded the comments received to the Commission.\n"
+        },
+        "doc2": {
+          "para": "1. (7)\tDie Behörde hat die ergänzende Kurzfassung des Dossiers der Öffentlichkeit zugänglich gemacht. Sie hat außerdem den Entwurf des Bewertungsberichts im Hinblick auf die Erneuerung an die Antragsteller und die Mitgliedstaaten zur Stellungnahme weitergeleitet und eine öffentliche Konsultation dazu auf den Weg gebracht. Die Behörde hat die eingegangenen Stellungnahmen an die Kommission weitergeleitet.\n"
+        }
+      },
+      {
+        "para_num": 16,
+        "doc1": {
+          "para": "1. (8)\tOn 29 September 2022, given that all areas of the assessment, except for endocrine disrupting properties, had been completed and that several critical areas of concern had been identified, the Commission invited the Authority to provide the results of the risk assessment of the active substance S-metolachor, including its conclusion as to whether S-metolachlor can be expected to meet the approval criteria set out in Article 4 of Regulation (EC) No 1107/2009 excluding the full assessment of endocrine disrupting properties.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:4|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (8)\tDa die Bewertung aller relevanter Bereiche, mit Ausnahme der endokrinschädlichen Eigenschaften, abgeschlossen und eine Reihe kritischer Problembereiche ermittelt worden war, ersuchte die Kommission die Behörde am 29. September 2022, die Ergebnisse der Risikobewertung für den Wirkstoff S-Metolachlor vorzulegen, einschließlich ihrer Schlussfolgerung dazu, ob angenommen werden kann, dass S-Metolachlor — unter Ausschluss der vollständigen Bewertung der endokrinschädlichen Eigenschaften — die Genehmigungskriterien gemäß Artikel 4 der Verordnung (EG) Nr. 1107/2009 erfüllt.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:4|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "para_num": 17,
+        "doc1": {
+          "para": "1. (9)\tOn 3 February 2023, the Authority communicated to the Commission its conclusion  on whether S-metolachlor can be expected to meet the approval criteria provided for in Article 4 of Regulation (EC) No 1107/2009.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:4|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (9)\tAm 3. Februar 2023 übermittelte die Behörde der Kommission ihre Schlussfolgerung  dazu, ob angenommen werden kann, dass S-Metolachlor die Genehmigungskriterien gemäß Artikel 4 der Verordnung (EG) Nr. 1107/2009 erfüllt.\n"
+        },
+        "errors": {
+          "articles": "missing in doc 2"
+        }
+      },
+      {
+        "para_num": 18,
+        "doc1": {
+          "para": "1. (10)\tThe Authority identified several critical areas of concerns. First of all, it concluded that there is a potential for S-metolachlor and its relevant herbicidally active metabolites to be present in groundwater above the parametric drinking water limit of 0.1 μg/L, based on monitoring data and that, in addition, these metabolites are predicted to be above 0.1 µg/L in all scenarios for all representative uses based on groundwater modelling. Furthermore, the Authority found a high potential for groundwater exposure above the parametric drinking water limit of 0.1 μg/L for metabolites which are toxicologically relevant due to concerns or data gaps concerning genotoxicity and/or carcinogenicity. Finally, the Authority also identified a high risk to earthworm-eating mammals from secondary poisoning.\n",
+          "extracted_entities": {
+            "amounts": {
+              "amount": [
+                "0.100 µg",
+                "0.100 µg",
+                "0.100 µg"
+              ]
+            },
+            "articles": {
+              "reference": [
+                "article:4|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (10)\tDie Behörde hat mehrere kritische Problembereiche ermittelt. Zunächst gelangte sie anhand von Überwachungsdaten zu dem Schluss, dass S-Metolachlor und seine relevanten Metaboliten mit Herbizidwirkung im Grundwasser in einer Höhe über dem parametrischen Trinkwassergrenzwert von 0,1 μg/l vorhanden sein können und dass außerdem, basierend auf einer Grundwassermodellierung, in allen Szenarien bei allen repräsentativen Verwendungen vom Vorhandensein dieser Metaboliten in einer Höhe über dem Wert von 0,1 μg/l auszugehen ist. Des Weiteren stellte die Behörde ein hohes Potenzial für eine Grundwasserexposition über dem parametrischen Trinkwassergrenzwert von 0,1 μg/l in Bezug auf Metaboliten fest, die aufgrund von Bedenken oder Datenlücken hinsichtlich der Genotoxizität und/oder Karzinogenität toxikologisch relevant sind. Schließlich ermittelte die Behörde auch ein hohes Risiko für regenwurmfressende Säugetiere durch Sekundärvergiftungen.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:4|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "errors": {
+          "amounts": "missing in doc 2"
+        }
+      },
+      {
+        "para_num": 19,
+        "doc1": {
+          "para": "1. (11)\tPursuant to Article 14 of Implementing Regulation (EU) No 844/2012, the Commission presented a draft renewal report and a draft of this Regulation to the Standing Committee on Plants, Animals, Food and Feed, for examination in May 2023. The draft renewal report was finalised by the Standing Committee on 12 July 2023.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:14|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (11)\tGemäß Artikel 14 der Durchführungsverordnung (EU) Nr. 844/2012 legte die Kommission dem Ständigen Ausschuss für Pflanzen, Tiere, Lebensmittel und Futtermittel im Mai 2023 einen Entwurf eines Berichts im Hinblick auf die Erneuerung sowie einen Entwurf der vorliegenden Verordnung zur Prüfung vor. Der Entwurf des Berichts im Hinblick auf die Erneuerung wurde am 12. Juli 2023 vom Ständigen Ausschuss fertiggestellt.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:4|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "errors": {
+          "articles": "mismatch"
+        }
+      },
+      {
+        "para_num": 20,
+        "doc1": {
+          "para": "1. (12)\tThe Commission invited the applicants to submit their comments on the conclusions of the Authority. Furthermore, in accordance with Article 14(1), third paragraph, of Implementing Regulation (EU) No 844/2012, the Commission invited the applicant to submit comments on the draft renewal report. The applicants submitted their comments which have been carefully examined.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:14|paragraph:1|subparagraph:third|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (12)\tDie Kommission forderte die Antragsteller auf, zu den Schlussfolgerungen der Behörde Stellung zu nehmen. Außerdem forderte die Kommission die Antragsteller im Einklang mit Artikel 14 Absatz 1 Unterabsatz 3 der Durchführungsverordnung (EU) Nr. 844/2012 auf, zum Entwurf des Berichts im Hinblick auf die Erneuerung Stellung zu nehmen. Die von den Antragstellern vorgelegten Stellungnahmen wurden eingehend geprüft.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:14|paragraph:1|subparagraph:3|point:|indent:"
+              ]
+            }
+          }
+        },
+        "errors": {
+          "articles": "mismatch"
+        }
+      },
+      {
+        "para_num": 21,
+        "doc1": {
+          "para": "1. (13)\tHowever, despite the arguments put forward by the applicants, the concerns regarding the active substance could not be eliminated.\n"
+        },
+        "doc2": {
+          "para": "1. (13)\tDie Bedenken gegenüber dem Wirkstoff konnten jedoch trotz der von den Antragstellern vorgebrachten Argumente nicht ausgeräumt werden.\n"
+        }
+      },
+      {
+        "para_num": 22,
+        "doc1": {
+          "para": "1. (14)\tConsequently, it has not been established with respect to one or more representative uses of at least one plant protection product containing S-metolachlor that the approval criteria provided for in Article 4 of Regulation (EC) No 1107/2009 are satisfied. It is therefore appropriate not to renew the approval of that active substance.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:4|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (14)\tDamit konnte nicht nachgewiesen werden, dass in Bezug auf einen oder mehrere repräsentative Verwendungszwecke mindestens eines Pflanzenschutzmittels, das S-Metolachlor enthält, die Genehmigungskriterien gemäß Artikel 4 der Verordnung (EG) Nr. 1107/2009 erfüllt sind. Die Genehmigung für den genannten Wirkstoff sollte daher nicht erneuert werden.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:4|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "para_num": 23,
+        "doc1": {
+          "para": "1. (15)\tImplementing Regulation (EU) No 540/2011 should therefore be amended accordingly.\n"
+        },
+        "doc2": {
+          "para": "1. (15)\tDie Durchführungsverordnung (EU) Nr. 540/2011 sollte daher entsprechend geändert werden.\n"
+        }
+      },
+      {
+        "para_num": 24,
+        "doc1": {
+          "para": "1. (16)\tMember States should be given sufficient time to withdraw authorisations for plant protection products containing S-metolachlor.\n"
+        },
+        "doc2": {
+          "para": "1. (16)\tDen Mitgliedstaaten sollte ausreichend Zeit für den Widerruf der Zulassungen für S-Metolachlor enthaltende Pflanzenschutzmittel eingeräumt werden.\n"
+        }
+      },
+      {
+        "para_num": 25,
+        "doc1": {
+          "para": "1. (17)\tFor plant protection products containing S-metolachlor, where Member States grant any grace period in accordance with Article 46 of Regulation (EC) No 1107/2009, that period should at the latest, expire on […][Office of Publications please insert date 6 months from the date of entry into force].\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:46|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (17)\tRäumt ein Mitgliedstaat gemäß Artikel 46 der Verordnung (EG) Nr. 1107/2009 eine Aufbrauchfrist für S-Metolachlor enthaltende Pflanzenschutzmittel ein, so sollte diese Frist spätestens am [Amt für Veröffentlichungen: Bitte Datum 6 Monate nach dem Datum des Inkrafttretens einfügen] enden.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:46|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "para_num": 26,
+        "doc1": {
+          "para": "1. (18)\tCommission Implementing Regulation (EU) 2023/918 of 4 May 2023  extended the approval period of S-metolachlor to 15 November 2024 in order to allow the renewal process to be completed before the expiry of the approval period of that substance. However, given that a decision on the non-renewal of the approval has been taken ahead of the expiry of that extended approval period, this Regulation should start to apply earlier than that date.\n"
+        },
+        "doc2": {
+          "para": "1. (18)\tMit der Durchführungsverordnung (EU) 2023/918 der Kommission vom 4. Mai 2023  wurde die Laufzeit der Genehmigung für S-Metolachlor bis zum 15. November 2024 verlängert, damit das Erneuerungsverfahren vor dem Auslaufen der Genehmigung für diesen Wirkstoff abgeschlossen werden kann. Da die Nichterneuerung der Genehmigung jedoch vor Ablauf dieser verlängerten Laufzeit beschlossen wurde, sollte die vorliegende Verordnung ab einem früheren Datum gelten.\n"
+        }
+      },
+      {
+        "para_num": 27,
+        "doc1": {
+          "para": "1. (19)\tThis Regulation does not prevent the submission of a further application for the approval of S-metolachlor pursuant to Article 7 of Regulation (EC) No 1107/2009.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:7|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "1. (19)\tDie vorliegende Verordnung steht der Einreichung eines neuen Antrags auf Genehmigung von S-Metolachlor gemäß Artikel 7 der Verordnung (EG) Nr. 1107/2009 nicht entgegen.\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:7|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "para_num": 28,
+        "doc1": {
+          "para": "1. (20)\tThe measures provided for in this Regulation are in accordance with the opinion of the Standing Committee on Plants, Animals, Food and Feed,\n"
+        },
+        "doc2": {
+          "para": "1. (20)\tDie in dieser Verordnung vorgesehenen Maßnahmen entsprechen der Stellungnahme des Ständigen Ausschusses für Pflanzen, Tiere, Lebensmittel und Futtermittel —\n"
+        }
+      },
+      {
+        "para_num": 29,
+        "doc1": {
+          "para": "HAS ADOPTED THIS REGULATION:\n"
+        },
+        "doc2": {
+          "para": "HAT FOLGENDE VERORDNUNG ERLASSEN:\n"
+        }
+      },
+      {
+        "para_num": 30,
+        "doc1": {
+          "para": "Article 1\n"
+        },
+        "doc2": {
+          "para": "Artikel 1\n"
+        }
+      },
+      {
+        "para_num": 31,
+        "doc1": {
+          "para": "Non-renewal of the approval of the active substance\n"
+        },
+        "doc2": {
+          "para": "Nichterneuerung der Genehmigung für den Wirkstoff\n"
+        }
+      },
+      {
+        "para_num": 32,
+        "doc1": {
+          "para": "The approval of the active substance S-metolachlor is not renewed.\n"
+        },
+        "doc2": {
+          "para": "Die Genehmigung für den Wirkstoff S-Metolachlor wird nicht erneuert.\n"
+        }
+      },
+      {
+        "para_num": 33,
+        "doc1": {
+          "para": "Article 2\n"
+        },
+        "doc2": {
+          "para": "Artikel 2\n"
+        }
+      },
+      {
+        "para_num": 34,
+        "doc1": {
+          "para": "Amendment to Implementing Regulation (EU) No 540/2011\n"
+        },
+        "doc2": {
+          "para": "Änderung der Durchführungsverordnung (EU) Nr. 540/2011\n"
+        }
+      },
+      {
+        "para_num": 35,
+        "doc1": {
+          "para": "In Part A of the Annex to Implementing Regulation (EU) No 540/2011, row 97 on S-metolachlor, is deleted.\n"
+        },
+        "doc2": {
+          "para": "In Teil A des Anhangs der Durchführungsverordnung (EU) Nr. 540/2011 wird Zeile 97 zu S-Metolachlor gestrichen.\n"
+        }
+      },
+      {
+        "para_num": 36,
+        "doc1": {
+          "para": "Article 3\n"
+        },
+        "doc2": {
+          "para": "Artikel 3\n"
+        }
+      },
+      {
+        "para_num": 37,
+        "doc1": {
+          "para": "Transitional measures\n"
+        },
+        "doc2": {
+          "para": "Übergangsmaßnahmen\n"
+        }
+      },
+      {
+        "para_num": 38,
+        "doc1": {
+          "para": "Member States shall withdraw authorisations for plant protection products containing S-metolachlor as an active substance by […][Office of Publications please insert date 3 months from the date of entry into force].\n"
+        },
+        "doc2": {
+          "para": "Die Mitgliedstaaten widerrufen spätestens am […] [Amt für Veröffentlichungen: Bitte Datum 3 Monate nach dem Datum des Inkrafttretens einfügen] die Zulassungen für Pflanzenschutzmittel, die S-Metolachlor als Wirkstoff enthalten.\n"
+        }
+      },
+      {
+        "para_num": 39,
+        "doc1": {
+          "para": "Article 4\n"
+        },
+        "doc2": {
+          "para": "Artikel 4\n"
+        }
+      },
+      {
+        "para_num": 40,
+        "doc1": {
+          "para": "Grace period\n"
+        },
+        "doc2": {
+          "para": "Aufbrauchfrist\n"
+        }
+      },
+      {
+        "para_num": 41,
+        "doc1": {
+          "para": "Any grace period granted by Member States in accordance with Article 46 of Regulation (EC) No 1107/2009 shall expire by […][Office of Publications please insert date 6 months from the date of entry into force].\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:46|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        },
+        "doc2": {
+          "para": "Etwaige Aufbrauchfristen, die die Mitgliedstaaten gemäß Artikel 46 der Verordnung (EG) Nr. 1107/2009 einräumen, enden spätestens am […] [Amt für Veröffentlichungen: Bitte Datum 6 Monate nach dem Datum des Inkrafttretens einfügen].\n",
+          "extracted_entities": {
+            "articles": {
+              "reference": [
+                "article:46|paragraph:|subparagraph:|point:|indent:"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "para_num": 42,
+        "doc1": {
+          "para": "Article 5\n"
+        },
+        "doc2": {
+          "para": "Artikel 5\n"
+        }
+      },
+      {
+        "para_num": 43,
+        "doc1": {
+          "para": "Entry into force\n"
+        },
+        "doc2": {
+          "para": "Inkrafttreten\n"
+        }
+      },
+      {
+        "para_num": 44,
+        "doc1": {
+          "para": "This Regulation shall enter into force on twentieth day following that of its publication in the Official Journal of the European Union.\n"
+        },
+        "doc2": {
+          "para": "Diese Verordnung tritt am zwanzigsten Tag nach ihrer Veröffentlichung im Amtsblatt der Europäischen Union in Kraft.\n"
+        }
+      },
+      {
+        "para_num": 45,
+        "doc1": {
+          "para": "This Regulation shall be binding in its entirety and directly applicable in all Member States.\n"
+        },
+        "doc2": {
+          "para": "Diese Verordnung ist in allen ihren Teilen verbindlich und gilt unmittelbar in jedem Mitgliedstaat.\n"
+        }
+      },
+      {
+        "para_num": 46,
+        "doc1": {
+          "para": "Done at Brussels,\n"
+        },
+        "doc2": {
+          "para": "Brüssel, den\n"
+        }
+      },
+      {
+        "para_num": 47,
+        "doc1": {
+          "para": "For the Commission\n"
+        },
+        "doc2": {
+          "para": "Für die Kommission\n"
+        }
+      },
+      {
+        "para_num": 48,
+        "doc1": {
+          "para": "The President\n"
+        },
+        "doc2": {
+          "para": "Die Präsidentin\n"
+        }
+      },
+      {
+        "para_num": 49,
+        "doc1": {
+          "para": "Ursula VON DER LEYEN\n"
+        },
+        "doc2": {
+          "para": "Ursula VON DER LEYEN\n"
+        }
+      },
+      {
+        "para_num": 50,
+        "doc1": {
+          "para": "\n---\n"
+        },
+        "doc2": {
+          "para": "\n---\n"
+        }
+      },
+      {
+        "para_num": 51,
+        "doc1": {
+          "para": "\n## Footnotes\n"
+        },
+        "doc2": {
+          "para": "\n## Footnotes\n"
+        }
+      },
+      {
+        "para_num": 52,
+        "doc1": {
+          "para": "OJ L 309, 24.11.2009, p. 1.\n"
+        },
+        "doc2": {
+          "para": "ABl. L 309 vom 14.11.2009, S. 1.\n"
+        }
+      },
+      {
+        "para_num": 53,
+        "doc1": {
+          "para": "Commission Directive 2005/3/EC of 19 January 2005 amending Council Directive 91/414/EEC to include imazosulfuron, laminarin, methoxyfenozide and s-metolachlor as active substances (OJ L 20, 22.1.2005, p. 19).\n"
+        },
+        "doc2": {
+          "para": "Richtlinie 2005/3/EG der Kommission vom 19. Januar 2005 zur Änderung der Richtlinie 91/414/EWG des Rates zwecks Aufnahme der Wirkstoffe Imazosulfuron, Laminarin, Methoxyfenozid und s-Metolachlor (ABl. L 20 vom 22.1.2005, S. 19).\n"
+        }
+      },
+      {
+        "para_num": 54,
+        "doc1": {
+          "para": "Council Directive 91/414/EEC of 15 July 1991 concerning the placing of plant protection products on the market (OJ L 230, 19.8.1991, p. 1).\n"
+        },
+        "doc2": {
+          "para": "Richtlinie 91/414/EWG des Rates vom 15. Juli 1991 über das Inverkehrbringen von Pflanzenschutzmitteln (ABl. L 230 vom 19.8.1991, S. 1).\n"
+        }
+      },
+      {
+        "para_num": 55,
+        "doc1": {
+          "para": "Commission Implementing Regulation (EU) No 540/2011 of 25 May 2011 implementing Regulation (EC) No 1107/2009 of the European Parliament and of the Council as regards the list of approved active substances (OJ L 153, 11.6.2011, p. 1).\n"
+        },
+        "doc2": {
+          "para": "Durchführungsverordnung (EU) Nr. 540/2011 der Kommission vom 25. Mai 2011 zur Durchführung der Verordnung (EG) Nr. 1107/2009 des Europäischen Parlaments und des Rates hinsichtlich der Liste zugelassener Wirkstoffe (ABl. L 153 vom 11.6.2011, S. 1).\n"
+        }
+      },
+      {
+        "para_num": 56,
+        "doc1": {
+          "para": "Commission Implementing Regulation (EU) No 844/2012 of 18 September 2012 setting out the provisions necessary for the implementation of the renewal procedure for active substances, as provided for in Regulation (EC) No 1107/2009 of the European Parliament and of the Council concerning the placing of plant protection products on the market (OJ L 252, 19.9.2012, p. 26).\n"
+        },
+        "doc2": {
+          "para": "Durchführungsverordnung (EU) Nr. 844/2012 der Kommission vom 18. September 2012 zur Festlegung der notwendigen Bestimmungen für das Erneuerungsverfahren für Wirkstoffe gemäß der Verordnung (EG) Nr. 1107/2009 des Europäischen Parlaments und des Rates über das Inverkehrbringen von Pflanzenschutzmitteln (ABl. L 252 vom 19.9.2012, S. 26).\n"
+        }
+      },
+      {
+        "para_num": 57,
+        "doc1": {
+          "para": "Peer review of the pesticide risk assessment of the active substance S‐metolachlor excluding the assessment of the endocrine disrupting properties. EFSA Journal 2023;21(2):7852; https://doi.org/10.2903/j.efsa.2023.7852.\n"
+        },
+        "doc2": {
+          "para": "Peer review of the pesticide risk assessment of the active substance S‐metolachlor excluding the assessment of the endocrine disrupting properties. EFSA Journal 2023;21(2):7852; https://doi.org/10.2903/j.efsa.2023.7852\n"
+        }
+      },
+      {
+        "para_num": 58,
+        "doc1": {
+          "para": "Commission Implementing Regulation (EU) 2023/918 of 4 May 2023 amending Implementing Regulation (EU) No 540/2011 as regards the extension of the approval periods of the active substances aclonifen, ametoctradin, beflubutamid, benthiavalicarb, boscalid, captan, clethodim, cycloxydim, cyflumetofen, dazomet, diclofop, dimethomorph, ethephon, fenazaquin, fluopicolide, fluoxastrobin, flurochloridone, folpet, formetanate, Helicoverpa armigera nucleopolyhedrovirus, hymexazol, indolylbutyric acid, mandipropamid, metalaxyl, metaldehyde, metam, metazachlor, metribuzin, milbemectin, paclobutrazol, penoxsulam, phenmedipham, pirimiphos-methyl, propamocarb, proquinazid, prothioconazole, S-Metolachlor, Spodoptera littoralis nucleopolyhedrovirus, Trichoderma asperellum strain T34 and Trichoderma atroviride strain I-1237 (OJ L 119, 5.5.2023, p. 160).\n"
+        },
+        "doc2": {
+          "para": "Durchführungsverordnung (EU) 2023/918 der Kommission vom 4. Mai 2023 zur Änderung der Durchführungsverordnung (EU) Nr. 540/2011 hinsichtlich der Ausweitung des Genehmigungszeitraums für die Wirkstoffe Aclonifen, Ametoctradin, Beflubutamid, Benthiavalicarb, Boscalid, Captan, Clethodim, Cycloxydim, Cyflumetofen, Dazomet, Diclofop, Dimethomorph, Ethephon, Fenazaquin, Fluopicolid, Fluoxastrobin, Flurochloridon, Folpet, Formetanat, Helicoverpa armigera Nucleopolyhedrovirus, Hymexazol, Indolyl-Buttersäure, Mandipropamid, Metalaxyl, Metaldehyd, Metam, Metazachlor, Metribuzin, Milbemectin, Paclobutrazol, Penoxsulam, Phenmedipham, Pirimiphos-methyl, Propamocarb, Proquinazid, Prothioconazol, S-Metolachlor, Spodoptera littoralis Nucleopolyhedrovirus, Trichoderma asperellum Stamm T34 und Trichoderma atroviride Stamm I-1237 (ABl. L 119 vom 5.5.2023, S. 160).\n"
+        }
+      }
+    ]
+  }
+}

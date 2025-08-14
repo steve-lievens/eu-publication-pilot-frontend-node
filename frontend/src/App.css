@@ -1,0 +1,92 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* light gray page background */
+.page-wrapper {
+  background-color: #f4f4f4; /* Carbon gray-10 */
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+/* tighten up the grid gutters if you like */
+.page-grid {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* style the white panel */
+.upload-tile {
+  background: #ffffff;
+  padding: 2rem;
+}
+
+/* container for the right-hand graphic */
+.graphic-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* make the illustration fill its column */
+.background-graphic {
+  width: 100%;
+  height: auto;
+}
+
+/* position the Watsonx logo bottom-left */
+.watsonx-logo {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  width: 80px; /* adjust as needed */
+}
+
+.uploader-label {
+  font-weight: 600;       /* semibold */
+  margin-bottom: 0.5rem;
+}
+
+.uploader-description {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: #525252;         /* Carbon’s $text-01 */
+  font-size: 0.875rem;    /* Carbon’s $body-long-01 */
+}
