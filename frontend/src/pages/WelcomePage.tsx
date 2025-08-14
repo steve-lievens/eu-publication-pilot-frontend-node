@@ -9,7 +9,7 @@ const WelcomePage: React.FC = () => (
     <div className={styles.introSection}>
       <Grid fullWidth>
         <Column lg={16} md={8} sm={4}>
-          <p className={styles.pageSubtitle}>Hi Liga!</p>
+          <p className={styles.pageSubtitle}>Hi !</p>
         </Column>
         <Column lg={10} md={8} sm={4}>
           <Heading className={styles.pageTitle}>
