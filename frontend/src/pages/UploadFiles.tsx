@@ -75,7 +75,7 @@ const UploadFiles: React.FC = () => {
     formData.append("entity_list", "amounts");
     formData.append("entity_list", "articles");
     formData.append("entity_list", "regdirs");
-    formData.append("entity_list", "caselaw");
+    //formData.append("entity_list", "caselaw");
     formData.append("use_deployed_prompt", "true");
     const backendUrl =
       "https://eu-pub.1yqyg3g5f8e4.eu-de.codeengine.appdomain.cloud/graph/compare-documents";
