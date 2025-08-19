@@ -194,8 +194,8 @@ const ConcordanceCheck3: React.FC = () => {
         Comparing: {data.docA} vs {data.docB}
       </Heading>
 
-      <div className={styles.pageWrapper}>
-        <div className={styles.tableWrapper}>
+      <div className={styles.pageWrapper3}>
+        <div className={styles.tableWrapper3}>
           <Theme theme="g10">
             <Table
               aria-label="document table"
