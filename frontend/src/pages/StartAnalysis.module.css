@@ -1,0 +1,108 @@
+/* main container with the light grey background */
+.pageWrapper {
+  background-color: #f4f4f4; /* Light Grey */
+  min-height: calc(100vh - 28px);
+}
+
+/* The white, full-width section at the top */
+.introSection {
+  position: relative;
+  background-color: #ffffff;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.pageSubtitle {
+  font-size: 1rem;
+  color: #525252;
+  margin-top: 0.5rem;
+  max-width: 800px;
+}
+
+.analysisButton {
+  padding-top: 20px;
+}
+
+/* main content area that holds the two columns */
+.mainContent {
+  padding: 2rem 1rem;
+  min-height: calc(100vh - 200px);
+}
+
+/* main white tile for uploading */
+.uploadTile {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0;
+  min-height: 550px;
+  padding: 2rem;
+  background-color: #ffffff !important;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.uploadColumn {
+  display: flex;
+  min-height: 600px; /* Force minimum height on the column */
+}
+
+.tileTitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.tileInstructions {
+  margin-bottom: 2.5rem;
+  color: #525252;
+  line-height: 1.5;
+}
+
+/* grid holding the two uploader boxes */
+.uploaderGrid {
+  margin-bottom: 2rem;
+  flex-grow: 1;
+  min-height: 100%;
+}
+
+.uploaderLabel {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.uploaderNote {
+  font-size: 0.75rem; /* 12px */
+  color: #6f6f6f;
+  margin-bottom: 1rem;
+}
+
+/* Style for when a file has been successfully added */
+.hasFile {
+  border: 2px solid #198038;
+  color: #198038;
+}
+
+.startButton {
+  width: 100%;
+  max-width: 200px;
+}
+
+/* Styles for the right-hand column with the graphic */
+.graphicColumn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.backgroundGraphic {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}

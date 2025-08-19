@@ -2,6 +2,7 @@
   "name": "eu-publication-frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@carbon/icons-react": "^11.62.0",
     "@carbon/react": "^1.85.1",
@@ -16,6 +17,7 @@
     "axios": "^1.10.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-is": "^19.1.1",
     "react-router-dom": "^7.6.3",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",

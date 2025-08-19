@@ -2,8 +2,10 @@ import React, { useState, useRef, useCallback } from "react";
 import {
   Accordion,
   AccordionItem,
+  Button,
   Theme,
   Table,
+  TextInput,
   Heading,
   Tag,
   TableBody,
@@ -261,6 +263,17 @@ const ConcordanceCheck = () => {
   const [highlightedPara, setHighlightedPara] = useState<number | null>(null);
   const paragraphRef = useRef<(HTMLDivElement | null)[]>([]);
 
+  const saveConCordanceCheck = useCallback(() => {
+    console.log("Saving concordance check data:", data);
+    // Here you would typically send the data to your backend to save it
+    // For now, we just log it
+    alert("Concordance check saved successfully!");
+  }, [data]);
+
+  // Function to filter paragraphs with discrepancies
+  // Returns an array of paragraphs that have errors in date, amounts, or articles
+  // This function is memoized to avoid unnecessary recalculations
+  // It will only recalculate when the data changes
   const getDiscrepancies = useCallback(() => {
     console.log("Getting discrepancies from data:", data);
     if (!data?.paragraphs?.length) return [];
@@ -327,6 +340,30 @@ const ConcordanceCheck = () => {
         </div>
 
         <div className={styles.outputWrapper}>
+          <Accordion>
+            <AccordionItem title="Save Concordance Check">
+              <TextInput
+                helperText="Helper text"
+                id="text-input-1"
+                invalidText="Error message goes here"
+                labelText="Label text"
+                onChange={() => {}}
+                onClick={() => {}}
+                placeholder="Placeholder text"
+                size="md"
+                type="text"
+                warnText="Warning message that is really long can wrap to more lines but should not be excessively long."
+              />
+              <Button
+                kind="primary"
+                className={styles.saveConCordanceButton}
+                onClick={() => saveConCordanceCheck()}
+              >
+                Save Concordance Check
+              </Button>
+            </AccordionItem>
+          </Accordion>
+
           <Heading className={styles.outputTitle}>
             Concordance Output
             <span className={styles.filterIcon}>

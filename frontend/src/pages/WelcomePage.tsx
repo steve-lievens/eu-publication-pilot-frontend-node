@@ -22,7 +22,7 @@ const WelcomePage: React.FC = () => (
           </p>
         </Column>
         <Column lg={6} md={8} sm={4}>
-          <Button href="/newcheck">Start a new concordance check</Button>
+          <Button href="/start">Start a new concordance check</Button>
         </Column>
       </Grid>
     </div>

@@ -11,6 +11,7 @@ const os = require("os");
 const { CloudantV1 } = require("@ibm-cloud/cloudant");
 const FormData = require("form-data");
 const { Readable } = require("stream");
+const JSON5 = require("json5");
 // --------------------------------------------------------------------------
 // Read environment variables
 // --------------------------------------------------------------------------
@@ -27,13 +28,8 @@ require("dotenv-defaults").config({
 const APP_NAME = process.env.APP_NAME;
 const CLOUDANT_URL = process.env.CLOUDANT_URL;
 const CLOUDANT_APIKEY = process.env.CLOUDANT_APIKEY;
-const CLOUDANT_DELAY = process.env.CLOUDANT_DELAY;
-const CLOUDANT_SOURCE_DB = process.env.CLOUDANT_SOURCE_DB;
-const CLOUDANT_CONTENT_DB = process.env.CLOUDANT_CONTENT_DB;
-const CLOUDANT_EXTRACTS_DB = process.env.CLOUDANT_EXTRACTS_DB;
-const CLOUDANT_TARGET_DB = process.env.CLOUDANT_TARGET_DB;
-const CLOUDANT_NORMS_DB = process.env.CLOUDANT_NORMS_DB;
-const CLOUDANT_LINK_DB = process.env.CLOUDANT_LINK_DB;
+const CLOUDANT_CONCORDANCE_DB = process.env.CLOUDANT_CONCORDANCE_DB;
+const WATSONX_APIKEY = process.env.WATSONX_APIKEY;
 
 // --------------------------------------------------------------------------
 // Initialization App Logging
@@ -42,14 +38,8 @@ console.log("INFO: Here we go ! Starting up the app !!!", APP_NAME);
 
 console.log("INFO: CLOUDANT_URL", CLOUDANT_URL);
 console.log("INFO: CLOUDANT_APIKEY", "*******");
-console.log("INFO: CLOUDANT_DELAY", CLOUDANT_DELAY);
-console.log("INFO: CLOUDANT_SOURCE_DB", CLOUDANT_SOURCE_DB);
-console.log("INFO: CLOUDANT_CONTENT_DB", CLOUDANT_CONTENT_DB);
-console.log("INFO: CLOUDANT_EXTRACTS_DB", CLOUDANT_EXTRACTS_DB);
-console.log("INFO: CLOUDANT_TARGET_DB", CLOUDANT_TARGET_DB);
-console.log("INFO: CLOUDANT_NORMS_DB", CLOUDANT_NORMS_DB);
-console.log("INFO: CLOUDANT_LINK_DB", CLOUDANT_LINK_DB);
-
+console.log("INFO: CLOUDANT_CONCORDANCE_DB", CLOUDANT_CONCORDANCE_DB);
+console.log("INFO: WATSONX_APIKEY", "*******");
 // --------------------------------------------------------------------------
 // Setup the express server
 // --------------------------------------------------------------------------
@@ -84,12 +74,44 @@ app.get("/", (req, res) => {
 app.get("/home", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 });
-app.get("/newcheck", (req, res) => {
+app.get("/start", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 });
 app.get("/concordance-check", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 });
+app.get("/concordance-check-2", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+});
+app.get("/concordance-check-3", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+});
+
+// --------------------------------------------------------------------------
+// REST API : write concordance data to the cloudant db
+// --------------------------------------------------------------------------
+app.post("/writeConcordance", jsonParser, async function (req, res) {
+  console.log("INFO: Writing concordance data to Cloudant DB");
+
+  // Check if the request body is empty
+  if (!req.body || Object.keys(req.body).length === 0) {
+    console.error("ERROR: Request body is empty");
+    return res.status(400).json({ error: "Request body is empty" });
+  }
+
+  const client = initCloudantClient();
+
+  try {
+    // Add the document to the Cloudant database
+    await addDocToCloudant(client, CLOUDANT_CONCORDANCE_DB, req.body);
+    res.status(200).json({ message: "Document added successfully" });
+  } catch (error) {
+    console.error("ERROR: Failed to add document to Cloudant", error);
+    res.status(500).json({ error: "Failed to add document to Cloudant" });
+  }
+});
+
+// --------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------
 // REST API : proxy the backend api
@@ -194,6 +216,20 @@ app.get("/getEnvironment", function (req, res) {
   };
 
   res.json(hostobj);
+});
+
+// --------------------------------------------------------------------------
+// REST API : retrieve all docs from the cloudant db
+// --------------------------------------------------------------------------
+app.post("/analyzeParas", jsonParser, async function (req, res) {
+  console.log("INFO: calling analyzeParas with body", req.body);
+
+  const backendUrl =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de/text/generation?version=2021-05-01";
+
+  let retVal = await sendToWatsonx(backendUrl, req.body);
+  console.log("INFO: Response from Watsonx:", retVal);
+  res.json(retVal);
 });
 
 // --------------------------------------------------------------------------
@@ -390,4 +426,68 @@ function searchCloudant(keys, params, languageCode, resolve) {
   };
 
   doAllSearches();
+}
+
+// --------------------------------------------------------------------------
+// Helper : watsonx.ai call generative ai
+// --------------------------------------------------------------------------
+async function sendToWatsonx(url, input) {
+  //console.log("INFO: calling deployed prompt with input", input);
+
+  // First create an access token from the API key
+  const data = new URLSearchParams();
+  data.append("grant_type", "urn:ibm:params:oauth:grant-type:apikey");
+  data.append("apikey", WATSONX_APIKEY);
+  const access = await fetch("https://iam.cloud.ibm.com/identity/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: data.toString(),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((error) => {
+      console.log("ERROR : ", error);
+      return error;
+    });
+
+  const token = access.access_token;
+
+  // Then call the watsonx endpoint with the access token
+  const watsonxReply = await fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(input),
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .catch((error) => {
+      console.log("ERROR : ", error);
+      return error;
+    });
+
+  console.log("INFO: watsonx reply", watsonxReply);
+
+  // clean up the reply before sending back
+  if (watsonxReply.results && watsonxReply.results.length > 0) {
+    // If results exist, get the first result's generated text
+    let rawReply = watsonxReply.results[0].generated_text;
+
+    // Clean out any unwanted characters, like the ending ---
+    if (rawReply.endsWith("---")) {
+      rawReply = rawReply.slice(0, -3);
+    }
+
+    // let's try to parse the JSON string
+    return JSON5.parse(rawReply);
+  } else {
+    return {};
+  }
 }

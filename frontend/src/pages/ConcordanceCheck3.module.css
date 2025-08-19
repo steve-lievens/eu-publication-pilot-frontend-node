@@ -1,0 +1,615 @@
+.title {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  padding-left: 20px;
+  padding-top: 10px;
+}
+
+.pageWrapper {
+  display: flex;
+  background-color: #f4f4f4;
+}
+
+.tableWrapper {
+  max-width: 80%;
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 50px;
+  overflow-y: scroll;
+  max-height: 88vh;
+}
+
+.filterIcon {
+  margin-left: 30px;
+}
+
+.outputWrapper {
+  width: 600px;
+  background-color: #ffffff;
+  overflow-y: scroll;
+  max-height: 88vh;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+}
+
+.tableFixed {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.paraTableCell {
+  vertical-align: top !important;
+  width: 48%;
+}
+
+.entitiesHeader {
+  margin-top: 15px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #161616;
+}
+.entitiesContainer {
+  font-size: 0.75rem;
+  padding-left: 10px;
+  padding-bottom: 5px;
+}
+.aiLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px rgba(15, 98, 254, 0.1);
+  isolation: isolate;
+  z-index: 1;
+}
+
+.aiLayerGradient {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(69, 137, 255, 0.05) 100%
+  );
+  box-shadow: inset 0px -80px 70px -65px rgba(15, 98, 254, 0.1);
+  z-index: 1;
+}
+
+.outputTitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.accordionContainer {
+  position: relative;
+  z-index: 2;
+}
+
+.recommendationSection {
+  padding: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.summaryBox {
+  position: relative;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+.summaryBox::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(69, 137, 255, 0.05) 100%
+  );
+  box-shadow: inset 0px -80px 70px -65px rgba(15, 98, 254, 0.1);
+  z-index: 1;
+}
+
+.summaryBox > * {
+  position: relative;
+  z-index: 2;
+}
+
+.aiBadge {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background-color: #6f6f6f;
+  color: #ffffff;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+}
+
+.documentContainer {
+  background-color: #ffffff;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.documentContainer p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  color: #161616;
+}
+
+.highlight {
+  background-color: #00ff112a;
+  padding: 0.25rem;
+  border-radius: 2px;
+}
+
+.discrepancyTitle {
+  display: flex;
+  align-items: center;
+}
+
+.discrepancyIcon {
+  margin-right: 0.5rem;
+  color: #da1e28;
+}
+
+.aiGeneratedText {
+  background-color: #e6f0fa;
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+.errorDetailPanel {
+  position: fixed;
+  right: 0;
+  top: 180px;
+  bottom: 0;
+  width: clamp(200px, 40vw, 600px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: #ffffff;
+  box-shadow: 0px 4px 8px rgba(15, 98, 254, 0.1);
+  isolation: isolate;
+  z-index: 20;
+  overflow-y: auto;
+}
+
+.errorDetailGradient {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(69, 137, 255, 0.05) 100%
+  );
+  box-shadow: inset 0px -80px 70px -65px rgba(15, 98, 254, 0.1);
+  z-index: 1;
+}
+
+.errorDetailContent {
+  position: relative;
+  z-index: 2;
+  padding: 1.5rem;
+  width: 100%;
+}
+
+.errorDetailHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.errorDetailHeader h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: #161616;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6f6f6f;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  color: #161616;
+}
+
+.errorSummary {
+  margin-bottom: 2rem;
+}
+
+.errorSummary > p {
+  margin-bottom: 1rem;
+  color: #525252;
+  font-size: 0.875rem;
+}
+
+.errorDescription {
+  background-color: #e6f0fa;
+  padding: 1rem;
+  border-radius: 4px;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .documentWrapper {
+    margin-right: 300px;
+  }
+  .outputWrapper {
+    width: 300px;
+  }
+  .errorDetailPanel {
+    width: clamp(200px, 45vw, 500px);
+  }
+}
+
+@media (max-width: 768px) {
+  .documentWrapper {
+    margin-right: 0;
+  }
+  .outputWrapper {
+    display: none;
+  }
+  .errorDetailPanel {
+    width: 100vw;
+    top: 0;
+  }
+}
+
+******* .pageWrapper {
+  padding: 2rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  margin-bottom: 2rem;
+  flex-shrink: 0;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
+
+.documentNames {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: #525252;
+}
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+/* Main layout containers */
+.tableContainer {
+  display: flex;
+  flex: 1;
+  gap: 1rem;
+  min-height: 0;
+}
+
+.documentsWrapper {
+  display: flex;
+  flex: 2;
+  gap: 1rem;
+  min-height: 0;
+}
+
+/* Document columns */
+.docTableContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-width: 780px;
+}
+
+.discrepanciesContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-width: 400px;
+}
+
+/* Headers */
+.docHeader {
+  font-weight: bold;
+  padding: 0.5rem 0;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #0f62fe;
+  flex-shrink: 0;
+}
+
+/* Scroll containers */
+.tableScrollContainer {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  min-height: 0;
+}
+
+/* Table body and rows */
+.tableBody {
+  display: flex;
+  flex-direction: column;
+}
+
+.tableRow,
+.paragraphContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100px;
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  /* transition: all 0.2s ease; */
+}
+
+/* Zebra striping */
+.evenRow {
+  background-color: #f8f8f8;
+}
+
+.oddRow {
+  background-color: #ffffff;
+}
+
+/* Paragraph content */
+.paraNumber {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #525252;
+}
+
+.paraContent {
+  flex: 1;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.missingPara {
+  color: #8d8d8d;
+  font-style: italic;
+}
+
+/* Entities styling */
+.entitiesInline {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.entityLabel {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.entity {
+  display: inline-block;
+  background-color: #e0e0e0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+}
+
+/* Discrepancies */
+.hasDiscrepancy {
+  border-left: 4px solid #ff832b;
+}
+
+.highlightedRow {
+  animation: highlightFlash 1.5s ease 2;
+  background-color: #fff8e1;
+  box-shadow: 0 0 0 2px #ff832b;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes highlightFlash {
+  0% {
+    background-color: #fff8e1;
+  }
+
+  50% {
+    background-color: #ffecb3;
+  }
+
+  100% {
+    background-color: #fff8e1;
+  }
+}
+
+.discrepancyItem {
+  padding: 1rem;
+}
+
+.discrepancyHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.discrepancyIcon {
+  margin-right: 0.5rem;
+  color: #da1e28;
+}
+
+.discrepancyTitle {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.discrepancyContent {
+  font-size: 0.9rem;
+}
+
+.discrepancyRow {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.2s ease;
+}
+
+.discrepancyRow:hover {
+  background-color: #ffd7d9;
+}
+
+.noDiscrepancies {
+  padding: 2rem;
+  text-align: center;
+  color: #8d8d8d;
+  font-style: italic;
+}
+
+.inlineDetail {
+  padding: 0.75rem 1rem;
+  background: #f4f4f4;
+}
+.detailRow {
+  margin-bottom: 0.5rem;
+}
+.detailSnippet {
+  white-space: pre-wrap;
+  margin: 0.25rem 0 0 0;
+}
+.paraNumSmall {
+  margin-left: 0.5rem;
+  color: #525252;
+  font-size: 0.85rem;
+}
+
+/* Make the right column scroll on its own */
+.discrepanciesContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-width: 400px;
+  overflow-y: auto;
+}
+
+/* Inner scroller wrapper so we can add padding without breaking flex */
+.sidebarScroll {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.25rem 0;
+  min-height: 0;
+}
+
+.groupHeader {
+  font-weight: 600;
+  margin-top: 8px;
+  margin-left: 0.5rem;
+  padding-bottom: 8px;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Group block wrapper */
+.groupBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Count bubble next to group title */
+.countPill {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  background: #e0e0e0;
+  font-size: 0.8rem;
+}
+
+/* Accordion title label styling */
+.accLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+/* Icon colors */
+.accIcon {
+  vertical-align: middle;
+}
+.iconRed {
+  color: #da1e28;
+}
+.iconCyan {
+  color: #1192e8;
+}
+.iconPurple {
+  color: #8a3ffc;
+}
+.iconGray {
+  color: #8d8d8d;
+}
+
+/* Detail panel styles */
+.inlineDetail {
+  padding: 0.75rem 1rem;
+  background: #f4f4f4;
+}
+.detailRow {
+  margin-bottom: 0.5rem;
+}
+.detailSnippet {
+  white-space: pre-wrap;
+  margin: 0.25rem 0 0 0;
+}
+.tagRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Small paragraph indicator */
+.paraNumSmall {
+  margin-left: 0.5rem;
+  color: #525252;
+  font-size: 0.85rem;
+}

@@ -24,6 +24,9 @@
   margin-left: 30px;
 }
 
+.saveConCordanceButton {
+  margin-left: 18px;
+}
 .outputWrapper {
   width: 600px;
   background-color: #ffffff;
