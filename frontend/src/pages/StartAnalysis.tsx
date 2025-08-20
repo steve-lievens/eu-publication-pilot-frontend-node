@@ -1,20 +1,8 @@
-import React, { useState } from "react";
-import {
-  Grid,
-  Column,
-  Heading,
-  Tabs,
-  TabList,
-  TabPanel,
-  Tab,
-  TabPanels,
-} from "@carbon/react";
-import type { OnChangeData } from "@carbon/react";
+import React from "react";
+import { Grid, Column, Heading } from "@carbon/react";
 import styles from "./StartAnalysis.module.css";
 import UploadFiles from "../pages/UploadFiles";
 import WatsonxBox from "../components/WatsonxBox";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const StartAnalysis: React.FC = () => {
   return (

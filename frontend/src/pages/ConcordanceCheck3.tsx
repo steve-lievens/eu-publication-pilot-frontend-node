@@ -8,11 +8,32 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  ExpandableTile,
+  TileAboveTheFoldContent,
+  TileBelowTheFoldContent,
 } from "@carbon/react";
 import { FilterEdit } from "@carbon/react/icons";
 import styles from "./ConcordanceCheck3.module.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { Marker } from "react-mark.js";
+
+interface Difference {
+  type: string;
+  description: string;
+  originalText: string;
+}
+
+interface DocData {
+  language: string;
+  diff: Difference[];
+}
+
+interface DifferencesData {
+  doc1: DocData;
+  doc2: DocData;
+  originalInput: String; // Adjust type as needed
+}
 
 interface DocumentData {
   docA: string;
@@ -24,10 +45,11 @@ interface DocumentData {
 interface ParagraphData {
   para: string;
   para_number: number;
+  highlights?: string[];
 }
 
 interface AnalysisResult {
-  diffs: {};
+  diffs: DifferencesData;
   paraNumber: number;
 }
 
@@ -48,13 +70,12 @@ const ConcordanceCheck3: React.FC = () => {
 
   const paragraphRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  //setDocData(dataInit);
   console.log("ConcordanceCheck3 data:", dataInit);
 
   const analyzeParagraph = async (
     paragraphA: ParagraphData,
     paragraphB: ParagraphData
-  ) => {
+  ): Promise<AnalysisResult> => {
     // Placeholder for analysis logic
     //console.log("Analyzing paragraph:", paragraphA, paragraphB);
 
@@ -70,7 +91,7 @@ const ConcordanceCheck3: React.FC = () => {
     let formData = JSON.stringify(inputData);
 
     let resultData = {
-      diffs: {},
+      diffs: {} as DifferencesData,
       paraNumber: paragraphA.para_number,
     };
     console.log("Sending data to backend:", formData);
@@ -85,10 +106,12 @@ const ConcordanceCheck3: React.FC = () => {
       });
       console.log("Parsing response:");
       //console.log(response.data.results[0].generated_text);
-      const resultFull = response.data;
-      console.log("Result :", resultFull);
-      if (resultFull.differences) {
-        resultData.diffs = resultFull.differences;
+
+      const resultFullAsDifferencesData: DifferencesData =
+        response.data as DifferencesData;
+      console.log("Result :", resultFullAsDifferencesData);
+      if (resultFullAsDifferencesData.doc1) {
+        resultData.diffs = resultFullAsDifferencesData;
       }
       console.log("Analysis result:", resultData);
     } catch (error) {
@@ -114,7 +137,28 @@ const ConcordanceCheck3: React.FC = () => {
       console.log("INFO: Result for paragraph ", i + 1, ":", result);
 
       // Only add non-empty results
-      if (!(JSON.stringify(result.diffs) === "{}")) results.push(result);
+      if (
+        result.diffs !== null &&
+        "doc1" in result.diffs &&
+        "doc2" in result.diffs
+      ) {
+        // or any other properties your DifferencesData type requires
+        results.push(result);
+
+        // add the highlighted texts to the paragraphs
+        docData.paragraphsA[i].highlights = result.diffs.doc1.diff.map(
+          (diff) => diff.originalText
+        );
+        docData.paragraphsB[i].highlights = result.diffs.doc2.diff.map(
+          (diff) => diff.originalText
+        );
+
+        setDocData(docData);
+
+        console.log("INFO: Differences found for paragraph ", i + 1);
+      } else {
+        console.log("INFO: No differences found for paragraph ", i + 1);
+      }
       setAnalysisResult([...results]);
     }
 
@@ -124,12 +168,6 @@ const ConcordanceCheck3: React.FC = () => {
   // This code start to run on page load
   useEffect(() => {
     if (!analysisDone) {
-      console.log(
-        "Analyzing paragraphs:",
-        docData.paragraphsA,
-        docData.paragraphsB
-      );
-
       // Analyze paragraphs and set the result
       console.log("INFO: Starting analysis...");
       analyzeParagraphs();
@@ -187,53 +225,86 @@ const ConcordanceCheck3: React.FC = () => {
               ref={(el) => {
                 paraRef.current[index] = el;
               }}
-            ></div>
-            {index + 1}
+            >
+              {index + 1}
+            </div>
           </TableCell>
           <TableCell className={styles.paraTableCell}>
-            <div>{para.para}</div>
+            <Marker
+              mark={para.highlights}
+              options={{
+                separateWordSearch: false,
+              }}
+            >
+              {para.para}
+            </Marker>
           </TableCell>
           <TableCell className={styles.paraTableCell}>
-            <div>{paragraphB[index].para}</div>
+            <Marker
+              mark={paragraphB[index].highlights}
+              options={{
+                separateWordSearch: false,
+              }}
+            >
+              {paragraphB[index].para}
+            </Marker>
           </TableCell>
         </TableRow>
       );
     });
   };
 
-  const renderDifferences = (diffs: {}) => {
-    let innerJsonStr = "";
-    let innerJson = {};
+  const renderDifferences = (diffs: DifferencesData, paraNr: number) => {
+    // get doc1 first
+    const doc1Diffs = diffs.doc1.diff;
+    const doc2Diffs = diffs.doc2.diff;
 
+    if (!doc1Diffs || !doc2Diffs) {
+      return <p>No differences found.</p>;
+    }
+
+    // Return the language and type of differences and then loop through the differences
     return (
       <div>
-        {Object.entries(diffs).map(([key, value], index) => (
-          <div key={index}>
-            <strong>{key}:</strong>
-            {typeof value === "object" && value !== null ? (
-              Object.entries(value).map(([subKey, subValue], subIndex) => (
-                <div key={subIndex}>
-                  <strong>{subKey}:</strong>
-                  {typeof subValue === "object" && subValue !== null ? (
-                    Object.entries(subValue).map(
-                      ([subsubKey, subsubValue], subsubIndex) => (
-                        <div key={subsubIndex}>
-                          <strong>{subsubKey}:</strong>
-                          {JSON.stringify(subsubValue, null, 2)}
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <div>{}</div> // Render an empty div when value is not an object
-                  )}
-                </div>
-              ))
-            ) : (
-              <div>{}</div> // Render an empty div when value is not an object
-            )}
-          </div>
-        ))}
-        <br />
+        <div className={styles.differenceHeader}>
+          <ExpandableTile
+            id={"ExpandableTile" + paraNr}
+            tileCollapsedIconText="Interact to Expand tile"
+            tileExpandedIconText="Interact to Collapse tile"
+          >
+            <TileAboveTheFoldContent>
+              {doc1Diffs.map((diff, index) => (
+                <li key={index}>
+                  <strong>{diff.type}:</strong>
+                  <p>{diffs.doc1.language + " : " + diff.originalText}</p>
+                  <p>
+                    {
+                      // Display the corresponding doc2 difference if it exists
+                      doc2Diffs[index]
+                        ? diffs.doc2.language +
+                          " : " +
+                          doc2Diffs[index].originalText
+                        : ""
+                    }
+                  </p>
+                </li>
+              ))}
+              {
+                // If there are more differences in doc2, display them
+                doc2Diffs.length > doc1Diffs.length &&
+                  doc2Diffs.slice(doc1Diffs.length).map((diff, index) => (
+                    <li key={index + doc1Diffs.length}>
+                      <strong>{diff.type}:</strong>
+                      <p>{diffs.doc2.language + " : " + diff.originalText}</p>
+                    </li>
+                  ))
+              }
+            </TileAboveTheFoldContent>
+            <TileBelowTheFoldContent>
+              {JSON.stringify(diffs.originalInput)}
+            </TileBelowTheFoldContent>
+          </ExpandableTile>
+        </div>
       </div>
     );
   };
@@ -281,7 +352,7 @@ const ConcordanceCheck3: React.FC = () => {
                   analysisResult.map((result, index) => (
                     <AccordionItem
                       title={`Paragraph ${result.paraNumber} Differences`}
-                      open={false}
+                      open={true}
                       key={index}
                       className={styles.accordionItem}
                       onClick={() => {
@@ -289,7 +360,7 @@ const ConcordanceCheck3: React.FC = () => {
                         scrollToDiv(result.paraNumber);
                       }}
                     >
-                      {renderDifferences(result.diffs)}
+                      {renderDifferences(result.diffs, result.paraNumber)}
                     </AccordionItem>
                   ))
                 ) : (

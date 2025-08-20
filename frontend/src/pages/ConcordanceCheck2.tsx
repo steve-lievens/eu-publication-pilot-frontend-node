@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Heading,
-  Toggle,
   Tag,
   Accordion,
   AccordionItem,
@@ -11,7 +10,7 @@ import {
   TableRow,
   TableCell,
 } from "@carbon/react";
-import { WarningAlt, FilterEdit } from "@carbon/react/icons";
+import { FilterEdit } from "@carbon/react/icons";
 import styles from "./ConcordanceCheck2.module.css";
 import { useLocation } from "react-router-dom";
 
@@ -59,8 +58,6 @@ const ConcordanceCheck2: React.FC = () => {
   const paragraphRef = useRef<(HTMLDivElement | null)[]>([]);
   const doc1Refs = useRef<(HTMLDivElement | null)[]>([]);
   const doc2Refs = useRef<(HTMLDivElement | null)[]>([]);
-  const doc1ScrollRef = useRef<HTMLDivElement>(null);
-  const doc2ScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     doc1Refs.current = new Array(data.paragraphsA.length);
@@ -76,27 +73,6 @@ const ConcordanceCheck2: React.FC = () => {
     // Highlight the paragraph
     setHighlightedPara(idx);
   };
-
-  // any discrepancy in a paragraph?
-  const hasAnyDiff = React.useMemo(() => {
-    const dMap = new Map<number, boolean>();
-    (data.comparisons?.dates || []).forEach((d) => dMap.set(d.paragraph, true));
-    (data.comparisons?.case_references || []).forEach((c) =>
-      dMap.set(c.paragraph, true)
-    );
-    return (paraNum: number) => dMap.has(paraNum);
-  }, [data.comparisons]);
-
-  const scrollToParagraph = useCallback((paraNum: number) => {
-    setHighlightedPara(paraNum);
-    const idx = paraNum - 1;
-    const offset = doc1Refs.current[idx]?.offsetTop ?? 0;
-    const headerHeight = 60;
-    [doc1ScrollRef.current, doc2ScrollRef.current].forEach((c) => {
-      if (c) c.scrollTo({ top: offset - headerHeight, behavior: "smooth" });
-    });
-    setTimeout(() => setHighlightedPara(null), 8000);
-  }, []);
 
   if (!data) return <p>Error: no data.</p>;
 
@@ -118,40 +94,8 @@ const ConcordanceCheck2: React.FC = () => {
     }
   };
 
-  const dateLabel = (d: DateDiff) => {
-    if (d.status === "mismatch")
-      return `Date mismatch — Paragraph ${d.paragraph}`;
-    if (d.status === "missing_in_A")
-      return `Missing date in ${data.docA} — Paragraph ${d.paragraph}`;
-    return `Missing date in ${data.docB} — Paragraph ${d.paragraph}`;
-  };
-
-  const caseLabel = (c: CaseDiff) => {
-    const kind = c.kind ? c.kind.toLowerCase().replace("_", " ") : "reference";
-    switch (c.reason) {
-      case "number_changed":
-        return `Mismatch ${kind} — Paragraph ${c.paragraph}`;
-      case "paragraph_changed":
-        return `Mismatch paragraph reference — Paragraph ${c.paragraph}`;
-      case "missing_in_A":
-        return `Missing ${kind} in ${data.docA} — Paragraph ${c.paragraph}`;
-      case "missing_in_B":
-        return `Missing ${kind} in ${data.docB} — Paragraph ${c.paragraph}`;
-      case "format":
-        return `Mismatch ECLI/EU — Paragraph ${c.paragraph}`;
-      default:
-        return `Case discrepancy — Paragraph ${c.paragraph}`;
-    }
-  };
-
   const dates = data.comparisons?.dates ?? [];
   const cases = data.comparisons?.case_references ?? [];
-
-  const renderEntities = (entities: Object) => {
-    if (!entities) return null;
-
-    return <div></div>;
-  };
 
   // Render both documents in a table, with each paragraph in a row
   // !!!!!!!!! Still needs error handling when both docs don't have the same number of paragraphs
@@ -204,8 +148,8 @@ const ConcordanceCheck2: React.FC = () => {
         Comparing: {data.docA} vs {data.docB}
       </Heading>
 
-      <div className={styles.pageWrapper}>
-        <div className={styles.tableWrapper}>
+      <div className={styles.pageWrapper2}>
+        <div className={styles.tableWrapper2}>
           <Theme theme="g10">
             <Table
               aria-label="document table"

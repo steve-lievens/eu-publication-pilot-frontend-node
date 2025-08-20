@@ -229,6 +229,9 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
 
   let retVal = await sendToWatsonx(backendUrl, req.body);
 
+  // Convert the data structure of the response
+  retVal = convertDataStructure(retVal);
+
   console.log("INFO: Response from Watsonx:", retVal);
   res.json(retVal);
 });
@@ -237,33 +240,81 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
 // Helper : Convert the data structure of the json response
 // --------------------------------------------------------------------------
 function convertDataStructure(data) {
-  // Loop over the data object
-  Object.entries(data).map(([subKey, subValue], subIndex) => {});
+  if (!data.differences) return {};
+
+  let doc1Diffs = [];
+  let doc2Diffs = [];
+
+  const doc1Input = data.differences[Object.keys(data.differences)[0]];
+  const doc2Input = data.differences[Object.keys(data.differences)[1]];
+
+  // Loop over doc1Input to get types
+  if (doc1Input) {
+    for (const [key, value] of Object.entries(doc1Input)) {
+      if (value && value.length > 0) {
+        console.log("INFO: doc1Input type:", key);
+        const typeName = key;
+
+        // Loop over the value array
+        for (const item of value) {
+          if (item && item.value) {
+            console.log(
+              "INFO: doc1Input item type content:",
+              item.value,
+              item.originaltext
+            );
+
+            const typeContent = {
+              type: typeName,
+              description: item.value,
+              originalText: item.originaltext,
+            };
+            doc1Diffs.push(typeContent);
+          }
+        }
+      }
+    }
+  }
+
+  if (doc2Input) {
+    for (const [key, value] of Object.entries(doc2Input)) {
+      if (value && value.length > 0) {
+        console.log("INFO: doc2Input type:", key);
+        const typeName = key;
+
+        // Loop over the value array
+        for (const item of value) {
+          if (item && item.value) {
+            console.log(
+              "INFO: doc2Input item type content:",
+              item.value,
+              item.originaltext
+            );
+
+            const typeContent = {
+              type: typeName,
+              description: item.value,
+              originalText: item.originaltext,
+            };
+            doc2Diffs.push(typeContent);
+          }
+        }
+      }
+    }
+  }
 
   // Convert the data structure to the desired format
   const convertedData = {
-    entities: [],
-    relations: [],
+    doc1: {
+      language: Object.keys(data.differences)[0],
+      diff: doc1Diffs,
+    },
+    doc2: {
+      language: Object.keys(data.differences)[1],
+      diff: doc2Diffs,
+    },
+    originalInput: data,
   };
-
-  if (data.entities) {
-    data.entities.forEach((entity) => {
-      convertedData.entities.push({
-        entity: entity.entity,
-        type: entity.type,
-        confidence: entity.confidence,
-      });
-    });
-  }
-
-  if (data.relations) {
-    data.relations.forEach((relation) => {
-      convertedData.relations.push({
-        relation: relation.relation,
-        entities: relation.entities,
-      });
-    });
-  }
 
   return convertedData;
 }
