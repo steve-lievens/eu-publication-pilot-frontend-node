@@ -8,11 +8,6 @@ import {
   TabPanel,
   Tab,
   TabPanels,
-  Tile,
-  FileUploaderDropContainer,
-  Button,
-  Loading,
-  Dropdown,
 } from "@carbon/react";
 import type { OnChangeData } from "@carbon/react";
 import styles from "./StartAnalysis.module.css";
@@ -38,18 +33,7 @@ const StartAnalysis: React.FC = () => {
       </div>
 
       <main className={styles.mainContent}>
-        <Tabs onTabCloseRequest={() => {}}>
-          <TabList scrollDebounceWait={200}>
-            <Tab>Upload Documents</Tab>
-            <Tab>Parse Documents (WIP)</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <UploadFiles></UploadFiles>
-            </TabPanel>
-            <TabPanel>Tab Panel 2</TabPanel>
-          </TabPanels>
-        </Tabs>
+        <UploadFiles></UploadFiles>
         <Column lg={6} md={0} sm={0} className={styles.aiColumn}>
           <WatsonxBox />
         </Column>

@@ -1,0 +1,20 @@
+{
+  "english": {
+    "amount": [
+      { "value": "520000000 EUR", "originaltext": "EUR 520 million" },
+      { "value": "1500000000 EUR", "originaltext": "EUR 1 500 million" },
+      { "value": "135000000 EUR", "originaltext": "EUR 135 million" }
+    ],
+    "range": [{ "value": "20252027", "originaltext": "20252027" }]
+  },
+  "german": {
+    "amount": [
+      { "value": "540000000 EUR", "originaltext": "540 miljonu EUR" },
+      { "value": "1700000000 EUR", "originaltext": "1 700 miljonu EUR" },
+      { "value": "137000000 EUR", "originaltext": "137 miljonu EUR" }
+    ],
+    "range": [
+      { "value": "2025-2027", "originaltext": "no 2025. līdz 2027. gadam" }
+    ]
+  }
+}

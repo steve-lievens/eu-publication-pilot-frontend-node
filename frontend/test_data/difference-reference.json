@@ -1,0 +1,12 @@
+{
+  "english": {
+    "reference": [
+      { "value": "pe00001-re01.en25", "originaltext": "pe00001-re01.en25" }
+    ]
+  },
+  "german": {
+    "reference": [
+      { "value": "pe00001-re01.lv25", "originaltext": "pe00001-re01.lv25" }
+    ]
+  }
+}

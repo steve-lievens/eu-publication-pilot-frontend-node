@@ -14,6 +14,13 @@ import styles from "./ConcordanceCheck3.module.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
+interface DocumentData {
+  docA: string;
+  docB: string;
+  paragraphsA: ParagraphData[];
+  paragraphsB: ParagraphData[];
+}
+
 interface ParagraphData {
   para: string;
   para_number: number;
@@ -27,20 +34,22 @@ interface AnalysisResult {
 const ConcordanceCheck3: React.FC = () => {
   const location = useLocation();
   const retData = location.state;
-  const data = {
+  const dataInit = {
     docA: retData[0].file,
     docB: retData[1].file,
     paragraphsA: retData[0].para,
     paragraphsB: retData[1].para,
   };
-
-  console.log("ConcordanceCheck3 data:", data);
-
+  const [docData, setDocData] = useState<DocumentData>(dataInit);
   const [highlightedPara, setHighlightedPara] = useState<number | null>(null);
-  const paragraphRef = useRef<(HTMLDivElement | null)[]>([]);
   const [analysisDone, setAnalysisDone] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult[]>([]);
   const [loadingTitle, setLoadingTitle] = useState<string>("Analyzing ...");
+
+  const paragraphRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  //setDocData(dataInit);
+  console.log("ConcordanceCheck3 data:", dataInit);
 
   const analyzeParagraph = async (
     paragraphA: ParagraphData,
@@ -96,11 +105,11 @@ const ConcordanceCheck3: React.FC = () => {
 
   const analyzeParagraphs = async () => {
     const results = [];
-    for (let i = 0; i < data.paragraphsA.length; i++) {
+    for (let i = 0; i < docData.paragraphsA.length; i++) {
       console.log("INFO: Starting analysis of paragraph ", i + 1);
       const result = await analyzeParagraph(
-        data.paragraphsA[i],
-        data.paragraphsB[i]
+        docData.paragraphsA[i],
+        docData.paragraphsB[i]
       );
       console.log("INFO: Result for paragraph ", i + 1, ":", result);
 
@@ -115,14 +124,18 @@ const ConcordanceCheck3: React.FC = () => {
   // This code start to run on page load
   useEffect(() => {
     if (!analysisDone) {
-      console.log("Analyzing paragraphs:", data.paragraphsA, data.paragraphsB);
+      console.log(
+        "Analyzing paragraphs:",
+        docData.paragraphsA,
+        docData.paragraphsB
+      );
 
       // Analyze paragraphs and set the result
       console.log("INFO: Starting analysis...");
       analyzeParagraphs();
       setAnalysisDone(true);
     }
-  }, [data]);
+  }, [analysisDone]);
 
   const scrollToDiv = (idx: number) => {
     console.log("Scrolling to paragraph:", idx);
@@ -135,7 +148,7 @@ const ConcordanceCheck3: React.FC = () => {
     setHighlightedPara(idx);
   };
 
-  if (!data) return <p>Error: no data.</p>;
+  if (!docData) return <p>Error: no data.</p>;
 
   // Render both documents in a table, with each paragraph in a row
   // !!!!!!!!! Still needs error handling when both docs don't have the same number of paragraphs
@@ -188,10 +201,47 @@ const ConcordanceCheck3: React.FC = () => {
     });
   };
 
+  const renderDifferences = (diffs: {}) => {
+    let innerJsonStr = "";
+    let innerJson = {};
+
+    return (
+      <div>
+        {Object.entries(diffs).map(([key, value], index) => (
+          <div key={index}>
+            <strong>{key}:</strong>
+            {typeof value === "object" && value !== null ? (
+              Object.entries(value).map(([subKey, subValue], subIndex) => (
+                <div key={subIndex}>
+                  <strong>{subKey}:</strong>
+                  {typeof subValue === "object" && subValue !== null ? (
+                    Object.entries(subValue).map(
+                      ([subsubKey, subsubValue], subsubIndex) => (
+                        <div key={subsubIndex}>
+                          <strong>{subsubKey}:</strong>
+                          {JSON.stringify(subsubValue, null, 2)}
+                        </div>
+                      )
+                    )
+                  ) : (
+                    <div>{}</div> // Render an empty div when value is not an object
+                  )}
+                </div>
+              ))
+            ) : (
+              <div>{}</div> // Render an empty div when value is not an object
+            )}
+          </div>
+        ))}
+        <br />
+      </div>
+    );
+  };
+
   return (
     <div>
       <Heading className={styles.title}>
-        Comparing: {data.docA} vs {data.docB}
+        Comparing: {docData.docA} vs {docData.docB}
       </Heading>
 
       <div className={styles.pageWrapper3}>
@@ -204,10 +254,10 @@ const ConcordanceCheck3: React.FC = () => {
             >
               <TableBody>
                 {renderDocuments(
-                  data.docA,
-                  data.docB,
-                  data.paragraphsA,
-                  data.paragraphsB,
+                  docData.docA,
+                  docData.docB,
+                  docData.paragraphsA,
+                  docData.paragraphsB,
                   paragraphRef,
                   highlightedPara
                 )}
@@ -232,13 +282,14 @@ const ConcordanceCheck3: React.FC = () => {
                     <AccordionItem
                       title={`Paragraph ${result.paraNumber} Differences`}
                       open={false}
+                      key={index}
                       className={styles.accordionItem}
                       onClick={() => {
                         console.log("Clicked on paragraph", result.paraNumber);
                         scrollToDiv(result.paraNumber);
                       }}
                     >
-                      {JSON.stringify(result.diffs, null, 2)}
+                      {renderDifferences(result.diffs)}
                     </AccordionItem>
                   ))
                 ) : (

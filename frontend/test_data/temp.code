@@ -1,0 +1,9 @@
+
+              innerJsonStr = JSON.stringify(value, null, 2);
+              innerJson = JSON.parse(innerJsonStr),
+              // Loop over the innerJson object and display each key-value pair
+              Object.entries(innerJson).map(([innerKey, innerValue], innerIndex) => (
+                <div key={innerIndex}>
+                  <strong>{innerKey}:</strong> {JSON.stringify(innerValue, null, 2)}
+                </div>
+              )),

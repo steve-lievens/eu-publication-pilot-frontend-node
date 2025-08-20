@@ -236,7 +236,9 @@ const UploadFiles: React.FC = () => {
               onClick={handleStartAnalysis(false)}
               disabled={!primaryFile || !secondaryFile || loading}
             >
-              {loading ? "Analyzing..." : "Start Analysis Approach 1"}
+              {loading
+                ? "Analyzing..."
+                : "Extract and Compare - All items but dates"}
             </Button>
           </div>
           <div className={styles.analysisButton}>
@@ -245,16 +247,16 @@ const UploadFiles: React.FC = () => {
               onClick={handleStartAnalysis(true)}
               disabled={!primaryFile || !secondaryFile || loading}
             >
-              {loading ? "Analyzing..." : "Start Analysis Approach 2"}
+              {loading ? "Analyzing..." : "LLM as a judge - Dates and Cases"}
             </Button>
           </div>
-          <div className={styles.analysisButton}>
+          <div className={styles.analysisButton3}>
             <Button
               className={styles.analysisButton}
               onClick={handleStartAnalysis3()}
               disabled={!primaryFile || !secondaryFile || loading}
             >
-              {loading ? "Analyzing..." : "Start Analysis Approach 3"}
+              {loading ? "Analyzing..." : "Unique prompt - All numbers"}
             </Button>
           </div>
           {loading && (

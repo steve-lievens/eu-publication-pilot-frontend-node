@@ -228,9 +228,57 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de/text/generation?version=2021-05-01";
 
   let retVal = await sendToWatsonx(backendUrl, req.body);
+
   console.log("INFO: Response from Watsonx:", retVal);
   res.json(retVal);
 });
+
+// --------------------------------------------------------------------------
+// Helper : Convert the data structure of the json response
+// --------------------------------------------------------------------------
+function convertDataStructure(data) {
+  // Loop over the data object
+  Object.entries(data).map(([subKey, subValue], subIndex) => {});
+
+  // Convert the data structure to the desired format
+  const convertedData = {
+    entities: [],
+    relations: [],
+  };
+
+  if (data.entities) {
+    data.entities.forEach((entity) => {
+      convertedData.entities.push({
+        entity: entity.entity,
+        type: entity.type,
+        confidence: entity.confidence,
+      });
+    });
+  }
+
+  if (data.relations) {
+    data.relations.forEach((relation) => {
+      convertedData.relations.push({
+        relation: relation.relation,
+        entities: relation.entities,
+      });
+    });
+  }
+
+  return convertedData;
+}
+
+// --------------------------------------------------------------------------
+// Helper : Get the current date in YYYY-MM-DD format
+// --------------------------------------------------------------------------
+function getCurrentDate() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+// --------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------
 // Helper : Setup cloudant client
@@ -483,6 +531,18 @@ async function sendToWatsonx(url, input) {
     // Clean out any unwanted characters, like the ending ---
     if (rawReply.endsWith("---")) {
       rawReply = rawReply.slice(0, -3);
+    }
+
+    // Remove everything before the first {
+    const firstBraceIndex = rawReply.indexOf("{");
+    if (firstBraceIndex !== -1) {
+      rawReply = rawReply.slice(firstBraceIndex);
+    }
+
+    // Remove everything after the last }
+    const lastBraceIndex = rawReply.lastIndexOf("}");
+    if (lastBraceIndex !== -1) {
+      rawReply = rawReply.slice(0, lastBraceIndex + 1);
     }
 
     // let's try to parse the JSON string
