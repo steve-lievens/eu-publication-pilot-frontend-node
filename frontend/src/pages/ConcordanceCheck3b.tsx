@@ -37,6 +37,8 @@ interface DocumentData {
   docB: string;
   paragraphsA: ParagraphData[];
   paragraphsB: ParagraphData[];
+  primLang: string;
+  secLang: string;
 }
 
 interface ParagraphData {
@@ -53,12 +55,42 @@ interface AnalysisResult {
 const ConcordanceCheck3b: React.FC = () => {
   const location = useLocation();
   const retData = location.state;
-  const dataInit = {
+
+  let dataInit = {
     docA: retData[0].file,
     docB: retData[1].file,
     paragraphsA: retData[0].para,
     paragraphsB: retData[1].para,
+    primLang: retData[2].primaryLanguage,
+    secLang: retData[2].secondaryLanguage,
   };
+
+  // based on the language input, swap the languages if necessary
+  if (retData[2].primaryLanguage === "lv") {
+    dataInit = {
+      docA: retData[1].file,
+      docB: retData[0].file,
+      paragraphsA: retData[1].para,
+      paragraphsB: retData[0].para,
+      primLang: retData[2].secondaryLanguage,
+      secLang: retData[2].primaryLanguage,
+    };
+  }
+
+  if (
+    retData[2].primaryLanguage === "de" &&
+    retData[2].secondaryLanguage === "en"
+  ) {
+    dataInit = {
+      docA: retData[1].file,
+      docB: retData[0].file,
+      paragraphsA: retData[1].para,
+      paragraphsB: retData[0].para,
+      primLang: retData[2].secondaryLanguage,
+      secLang: retData[2].primaryLanguage,
+    };
+  }
+
   const [docData, setDocData] = useState<DocumentData>(dataInit);
   const [highlightedPara, setHighlightedPara] = useState<number | null>(null);
   const [analysisDone, setAnalysisDone] = useState(false);
@@ -71,7 +103,9 @@ const ConcordanceCheck3b: React.FC = () => {
 
   const analyzeParagraph = async (
     paragraphA: ParagraphData,
-    paragraphB: ParagraphData
+    paragraphB: ParagraphData,
+    primLang: string,
+    secLang: string
   ): Promise<AnalysisResult> => {
     // Placeholder for analysis logic
     //console.log("Analyzing paragraph:", paragraphA, paragraphB);
@@ -83,6 +117,9 @@ const ConcordanceCheck3b: React.FC = () => {
           paragraphs_language_two: paragraphB.para,
         },
       },
+      primLang: primLang,
+      secLang: secLang,
+      v2: true,
     };
 
     let formData = JSON.stringify(inputData);
@@ -136,7 +173,9 @@ const ConcordanceCheck3b: React.FC = () => {
       console.log("INFO: Starting analysis of paragraph ", i + 1);
       const result = await analyzeParagraph(
         docData.paragraphsA[i],
-        docData.paragraphsB[i]
+        docData.paragraphsB[i],
+        docData.primLang,
+        docData.secLang
       );
       console.log("INFO: Result for paragraph ", i + 1, ":", result);
 
@@ -146,18 +185,35 @@ const ConcordanceCheck3b: React.FC = () => {
         results.push(result);
 
         // add the highlighted texts to the paragraphs, remove any ' chars in the string
-        docData.paragraphsA[i].highlights = result.diffs.differences.map(
-          (diff) => {
-            const highlight = diff.originaltextlang1.replace(/['"]/g, "");
-            return highlight;
+        let highlightA = result.diffs.differences.map((diff) => {
+          // split the original Text when there is a pipe charachter
+          const tmpHighlights = diff.originaltextlang1.split("|");
+          let retHighlights = [];
+
+          // Strip the outer single quotes
+          // loop over tmpHighlights
+          for (let tmpHighlight of tmpHighlights) {
+            retHighlights.push(tmpHighlight.replace(/['"]/g, ""));
           }
-        );
-        docData.paragraphsB[i].highlights = result.diffs.differences.map(
-          (diff) => {
-            const highlight = diff.originaltextlang2.replace(/['"]/g, "");
-            return highlight;
+
+          return retHighlights;
+        });
+        docData.paragraphsA[i].highlights = highlightA.flat(1);
+
+        let highlightB = result.diffs.differences.map((diff) => {
+          // split the original Text when there is a pipe charachter
+          const tmpHighlights = diff.originaltextlang2.split("|");
+          let retHighlights = [];
+
+          // Strip the outer single quotes
+          // loop over tmpHighlights
+          for (let tmpHighlight of tmpHighlights) {
+            retHighlights.push(tmpHighlight.replace(/['"]/g, ""));
           }
-        );
+
+          return retHighlights;
+        });
+        docData.paragraphsB[i].highlights = highlightB.flat();
 
         //setDocData(docData);
 
@@ -279,17 +335,16 @@ const ConcordanceCheck3b: React.FC = () => {
               {
                 // Loop over the differences and display them
                 diffs.differences.map((diff, index) => (
-                  <div key={index} className={styles.diffItem}>
-                    <strong>Entity Type:</strong> {diff.entitytype} <br />
-                    <strong>Entity Value (Lang 1):</strong>{" "}
-                    {diff.entityvaluelang1} <br />
-                    <strong>Original Text (Lang 1):</strong>{" "}
-                    {diff.originaltextlang1} <br />
-                    <strong>Entity Value (Lang 2):</strong>{" "}
-                    {diff.entityvaluelang2} <br />
-                    <strong>Original Text (Lang 2):</strong>{" "}
-                    {diff.originaltextlang2} <br />
+                  <div key={"TileAbove" + index} className={styles.diffItem}>
+                    <strong>{diff.entitytype}</strong> <br />
+                    <br />
+                    <strong>{docData.primLang}:</strong>{" "}
+                    {diff.originaltextlang1.replace(/\|/g, " ")} <br />
+                    <strong>{docData.secLang}:</strong>{" "}
+                    {diff.originaltextlang2.replace(/\|/g, " ")} <br />
                     <strong>Explanation:</strong> {diff.explanation}
+                    <br />
+                    <br />
                   </div>
                 ))
               }

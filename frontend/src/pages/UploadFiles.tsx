@@ -59,7 +59,7 @@ const UploadFiles: React.FC = () => {
     }
   };
 
-  const handleStartAnalysis3 = () => async () => {
+  const handleStartAnalysis3 = (usePromptv2: boolean) => async () => {
     // Placeholder for future implementation
     console.log("Parsing documents...");
 
@@ -92,7 +92,9 @@ const UploadFiles: React.FC = () => {
       console.log("Parsing response:");
       console.log(response);
 
-      navigate("/concordance-check-3", { state: response.data });
+      if (usePromptv2)
+        navigate("/concordance-check-3b", { state: response.data });
+      else navigate("/concordance-check-3", { state: response.data });
     } catch (error) {
       console.error("Error starting analysis:", error);
     } finally {
@@ -271,7 +273,7 @@ const UploadFiles: React.FC = () => {
           <div className={styles.analysisButton3}>
             <Button
               className={styles.analysisButton}
-              onClick={handleStartAnalysis3()}
+              onClick={handleStartAnalysis3(false)}
               disabled={
                 !primaryFile ||
                 !secondaryFile ||
@@ -280,6 +282,22 @@ const UploadFiles: React.FC = () => {
               }
             >
               {loading ? "Analyzing..." : "Unique prompt - All numbers"}
+            </Button>
+          </div>
+          <div className={styles.analysisButton3}>
+            <Button
+              className={styles.analysisButton}
+              onClick={handleStartAnalysis3(true)}
+              disabled={
+                !primaryFile ||
+                !secondaryFile ||
+                primaryLanguage == secondaryLanguage ||
+                loading
+              }
+            >
+              {loading
+                ? "Analyzing..."
+                : "Unique prompt - All numbers V2 (en-de only)"}
             </Button>
           </div>
           {loading && (

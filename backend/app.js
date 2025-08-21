@@ -224,6 +224,14 @@ app.get("/getEnvironment", function (req, res) {
 app.post("/analyzeParas", jsonParser, async function (req, res) {
   console.log("INFO: Starting analyzeParas with input: ", req.body);
 
+  let isV2 = false;
+  let backendUrl = "";
+
+  // check for v2
+  if (req.body.v2) {
+    isV2 = true;
+  }
+
   // Possible backends
   const backendENDE =
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de/text/generation?version=2021-05-01";
@@ -231,23 +239,43 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv/text/generation?version=2021-05-01";
   const backendDELV =
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv/text/generation?version=2021-05-01";
-  let backendUrl = "";
+  const backendENDEV2 =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de_v2/text/generation?version=2021-05-01";
+  const backendENLVV2 =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv_v2/text/generation?version=2021-05-01";
+  const backendDELVV2 = "";
 
   // Use the language parameters to decide which backend to use
   const primLang = req.body.primLang;
   const secLang = req.body.secLang;
 
-  if (primLang === "en" && secLang === "de") {
-    console.log("INFO: Calling backend for en->de");
-    backendUrl = backendENDE;
-  }
-  if (primLang === "en" && secLang === "lv") {
-    console.log("INFO: Calling backend for en->lv");
-    backendUrl = backendENLV;
-  }
-  if (primLang === "de" && secLang === "lv") {
-    console.log("INFO: Calling backend for de->lv");
-    backendUrl = backendDELV;
+  if (isV2) {
+    backendUrl = backendENDEV2;
+    if (primLang === "en" && secLang === "de") {
+      console.log("INFO: Calling backend for en->de V2");
+      backendUrl = backendENDEV2;
+    }
+    if (primLang === "en" && secLang === "lv") {
+      console.log("INFO: Calling backend for en->lv V2");
+      backendUrl = backendENLVV2;
+    }
+    if (primLang === "de" && secLang === "lv") {
+      console.log("INFO: Calling backend for de->lv V2");
+      backendUrl = backendDELVV2;
+    }
+  } else {
+    if (primLang === "en" && secLang === "de") {
+      console.log("INFO: Calling backend for en->de");
+      backendUrl = backendENDE;
+    }
+    if (primLang === "en" && secLang === "lv") {
+      console.log("INFO: Calling backend for en->lv");
+      backendUrl = backendENLV;
+    }
+    if (primLang === "de" && secLang === "lv") {
+      console.log("INFO: Calling backend for de->lv");
+      backendUrl = backendDELV;
+    }
   }
 
   // Create a new body
@@ -259,9 +287,14 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
   let retVal = await sendToWatsonx(backendUrl, newBody);
 
   // Convert the data structure of the response
-  retVal = convertDataStructure(retVal);
+  if (isV2) {
+    // copy the entire retVal object as a new property of retVal
+    retVal.originalInput = { ...retVal };
+  } else {
+    retVal = convertDataStructure(retVal);
+  }
 
-  console.log("INFO: Converted response from Watsonx:", retVal);
+  console.log("INFO: response from Watsonx:", retVal);
   res.json(retVal);
 });
 
@@ -601,7 +634,7 @@ async function sendToWatsonx(url, input) {
       return error;
     });
 
-  console.log("INFO: watsonx reply", watsonxReply);
+  //console.log("INFO: watsonx reply", watsonxReply);
 
   // clean up the reply before sending back
   if (watsonxReply.results && watsonxReply.results.length > 0) {
@@ -629,7 +662,7 @@ async function sendToWatsonx(url, input) {
     let parsedReply = {};
     try {
       parsedReply = JSON5.parse(rawReply);
-      console.log("INFO: parsedReply", parsedReply);
+      //console.log("INFO: parsedReply", parsedReply);
     } catch (error) {
       console.log("ERROR: Failed to parse JSON", error);
       parsedReply = {};
