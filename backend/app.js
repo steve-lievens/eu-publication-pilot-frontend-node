@@ -243,7 +243,8 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de_v2/text/generation?version=2021-05-01";
   const backendENLVV2 =
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv_v2/text/generation?version=2021-05-01";
-  const backendDELVV2 = "";
+  const backendDELVV2 =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv_v2/text/generation?version=2021-05-01";
 
   // Use the language parameters to decide which backend to use
   const primLang = req.body.primLang;

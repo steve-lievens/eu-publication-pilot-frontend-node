@@ -288,7 +288,7 @@ const ConcordanceCheck3b: React.FC = () => {
         >
           <TableCell>
             <div
-              key={index}
+              key={"column1" + index}
               ref={(el) => {
                 paraRef.current[index] = el;
               }}
