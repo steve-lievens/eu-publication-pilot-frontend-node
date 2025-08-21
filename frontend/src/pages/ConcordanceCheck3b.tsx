@@ -1,18 +1,32 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
+  AILabel,
+  AILabelContent,
+  AILabelActions,
+  Button,
+  IconButton,
   Heading,
   Accordion,
   AccordionItem,
+  Column,
+  Grid,
   Theme,
   Table,
   TableBody,
   TableRow,
   TableCell,
+  Tile,
+  TextInput,
   ExpandableTile,
   TileAboveTheFoldContent,
   TileBelowTheFoldContent,
 } from "@carbon/react";
-import { FilterEdit } from "@carbon/react/icons";
+import {
+  AiGovernanceTracked,
+  AiGovernanceUntracked,
+  FilterEdit,
+  Hourglass,
+} from "@carbon/react/icons";
 import styles from "./ConcordanceCheck3.module.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -37,8 +51,9 @@ interface DocumentData {
   docB: string;
   paragraphsA: ParagraphData[];
   paragraphsB: ParagraphData[];
-  primLang: string;
-  secLang: string;
+  LangA: string;
+  LangB: string;
+  analysisReady: number[];
 }
 
 interface ParagraphData {
@@ -56,13 +71,17 @@ const ConcordanceCheck3b: React.FC = () => {
   const location = useLocation();
   const retData = location.state;
 
+  // Create an array of booleans (value false), size equal the amount of paragraphs
+  const analysisReady = Array(retData[0].para.length).fill(0);
+
   let dataInit = {
     docA: retData[0].file,
     docB: retData[1].file,
     paragraphsA: retData[0].para,
     paragraphsB: retData[1].para,
-    primLang: retData[2].primaryLanguage,
-    secLang: retData[2].secondaryLanguage,
+    LangA: retData[2].primaryLanguage,
+    LangB: retData[2].secondaryLanguage,
+    analysisReady: analysisReady,
   };
 
   // based on the language input, swap the languages if necessary
@@ -72,8 +91,9 @@ const ConcordanceCheck3b: React.FC = () => {
       docB: retData[0].file,
       paragraphsA: retData[1].para,
       paragraphsB: retData[0].para,
-      primLang: retData[2].secondaryLanguage,
-      secLang: retData[2].primaryLanguage,
+      LangA: retData[2].secondaryLanguage,
+      LangB: retData[2].primaryLanguage,
+      analysisReady: analysisReady,
     };
   }
 
@@ -86,8 +106,9 @@ const ConcordanceCheck3b: React.FC = () => {
       docB: retData[0].file,
       paragraphsA: retData[1].para,
       paragraphsB: retData[0].para,
-      primLang: retData[2].secondaryLanguage,
-      secLang: retData[2].primaryLanguage,
+      LangA: retData[2].secondaryLanguage,
+      LangB: retData[2].primaryLanguage,
+      analysisReady: analysisReady,
     };
   }
 
@@ -174,13 +195,16 @@ const ConcordanceCheck3b: React.FC = () => {
       const result = await analyzeParagraph(
         docData.paragraphsA[i],
         docData.paragraphsB[i],
-        docData.primLang,
-        docData.secLang
+        docData.LangA,
+        docData.LangB
       );
       console.log("INFO: Result for paragraph ", i + 1, ":", result);
 
       // Only add non-empty results
       if (result.diffs.differences && result.diffs.differences.length > 0) {
+        // Set the analysisReady to processed, no diffs
+        docData.analysisReady[i] = 2;
+
         // or any other properties your DifferencesData type requires
         results.push(result);
 
@@ -220,6 +244,8 @@ const ConcordanceCheck3b: React.FC = () => {
         console.log("INFO: Differences found for paragraph ", i + 1);
       } else {
         console.log("INFO: No differences found for paragraph ", i + 1);
+        // Set the analysisReady to processed, no diffs
+        docData.analysisReady[i] = 1;
       }
       setAnalysisResult([...results]);
     }
@@ -262,6 +288,7 @@ const ConcordanceCheck3b: React.FC = () => {
     doc2: string,
     paragraphA: ParagraphData[],
     paragraphB: ParagraphData[],
+    analysisReady: number[],
     paraRef: React.RefObject<(HTMLDivElement | null)[]>,
     highlightedPara: number | null
   ) => {
@@ -279,22 +306,55 @@ const ConcordanceCheck3b: React.FC = () => {
       //console.log("Rendering paragraph", para);
       return (
         <TableRow
-          key={index}
+          key={"para-row-" + index}
           className={
             highlightedPara !== null && highlightedPara - 1 === index
               ? styles.highlight
               : ""
           }
         >
-          <TableCell>
-            <div
-              key={"column1" + index}
-              ref={(el) => {
-                paraRef.current[index] = el;
-              }}
-            >
-              {index + 1}
-            </div>
+          <TableCell className={styles.noPadding}>
+            <Grid className={styles.noPadding}>
+              <Column lg={8} md={4} sm={2}>
+                <div
+                  className={
+                    analysisReady[index] === 1 || analysisReady[index] === 2
+                      ? styles.hidden
+                      : ""
+                  }
+                >
+                  <Hourglass />
+                </div>
+                <div
+                  className={
+                    analysisReady[index] === 0 || analysisReady[index] === 2
+                      ? styles.hidden
+                      : ""
+                  }
+                >
+                  <AiGovernanceTracked className={styles.iconGreen} />
+                </div>
+                <div
+                  className={
+                    analysisReady[index] === 0 || analysisReady[index] === 1
+                      ? styles.hidden
+                      : ""
+                  }
+                >
+                  <AiGovernanceUntracked className={styles.iconRed} />
+                </div>
+              </Column>
+              <Column lg={8} md={4} sm={2}>
+                <div
+                  key={"para-column1-" + index}
+                  ref={(el) => {
+                    paraRef.current[index] = el;
+                  }}
+                >
+                  {index + 1}
+                </div>
+              </Column>
+            </Grid>
           </TableCell>
           <TableCell className={styles.paraTableCell}>
             <Marker
@@ -325,35 +385,39 @@ const ConcordanceCheck3b: React.FC = () => {
     // Return the differences nicely formatted
     return (
       <div>
-        <div className={styles.differenceHeader}>
-          <ExpandableTile
-            id={"ExpandableTile" + paraNr}
-            tileCollapsedIconText="Interact to Expand tile"
-            tileExpandedIconText="Interact to Collapse tile"
-          >
-            <TileAboveTheFoldContent>
-              {
-                // Loop over the differences and display them
-                diffs.differences.map((diff, index) => (
-                  <div key={"TileAbove" + index} className={styles.diffItem}>
-                    <strong>{diff.entitytype}</strong> <br />
-                    <br />
-                    <strong>{docData.primLang}:</strong>{" "}
-                    {diff.originaltextlang1.replace(/\|/g, " ")} <br />
-                    <strong>{docData.secLang}:</strong>{" "}
-                    {diff.originaltextlang2.replace(/\|/g, " ")} <br />
-                    <strong>Explanation:</strong> {diff.explanation}
-                    <br />
-                    <br />
+        <Tile
+          id={`aitile-${paraNr}`}
+          decorator={
+            <AILabel className="ai-label-container">
+              <AILabelContent>
+                <div>
+                  <p className={styles.aiBoxTitle}>watsonx return data</p>
+                  <br />
+                  <div className={styles.aiBoxContent}>
+                    {JSON.stringify(diffs.originalInput)}
                   </div>
-                ))
-              }
-            </TileAboveTheFoldContent>
-            <TileBelowTheFoldContent>
-              {JSON.stringify(diffs.originalInput)}
-            </TileBelowTheFoldContent>
-          </ExpandableTile>
-        </div>
+                </div>
+              </AILabelContent>
+            </AILabel>
+          }
+        >
+          {
+            // Loop over the differences and display them
+            diffs.differences.map((diff, index) => (
+              <div key={"TileAbove" + index} className={styles.diffItem}>
+                <strong>{diff.entitytype}</strong> <br />
+                <br />
+                <strong>{docData.LangA}:</strong>{" "}
+                {diff.originaltextlang1.replace(/\|/g, " ")} <br />
+                <strong>{docData.LangB}:</strong>{" "}
+                {diff.originaltextlang2.replace(/\|/g, " ")} <br />
+                <strong>Explanation:</strong> {diff.explanation}
+                <br />
+                <br />
+              </div>
+            ))
+          }
+        </Tile>
       </div>
     );
   };
@@ -378,6 +442,7 @@ const ConcordanceCheck3b: React.FC = () => {
                   docData.docB,
                   docData.paragraphsA,
                   docData.paragraphsB,
+                  docData.analysisReady,
                   paragraphRef,
                   highlightedPara
                 )}
@@ -402,7 +467,7 @@ const ConcordanceCheck3b: React.FC = () => {
                     <AccordionItem
                       title={`Paragraph ${result.paraNumber} Differences`}
                       open={true}
-                      key={index}
+                      key={"AccordionItem" + index}
                       className={styles.accordionItem}
                       onClick={() => {
                         console.log("Clicked on paragraph", result.paraNumber);

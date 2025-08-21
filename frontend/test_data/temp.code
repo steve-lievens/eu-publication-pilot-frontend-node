@@ -1,9 +1,58 @@
+// code to render the differences
 
-              innerJsonStr = JSON.stringify(value, null, 2);
-              innerJson = JSON.parse(innerJsonStr),
-              // Loop over the innerJson object and display each key-value pair
-              Object.entries(innerJson).map(([innerKey, innerValue], innerIndex) => (
-                <div key={innerIndex}>
-                  <strong>{innerKey}:</strong> {JSON.stringify(innerValue, null, 2)}
+
+              {
+                // Loop over the differences and display them
+                diffs.differences.map((diff, index) => (
+                  <div key={"TileAbove" + index} className={styles.diffItem}>
+                    <strong>{diff.entitytype}</strong> <br />
+                    <br />
+                    <strong>{docData.LangA}:</strong>{" "}
+                    {diff.originaltextlang1.replace(/\|/g, " ")} <br />
+                    <strong>{docData.LangB}:</strong>{" "}
+                    {diff.originaltextlang2.replace(/\|/g, " ")} <br />
+                    <strong>Explanation:</strong> {diff.explanation}
+                    <br />
+                    <br />
+                  </div>
+                ))
+              }
+
+
+// Expandable Tile code
+
+          <ExpandableTile
+            id={"ExpandableTile" + paraNr}
+            tileCollapsedIconText="Interact to Expand tile"
+            tileExpandedIconText="Interact to Collapse tile"
+          >
+            <TileAboveTheFoldContent></TileAboveTheFoldContent>
+            <TileBelowTheFoldContent>
+              {JSON.stringify(diffs.originalInput)}
+            </TileBelowTheFoldContent>
+          </ExpandableTile>
+
+// AI TextInput working
+
+        <TextInput
+          decorator={
+            <AILabel className="ai-label-container">
+              <AILabelContent>
+                <div>
+                  <p className="secondary">watsonx return data</p>
+                  <p className="secondary">
+                    {JSON.stringify(diffs.originalInput)}
+                  </p>
                 </div>
-              )),
+              </AILabelContent>
+            </AILabel>
+          }
+          helperText=""
+          id="text-input-ai-label"
+          labelText=""
+          onChange={() => {}}
+          onClick={() => {}}
+          type="text"
+          readOnly
+          value={"This is a helper text"}
+        />

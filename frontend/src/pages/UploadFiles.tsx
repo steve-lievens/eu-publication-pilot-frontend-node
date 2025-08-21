@@ -295,9 +295,7 @@ const UploadFiles: React.FC = () => {
                 loading
               }
             >
-              {loading
-                ? "Analyzing..."
-                : "Unique prompt - All numbers V2 (en-de only)"}
+              {loading ? "Analyzing..." : "Unique prompt - All numbers V2"}
             </Button>
           </div>
           {loading && (

@@ -5,9 +5,36 @@
   padding-top: 10px;
 }
 
+.noPadding {
+  padding: 0px;
+  padding-inline: 0px !important;
+  background-color: #f4f4f4;
+}
 .pageWrapper3 {
   display: flex;
   background-color: #f4f4f4;
+}
+
+.hidden {
+  display: none;
+}
+
+.iconRed {
+  fill: red;
+}
+
+.iconGreen {
+  fill: rgb(0, 181, 0);
+}
+
+.aiBoxTitle {
+  font-weight: bold !important;
+}
+
+.aiBoxContent {
+  max-width: 200px;
+  overflow: auto;
+  font-size: x-small;
 }
 
 .tableWrapper3 {
@@ -42,10 +69,7 @@
 
 .paraTableCell {
   vertical-align: top !important;
-  width: 48%;
-}
-
-.paragraph-diff-ok {
+  width: 47%;
 }
 
 .entitiesHeader {
