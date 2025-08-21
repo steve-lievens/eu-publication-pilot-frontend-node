@@ -222,17 +222,46 @@ app.get("/getEnvironment", function (req, res) {
 // REST API : retrieve all docs from the cloudant db
 // --------------------------------------------------------------------------
 app.post("/analyzeParas", jsonParser, async function (req, res) {
-  console.log("INFO: calling analyzeParas with body", req.body);
+  console.log("INFO: Starting analyzeParas with input: ", req.body);
 
-  const backendUrl =
+  // Possible backends
+  const backendENDE =
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de/text/generation?version=2021-05-01";
+  const backendENLV =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv/text/generation?version=2021-05-01";
+  const backendDELV =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv/text/generation?version=2021-05-01";
+  let backendUrl = "";
 
-  let retVal = await sendToWatsonx(backendUrl, req.body);
+  // Use the language parameters to decide which backend to use
+  const primLang = req.body.primLang;
+  const secLang = req.body.secLang;
+
+  if (primLang === "en" && secLang === "de") {
+    console.log("INFO: Calling backend for en->de");
+    backendUrl = backendENDE;
+  }
+  if (primLang === "en" && secLang === "lv") {
+    console.log("INFO: Calling backend for en->lv");
+    backendUrl = backendENLV;
+  }
+  if (primLang === "de" && secLang === "lv") {
+    console.log("INFO: Calling backend for de->lv");
+    backendUrl = backendDELV;
+  }
+
+  // Create a new body
+  let newBody = {
+    parameters: req.body.parameters,
+  };
+  console.log("INFO: newBody: ", newBody);
+  // Call the backend
+  let retVal = await sendToWatsonx(backendUrl, newBody);
 
   // Convert the data structure of the response
   retVal = convertDataStructure(retVal);
 
-  console.log("INFO: Response from Watsonx:", retVal);
+  console.log("INFO: Converted response from Watsonx:", retVal);
   res.json(retVal);
 });
 
@@ -252,17 +281,17 @@ function convertDataStructure(data) {
   if (doc1Input) {
     for (const [key, value] of Object.entries(doc1Input)) {
       if (value && value.length > 0) {
-        console.log("INFO: doc1Input type:", key);
+        //console.log("INFO: doc1Input type:", key);
         const typeName = key;
 
         // Loop over the value array
         for (const item of value) {
           if (item && item.value) {
-            console.log(
+            /*console.log(
               "INFO: doc1Input item type content:",
               item.value,
               item.originaltext
-            );
+            );*/
 
             const typeContent = {
               type: typeName,
@@ -279,17 +308,17 @@ function convertDataStructure(data) {
   if (doc2Input) {
     for (const [key, value] of Object.entries(doc2Input)) {
       if (value && value.length > 0) {
-        console.log("INFO: doc2Input type:", key);
+        //console.log("INFO: doc2Input type:", key);
         const typeName = key;
 
         // Loop over the value array
         for (const item of value) {
           if (item && item.value) {
-            console.log(
+            /*console.log(
               "INFO: doc2Input item type content:",
               item.value,
               item.originaltext
-            );
+            );*/
 
             const typeContent = {
               type: typeName,
@@ -596,8 +625,19 @@ async function sendToWatsonx(url, input) {
       rawReply = rawReply.slice(0, lastBraceIndex + 1);
     }
 
-    // let's try to parse the JSON string
-    return JSON5.parse(rawReply);
+    // let's try to parse the JSON string, catch any errors
+    let parsedReply = {};
+    try {
+      parsedReply = JSON5.parse(rawReply);
+      console.log("INFO: parsedReply", parsedReply);
+    } catch (error) {
+      console.log("ERROR: Failed to parse JSON", error);
+      parsedReply = {};
+      parsedReply.error = error;
+      parsedReply.rawReply = rawReply;
+    }
+
+    return parsedReply;
   } else {
     return {};
   }

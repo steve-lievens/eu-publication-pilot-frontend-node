@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   Heading,
   Accordion,
@@ -19,19 +19,16 @@ import axios from "axios";
 import { Marker } from "react-mark.js";
 
 interface Difference {
-  type: string;
-  description: string;
-  originalText: string;
-}
-
-interface DocData {
-  language: string;
-  diff: Difference[];
+  entitytype: string;
+  entityvaluelang1: string;
+  originaltextlang1: string;
+  entityvaluelang2: string;
+  originaltextlang2: string;
+  explanation: string;
 }
 
 interface DifferencesData {
-  doc1: DocData;
-  doc2: DocData;
+  differences: Difference[];
   originalInput: String; // Adjust type as needed
 }
 
@@ -40,8 +37,6 @@ interface DocumentData {
   docB: string;
   paragraphsA: ParagraphData[];
   paragraphsB: ParagraphData[];
-  primLang: string;
-  secLang: string;
 }
 
 interface ParagraphData {
@@ -55,45 +50,15 @@ interface AnalysisResult {
   paraNumber: number;
 }
 
-const ConcordanceCheck3: React.FC = () => {
+const ConcordanceCheck3b: React.FC = () => {
   const location = useLocation();
   const retData = location.state;
-
-  let dataInit = {
+  const dataInit = {
     docA: retData[0].file,
     docB: retData[1].file,
     paragraphsA: retData[0].para,
     paragraphsB: retData[1].para,
-    primLang: retData[2].primaryLanguage,
-    secLang: retData[2].secondaryLanguage,
   };
-
-  // based on the language input, swap the languages if necessary
-  if (retData[2].primaryLanguage === "lv") {
-    dataInit = {
-      docA: retData[1].file,
-      docB: retData[0].file,
-      paragraphsA: retData[1].para,
-      paragraphsB: retData[0].para,
-      primLang: retData[2].secondaryLanguage,
-      secLang: retData[2].primaryLanguage,
-    };
-  }
-
-  if (
-    retData[2].primaryLanguage === "de" &&
-    retData[2].secondaryLanguage === "en"
-  ) {
-    dataInit = {
-      docA: retData[1].file,
-      docB: retData[0].file,
-      paragraphsA: retData[1].para,
-      paragraphsB: retData[0].para,
-      primLang: retData[2].secondaryLanguage,
-      secLang: retData[2].primaryLanguage,
-    };
-  }
-
   const [docData, setDocData] = useState<DocumentData>(dataInit);
   const [highlightedPara, setHighlightedPara] = useState<number | null>(null);
   const [analysisDone, setAnalysisDone] = useState(false);
@@ -106,9 +71,7 @@ const ConcordanceCheck3: React.FC = () => {
 
   const analyzeParagraph = async (
     paragraphA: ParagraphData,
-    paragraphB: ParagraphData,
-    primLang: string,
-    secLang: string
+    paragraphB: ParagraphData
   ): Promise<AnalysisResult> => {
     // Placeholder for analysis logic
     //console.log("Analyzing paragraph:", paragraphA, paragraphB);
@@ -120,8 +83,6 @@ const ConcordanceCheck3: React.FC = () => {
           paragraphs_language_two: paragraphB.para,
         },
       },
-      primLang: primLang,
-      secLang: secLang,
     };
 
     let formData = JSON.stringify(inputData);
@@ -146,7 +107,14 @@ const ConcordanceCheck3: React.FC = () => {
       const resultFullAsDifferencesData: DifferencesData =
         response.data as DifferencesData;
       console.log("Result :", resultFullAsDifferencesData);
-      if (resultFullAsDifferencesData.doc1) {
+
+      // check if the result has differences
+      if (
+        resultFullAsDifferencesData &&
+        resultFullAsDifferencesData.differences &&
+        resultFullAsDifferencesData.differences.length > 0
+      ) {
+        console.log("Differences found:", resultFullAsDifferencesData);
         resultData.diffs = resultFullAsDifferencesData;
       }
       console.log("Analysis result:", resultData);
@@ -168,30 +136,30 @@ const ConcordanceCheck3: React.FC = () => {
       console.log("INFO: Starting analysis of paragraph ", i + 1);
       const result = await analyzeParagraph(
         docData.paragraphsA[i],
-        docData.paragraphsB[i],
-        docData.primLang,
-        docData.secLang
+        docData.paragraphsB[i]
       );
       console.log("INFO: Result for paragraph ", i + 1, ":", result);
 
       // Only add non-empty results
-      if (
-        result.diffs !== null &&
-        "doc1" in result.diffs &&
-        "doc2" in result.diffs
-      ) {
+      if (result.diffs.differences && result.diffs.differences.length > 0) {
         // or any other properties your DifferencesData type requires
         results.push(result);
 
-        // add the highlighted texts to the paragraphs
-        docData.paragraphsA[i].highlights = result.diffs.doc1.diff.map(
-          (diff) => diff.originalText
+        // add the highlighted texts to the paragraphs, remove any ' chars in the string
+        docData.paragraphsA[i].highlights = result.diffs.differences.map(
+          (diff) => {
+            const highlight = diff.originaltextlang1.replace(/['"]/g, "");
+            return highlight;
+          }
         );
-        docData.paragraphsB[i].highlights = result.diffs.doc2.diff.map(
-          (diff) => diff.originalText
+        docData.paragraphsB[i].highlights = result.diffs.differences.map(
+          (diff) => {
+            const highlight = diff.originaltextlang2.replace(/['"]/g, "");
+            return highlight;
+          }
         );
 
-        setDocData(docData);
+        //setDocData(docData);
 
         console.log("INFO: Differences found for paragraph ", i + 1);
       } else {
@@ -203,23 +171,20 @@ const ConcordanceCheck3: React.FC = () => {
     setLoadingTitle("No differences found");
   };
 
+  const memoizedAnalyzeParagraphs = useCallback(analyzeParagraphs, [
+    docData.paragraphsA,
+    docData.paragraphsB,
+  ]);
+
   // This code start to run on page load
   useEffect(() => {
     if (!analysisDone) {
       // Analyze paragraphs and set the result
       console.log("INFO: Starting analysis...");
-
-      // Only analyze when the paragraph count is the same
-      if (docData.paragraphsA.length === docData.paragraphsB.length) {
-        analyzeParagraphs();
-      } else {
-        console.log(
-          "ERROR: Paragraph count is not the same for both docs, not analyzing"
-        );
-      }
+      memoizedAnalyzeParagraphs();
       setAnalysisDone(true);
     }
-  }, [analysisDone]);
+  }, [analysisDone, memoizedAnalyzeParagraphs]);
 
   const scrollToDiv = (idx: number) => {
     console.log("Scrolling to paragraph:", idx);
@@ -246,8 +211,6 @@ const ConcordanceCheck3: React.FC = () => {
   ) => {
     if (paragraphA.length !== paragraphB.length) {
       console.error("Paragraphs count mismatch between documents");
-      console.error("Paragraphs A count:", paragraphA.length);
-      console.error("Paragraphs B count:", paragraphB.length);
       return (
         <TableRow>
           <TableCell>
@@ -303,15 +266,7 @@ const ConcordanceCheck3: React.FC = () => {
   };
 
   const renderDifferences = (diffs: DifferencesData, paraNr: number) => {
-    // get doc1 first
-    const doc1Diffs = diffs.doc1.diff;
-    const doc2Diffs = diffs.doc2.diff;
-
-    if (!doc1Diffs || !doc2Diffs) {
-      return <p>No differences found.</p>;
-    }
-
-    // Return the language and type of differences and then loop through the differences
+    // Return the differences nicely formatted
     return (
       <div>
         <div className={styles.differenceHeader}>
@@ -321,31 +276,22 @@ const ConcordanceCheck3: React.FC = () => {
             tileExpandedIconText="Interact to Collapse tile"
           >
             <TileAboveTheFoldContent>
-              {doc1Diffs.map((diff, index) => (
-                <li key={index}>
-                  <strong>{diff.type}:</strong>
-                  <p>{diffs.doc1.language + " : " + diff.originalText}</p>
-                  <p>
-                    {
-                      // Display the corresponding doc2 difference if it exists
-                      doc2Diffs[index]
-                        ? diffs.doc2.language +
-                          " : " +
-                          doc2Diffs[index].originalText
-                        : ""
-                    }
-                  </p>
-                </li>
-              ))}
               {
-                // If there are more differences in doc2, display them
-                doc2Diffs.length > doc1Diffs.length &&
-                  doc2Diffs.slice(doc1Diffs.length).map((diff, index) => (
-                    <li key={index + doc1Diffs.length}>
-                      <strong>{diff.type}:</strong>
-                      <p>{diffs.doc2.language + " : " + diff.originalText}</p>
-                    </li>
-                  ))
+                // Loop over the differences and display them
+                diffs.differences.map((diff, index) => (
+                  <div key={index} className={styles.diffItem}>
+                    <strong>Entity Type:</strong> {diff.entitytype} <br />
+                    <strong>Entity Value (Lang 1):</strong>{" "}
+                    {diff.entityvaluelang1} <br />
+                    <strong>Original Text (Lang 1):</strong>{" "}
+                    {diff.originaltextlang1} <br />
+                    <strong>Entity Value (Lang 2):</strong>{" "}
+                    {diff.entityvaluelang2} <br />
+                    <strong>Original Text (Lang 2):</strong>{" "}
+                    {diff.originaltextlang2} <br />
+                    <strong>Explanation:</strong> {diff.explanation}
+                  </div>
+                ))
               }
             </TileAboveTheFoldContent>
             <TileBelowTheFoldContent>
@@ -429,4 +375,4 @@ const ConcordanceCheck3: React.FC = () => {
   );
 };
 
-export default ConcordanceCheck3;
+export default ConcordanceCheck3b;

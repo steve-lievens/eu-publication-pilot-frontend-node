@@ -81,6 +81,14 @@ const UploadFiles: React.FC = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      // adding language to the response
+      const dataInput = {
+        primaryLanguage: primaryLanguage,
+        secondaryLanguage: secondaryLanguage,
+      };
+      response.data.push(dataInput);
+
       console.log("Parsing response:");
       console.log(response);
 
@@ -234,7 +242,12 @@ const UploadFiles: React.FC = () => {
           <div className={styles.analysisButton}>
             <Button
               onClick={handleStartAnalysis(false)}
-              disabled={!primaryFile || !secondaryFile || loading}
+              disabled={
+                !primaryFile ||
+                !secondaryFile ||
+                primaryLanguage == secondaryLanguage ||
+                loading
+              }
             >
               {loading
                 ? "Analyzing..."
@@ -245,7 +258,12 @@ const UploadFiles: React.FC = () => {
             <Button
               className={styles.analysisButton}
               onClick={handleStartAnalysis(true)}
-              disabled={!primaryFile || !secondaryFile || loading}
+              disabled={
+                !primaryFile ||
+                !secondaryFile ||
+                primaryLanguage == secondaryLanguage ||
+                loading
+              }
             >
               {loading ? "Analyzing..." : "LLM as a judge - Dates and Cases"}
             </Button>
@@ -254,7 +272,12 @@ const UploadFiles: React.FC = () => {
             <Button
               className={styles.analysisButton}
               onClick={handleStartAnalysis3()}
-              disabled={!primaryFile || !secondaryFile || loading}
+              disabled={
+                !primaryFile ||
+                !secondaryFile ||
+                primaryLanguage == secondaryLanguage ||
+                loading
+              }
             >
               {loading ? "Analyzing..." : "Unique prompt - All numbers"}
             </Button>
