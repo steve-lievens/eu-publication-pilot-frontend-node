@@ -24,6 +24,10 @@
   max-width: 800px;
 }
 
+.startButton {
+  z-index: 1000;
+}
+
 /* main content area that holds the two columns */
 .mainContent {
   padding: 2rem 1rem;

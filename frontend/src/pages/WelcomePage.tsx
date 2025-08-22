@@ -21,7 +21,7 @@ const WelcomePage: React.FC = () => (
             inconsistencies.
           </p>
         </Column>
-        <Column lg={6} md={8} sm={4}>
+        <Column lg={6} md={8} sm={4} className={styles.startButton}>
           <Button href="/start">Start a new concordance check</Button>
         </Column>
       </Grid>
