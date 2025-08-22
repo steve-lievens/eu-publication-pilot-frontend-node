@@ -376,14 +376,6 @@ app.post("/judgeParaDiffs", jsonParser, async function (req, res) {
   // Call the backend
   let retVal = await sendToWatsonx(backendUrl, newBody);
 
-  // Convert the data structure of the response
-  if (isV2) {
-    // copy the entire retVal object as a new property of retVal
-    retVal.originalInput = { ...retVal };
-  } else {
-    retVal = convertDataStructure(retVal);
-  }
-
   console.log("INFO: response from Watsonx:", retVal);
   res.json(retVal);
 });

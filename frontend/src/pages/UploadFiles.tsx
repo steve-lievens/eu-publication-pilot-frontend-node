@@ -270,20 +270,7 @@ const UploadFiles: React.FC = () => {
               {loading ? "Analyzing..." : "LLM as a judge - Dates and Cases"}
             </Button>
           </div>
-          <div className={styles.analysisButton3}>
-            <Button
-              className={styles.analysisButton}
-              onClick={handleStartAnalysis3(false)}
-              disabled={
-                !primaryFile ||
-                !secondaryFile ||
-                primaryLanguage === secondaryLanguage ||
-                loading
-              }
-            >
-              {loading ? "Analyzing..." : "Unique prompt - All numbers"}
-            </Button>
-          </div>
+
           <div className={styles.analysisButton3}>
             <Button
               className={styles.analysisButton}
