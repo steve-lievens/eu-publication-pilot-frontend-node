@@ -1,0 +1,6 @@
+{ "parameters": 
+    { "prompt_variables": 
+        { "output_previous_llm": "{"differences":[{"entitytype":"regulation","entityvaluelang1":"Regulation (Euratom, EC) No 2185/96","originaltextlang1":"Regulation (Euratom, EC) No 2185/96","entityvaluelang2":"Regula (Euratom, EK) Nr. 2185/96","originaltextlang2":"Regula (Euratom, EK) Nr. 2185/96","explanation":"'regulation' is 'Regulation (Euratom, EC) No 2185/96' in English and 'Regula (Euratom, EK) Nr. 2185/96' in Latvian"}]}"
+        } 
+    } 
+}
