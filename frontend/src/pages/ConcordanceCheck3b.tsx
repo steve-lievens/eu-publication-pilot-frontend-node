@@ -2,30 +2,27 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   AILabel,
   AILabelContent,
-  AILabelActions,
-  Button,
-  IconButton,
   Heading,
   Accordion,
   AccordionItem,
   Column,
+  FluidForm,
   Grid,
   Theme,
   Table,
   TableBody,
   TableRow,
   TableCell,
-  Tile,
   TextInput,
-  ExpandableTile,
-  TileAboveTheFoldContent,
-  TileBelowTheFoldContent,
+  Tile,
 } from "@carbon/react";
 import {
   AiGovernanceTracked,
   AiGovernanceUntracked,
   FilterEdit,
   Hourglass,
+  ThumbsUp,
+  ThumbsDown,
 } from "@carbon/react/icons";
 import styles from "./ConcordanceCheck3.module.css";
 import { useLocation } from "react-router-dom";
@@ -414,6 +411,10 @@ const ConcordanceCheck3b: React.FC = () => {
                 <strong>Explanation:</strong> {diff.explanation}
                 <br />
                 <br />
+                <div className={styles.thumbsUpDownArea}>
+                  <ThumbsUp className={styles.thumbsUpDown} />
+                  <ThumbsDown className={styles.thumbsUpDown} />
+                </div>
               </div>
             ))
           }

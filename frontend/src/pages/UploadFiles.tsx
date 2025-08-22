@@ -247,7 +247,7 @@ const UploadFiles: React.FC = () => {
               disabled={
                 !primaryFile ||
                 !secondaryFile ||
-                primaryLanguage == secondaryLanguage ||
+                primaryLanguage === secondaryLanguage ||
                 loading
               }
             >
@@ -263,7 +263,7 @@ const UploadFiles: React.FC = () => {
               disabled={
                 !primaryFile ||
                 !secondaryFile ||
-                primaryLanguage == secondaryLanguage ||
+                primaryLanguage === secondaryLanguage ||
                 loading
               }
             >
@@ -277,7 +277,7 @@ const UploadFiles: React.FC = () => {
               disabled={
                 !primaryFile ||
                 !secondaryFile ||
-                primaryLanguage == secondaryLanguage ||
+                primaryLanguage === secondaryLanguage ||
                 loading
               }
             >
@@ -291,7 +291,7 @@ const UploadFiles: React.FC = () => {
               disabled={
                 !primaryFile ||
                 !secondaryFile ||
-                primaryLanguage == secondaryLanguage ||
+                primaryLanguage === secondaryLanguage ||
                 loading
               }
             >

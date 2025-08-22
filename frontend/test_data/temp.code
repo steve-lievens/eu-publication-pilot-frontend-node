@@ -56,3 +56,13 @@
           readOnly
           value={"This is a helper text"}
         />
+
+// Input form (fluid)
+
+                <FluidForm>
+                  <TextInput
+                    type="text"
+                    labelText="Please enter your feedback"
+                    id={"Feedback" + index}
+                  />
+                </FluidForm>

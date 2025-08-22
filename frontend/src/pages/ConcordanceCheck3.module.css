@@ -30,6 +30,12 @@
 .aiBoxTitle {
   font-weight: bold !important;
 }
+.thumbsUpDownArea {
+  text-align: right;
+}
+.thumbsUpDown {
+  margin-left: 10px;
+}
 
 .aiBoxContent {
   max-width: 200px;
