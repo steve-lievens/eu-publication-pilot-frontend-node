@@ -29,6 +29,10 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { Marker } from "react-mark.js";
 
+interface Ruling {
+  evaluation: boolean;
+}
+
 interface Difference {
   entitytype: string;
   entityvaluelang1: string;
@@ -36,6 +40,7 @@ interface Difference {
   entityvaluelang2: string;
   originaltextlang2: string;
   explanation: string;
+  ruling?: boolean;
 }
 
 interface DifferencesData {
@@ -119,6 +124,35 @@ const ConcordanceCheck3b: React.FC = () => {
 
   console.log("ConcordanceCheck3 data:", dataInit);
 
+  const judgeParaDiff = async (resultAnalysis: Object): Promise<Ruling> => {
+    console.log("Judging paragraph result:", resultAnalysis);
+
+    let resultData = {};
+    let formData = JSON.stringify(resultAnalysis);
+
+    console.log("Sending data to judge backend:", formData);
+
+    // Send the data to the backend for analysis
+    try {
+      const response = await axios.post("/judgeParaDiffs", formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      console.log("Parsing response:");
+      resultData = response.data;
+
+      console.log("Judge result:", resultData);
+    } catch (error) {
+      console.error("Error starting analysis:", error);
+    } finally {
+    }
+    const resultDataFull: Ruling = resultData as Ruling;
+    console.log("Judging completed");
+    return resultDataFull;
+  };
+
   const analyzeParagraph = async (
     paragraphA: ParagraphData,
     paragraphB: ParagraphData,
@@ -184,7 +218,6 @@ const ConcordanceCheck3b: React.FC = () => {
     console.log("Analysis completed for paragraph:", paragraphA.para_number);
     return resultData;
   };
-
   const analyzeParagraphs = async () => {
     const results = [];
     for (let i = 0; i < docData.paragraphsA.length; i++) {
@@ -199,6 +232,18 @@ const ConcordanceCheck3b: React.FC = () => {
 
       // Only add non-empty results
       if (result.diffs.differences && result.diffs.differences.length > 0) {
+        // For Results with differences, also call the LLM as a judge and add the results of that to this result.
+        // Loop over all the differences
+        for (let i = 0; i < result.diffs.differences.length; i++) {
+          // Build the single difference object
+          let singleDif = { differences: [result.diffs.differences[i]] };
+          const ruling = await judgeParaDiff(singleDif);
+          console.log("INFO: Judge result for paragraph ", i + 1, ":", ruling);
+
+          // Add the ruling to the result
+          result.diffs.differences[i].ruling = ruling.evaluation;
+        }
+
         // Set the analysisReady to processed, no diffs
         docData.analysisReady[i] = 2;
 
@@ -401,19 +446,21 @@ const ConcordanceCheck3b: React.FC = () => {
           {
             // Loop over the differences and display them
             diffs.differences.map((diff, index) => (
-              <div key={"TileAbove" + index} className={styles.diffItem}>
-                <strong>{diff.entitytype}</strong> <br />
-                <br />
-                <strong>{docData.LangA}:</strong>{" "}
-                {diff.originaltextlang1.replace(/\|/g, " ")} <br />
-                <strong>{docData.LangB}:</strong>{" "}
-                {diff.originaltextlang2.replace(/\|/g, " ")} <br />
-                <strong>Explanation:</strong> {diff.explanation}
-                <br />
-                <br />
-                <div className={styles.thumbsUpDownArea}>
-                  <ThumbsUp className={styles.thumbsUpDown} />
-                  <ThumbsDown className={styles.thumbsUpDown} />
+              <div key={"TileAbove" + index}>
+                <div className={diff.ruling ? styles.nothing : styles.diffItem}>
+                  <strong>{diff.entitytype}</strong> <br />
+                  <br />
+                  <strong>{docData.LangA}:</strong>{" "}
+                  {diff.originaltextlang1.replace(/\|/g, " ")} <br />
+                  <strong>{docData.LangB}:</strong>{" "}
+                  {diff.originaltextlang2.replace(/\|/g, " ")} <br />
+                  <strong>Explanation:</strong> {diff.explanation}
+                  <br />
+                  <br />
+                  <div className={styles.thumbsUpDownArea}>
+                    <ThumbsUp className={styles.thumbsUpDown} />
+                    <ThumbsDown className={styles.thumbsUpDown} />
+                  </div>
                 </div>
               </div>
             ))

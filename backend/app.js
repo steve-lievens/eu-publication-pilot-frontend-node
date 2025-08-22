@@ -239,6 +239,7 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv/text/generation?version=2021-05-01";
   const backendDELV =
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv/text/generation?version=2021-05-01";
+
   const backendENDEV2 =
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de_v3/text/generation?version=2021-05-01";
   const backendENLVV2 =
@@ -246,23 +247,30 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
   const backendDELVV2 =
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv_v3/text/generation?version=2021-05-01";
 
+  const backendENDEV3ML =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de_ml_v3/text/generation?version=2021-05-01";
+  const backendENLVV3ML =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv_ml_v3/text/generation?version=2021-05-01";
+  const backendDELVV3ML =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv_ml_v3/text/generation?version=2021-05-01";
+
   // Use the language parameters to decide which backend to use
   const primLang = req.body.primLang;
   const secLang = req.body.secLang;
 
   if (isV2) {
-    backendUrl = backendENDEV2;
+    backendUrl = backendENDEV3ML;
     if (primLang === "en" && secLang === "de") {
       console.log("INFO: Calling backend for en->de V2");
-      backendUrl = backendENDEV2;
+      backendUrl = backendENDEV3ML;
     }
     if (primLang === "en" && secLang === "lv") {
       console.log("INFO: Calling backend for en->lv V2");
-      backendUrl = backendENLVV2;
+      backendUrl = backendENLVV3ML;
     }
     if (primLang === "de" && secLang === "lv") {
       console.log("INFO: Calling backend for de->lv V2");
-      backendUrl = backendDELVV2;
+      backendUrl = backendDELVV3ML;
     }
   } else {
     if (primLang === "en" && secLang === "de") {
@@ -368,7 +376,7 @@ app.post("/judgeParaDiffs", jsonParser, async function (req, res) {
   let newBody = {
     parameters: {
       prompt_variables: {
-        output_previous_llm: req.body,
+        output_previous_llm: JSON.stringify(req.body),
       },
     },
   };
@@ -716,7 +724,7 @@ async function sendToWatsonx(url, input) {
       return error;
     });
 
-  //console.log("INFO: watsonx reply", watsonxReply);
+  console.log("INFO: FULL watsonx reply", watsonxReply);
 
   // clean up the reply before sending back
   if (watsonxReply.results && watsonxReply.results.length > 0) {

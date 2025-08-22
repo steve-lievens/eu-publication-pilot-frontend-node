@@ -43,6 +43,9 @@
   font-size: x-small;
 }
 
+.diffItem {
+  text-decoration: line-through;
+}
 .tableWrapper3 {
   max-width: 80%;
   padding-top: 10px;
