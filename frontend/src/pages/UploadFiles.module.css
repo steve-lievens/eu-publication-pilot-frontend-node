@@ -24,11 +24,26 @@
   max-width: 800px;
 }
 
+.institutionGrid {
+  display: none;
+}
+
+.startAnalysisGrid {
+  padding-top: 20px;
+}
+
+.analysisStartButton {
+  margin-top: 50px !important;
+  z-index: 1000;
+}
+
 .analysisButton {
   padding-top: 20px;
+  display: none;
 }
 .analysisButton3 {
   padding-top: 20px;
+  display: none;
 }
 /* main content area that holds the two columns */
 .mainContent {

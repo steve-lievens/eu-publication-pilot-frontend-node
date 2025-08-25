@@ -8,6 +8,8 @@ import {
   Button,
   Loading,
   Dropdown,
+  RadioButtonGroup,
+  RadioButton,
 } from "@carbon/react";
 import type { OnChangeData } from "@carbon/react";
 import styles from "./UploadFiles.module.css";
@@ -21,6 +23,7 @@ const UploadFiles: React.FC = () => {
   const [secondaryLanguage, setSecondaryLanguage] = useState<string>("de");
   const [institution, setInstitution] = useState<string>("European Commission");
   const [loading, setLoading] = useState<boolean>(false);
+  const [approach, setApproach] = useState<string>("approach3");
   const navigate = useNavigate();
 
   const languageOptions = [
@@ -44,8 +47,20 @@ const UploadFiles: React.FC = () => {
     { addedFiles }: { addedFiles: File[] }
   ) => {
     const file = addedFiles[0];
+    console.log("Primary file chosen:", file);
+
     if (file) {
       setPrimaryFile(file);
+
+      // Try to modify the language dropdown based on file name
+      const fileName = file.name.toLowerCase();
+      if (fileName.includes("english") || fileName.includes("en")) {
+        setPrimaryLanguage("en");
+      } else if (fileName.includes("german") || fileName.includes("de")) {
+        setPrimaryLanguage("de");
+      } else if (fileName.includes("latvian") || fileName.includes("lv")) {
+        setPrimaryLanguage("lv");
+      }
     }
   };
 
@@ -54,8 +69,20 @@ const UploadFiles: React.FC = () => {
     { addedFiles }: { addedFiles: File[] }
   ) => {
     const file = addedFiles[0];
+    console.log("Secondary file chosen:", file);
+
     if (file) {
       setSecondaryFile(file);
+
+      // Try to modify the language dropdown based on file name
+      const fileName = file.name.toLowerCase();
+      if (fileName.includes("english") || fileName.includes("en")) {
+        setSecondaryLanguage("en");
+      } else if (fileName.includes("german") || fileName.includes("de")) {
+        setSecondaryLanguage("de");
+      } else if (fileName.includes("latvian") || fileName.includes("lv")) {
+        setSecondaryLanguage("lv");
+      }
     }
   };
 
@@ -150,6 +177,17 @@ const UploadFiles: React.FC = () => {
     }
   };
 
+  const handleStartAnalysisButton = () => async () => {
+    console.log("Starting analysis with approach:", approach);
+    if (approach === "approach1") {
+      await handleStartAnalysis(false)();
+    } else if (approach === "approach2") {
+      await handleStartAnalysis(true)();
+    } else if (approach === "approach3") {
+      await handleStartAnalysis3(true)();
+    }
+  };
+
   return (
     <Grid fullWidth className={styles.uploaderGrid}>
       <Loading
@@ -161,7 +199,7 @@ const UploadFiles: React.FC = () => {
         <Tile className={styles.uploadTile}>
           <Heading className={styles.tileTitle}>Upload Documents</Heading>
           <p className={styles.tileInstructions}>
-            Please start by selecting...
+            Please start by selecting your documents ...
           </p>
           <Grid>
             <Column lg={5} md={4} sm={2}>
@@ -225,7 +263,7 @@ const UploadFiles: React.FC = () => {
               />
             </Column>
           </Grid>
-          <Grid>
+          <Grid className={styles.institutionGrid}>
             <Column lg={10} md={8} sm={4}>
               <Dropdown
                 id="institution"
@@ -241,6 +279,51 @@ const UploadFiles: React.FC = () => {
               />
             </Column>
           </Grid>
+          <Grid className={styles.startAnalysisGrid}>
+            <Column lg={5} md={4} sm={2}>
+              <RadioButtonGroup
+                legendText="Select approach for analysis"
+                name="radio-button-vertical-group"
+                defaultSelected="approach3"
+                orientation="vertical"
+                onChange={(value) => {
+                  if (typeof value === "string") setApproach(value);
+                }}
+              >
+                <RadioButton
+                  labelText="Extract and Compare - All items but dates"
+                  value="approach1"
+                  id="radio-1"
+                />
+                <RadioButton
+                  labelText="LLM as a judge - Dates and Cases"
+                  value="approach2"
+                  id="radio-2"
+                />
+                <RadioButton
+                  labelText="Unique prompt - All numbers V2"
+                  value="approach3"
+                  id="radio-3"
+                  checked
+                />
+              </RadioButtonGroup>
+            </Column>
+            <Column lg={5} md={4} sm={2}>
+              <Button
+                className={styles.analysisStartButton}
+                onClick={handleStartAnalysisButton()}
+                disabled={
+                  !primaryFile ||
+                  !secondaryFile ||
+                  primaryLanguage === secondaryLanguage ||
+                  loading
+                }
+              >
+                {loading ? "Analyzing..." : "Start Analysis"}
+              </Button>
+            </Column>
+          </Grid>
+
           <div className={styles.analysisButton}>
             <Button
               onClick={handleStartAnalysis(false)}
