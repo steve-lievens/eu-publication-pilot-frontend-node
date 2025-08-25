@@ -25,7 +25,7 @@
 }
 
 .institutionGrid {
-  display: none;
+  display: none !important;
 }
 
 .startAnalysisGrid {
