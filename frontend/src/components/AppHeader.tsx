@@ -9,7 +9,11 @@ import { Menu, Search, Notification, Switcher } from "@carbon/icons-react";
 import styles from "./AppHeader.module.css";
 import { useNavigate } from "react-router-dom";
 
-const AppHeader: React.FC = () => {
+interface AppHeaderProps {
+  version: string;
+}
+
+const AppHeader: React.FC<AppHeaderProps> = ({ version }) => {
   const navigate = useNavigate();
 
   return (
@@ -21,7 +25,7 @@ const AppHeader: React.FC = () => {
             marginLeft: "16px",
           }}
         >
-          Publications Office of the European Union (v.1.6.0)
+          Publications Office of the European Union (v.{version})
         </div>
       </HeaderName>
       <HeaderGlobalBar>

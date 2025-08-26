@@ -31,6 +31,10 @@ import axios from "axios";
 import { Marker } from "react-mark.js";
 import { v4 as uuidv4 } from "uuid";
 
+interface ConcordanceProps {
+  version: string;
+}
+
 interface Ruling {
   evaluation: boolean;
 }
@@ -76,7 +80,7 @@ interface AnalysisResult {
   paraNumber: number;
 }
 
-const ConcordanceCheck3b: React.FC = () => {
+const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
   const location = useLocation();
   const retData = location.state;
 
@@ -138,6 +142,7 @@ const ConcordanceCheck3b: React.FC = () => {
     // Send the feedback to the backend by calling the /writeConcordanceFeedback endpoint
     let inputData = {
       _id: sessionKey,
+      appVersion: version,
       docA: docData.docA,
       docB: docData.docB,
       paragraphCount: docData.paragraphsA.length,
@@ -419,6 +424,7 @@ const ConcordanceCheck3b: React.FC = () => {
       // Send the feedback to the backend by calling the /writeConcordanceFeedback endpoint
       let inputData = {
         sessionKey: sessionKey,
+        appVersion: version,
         feedbacktype: "thumbsUp",
         docA: docData.docA,
         docB: docData.docB,
@@ -473,6 +479,7 @@ const ConcordanceCheck3b: React.FC = () => {
       // Send the feedback to the backend by calling the /writeConcordanceFeedback endpoint
       let inputData = {
         sessionKey: sessionKey,
+        appVersion: version,
         feedbacktype: "thumbsDown",
         docA: docData.docA,
         docB: docData.docB,

@@ -8,9 +8,12 @@ import ConcordanceCheck from "./pages/ConcordanceCheck";
 import ConcordanceCheck2 from "./pages/ConcordanceCheck2";
 import ConcordanceCheck3 from "./pages/ConcordanceCheck3";
 import ConcordanceCheck3b from "./pages/ConcordanceCheck3b";
+
+const appVersion = "1.6.1";
+
 const App: React.FC = () => (
   <BrowserRouter>
-    <AppHeader />
+    <AppHeader version={appVersion} />
     <Routes>
       <Route path="/" element={<WelcomePage />} />
       <Route path="/prompttest" element={<PromptTesting />} />
@@ -18,7 +21,10 @@ const App: React.FC = () => (
       <Route path="/concordance-check" element={<ConcordanceCheck />} />
       <Route path="/concordance-check-2" element={<ConcordanceCheck2 />} />
       <Route path="/concordance-check-3" element={<ConcordanceCheck3 />} />
-      <Route path="/concordance-check-3b" element={<ConcordanceCheck3b />} />
+      <Route
+        path="/concordance-check-3b"
+        element={<ConcordanceCheck3b version={appVersion} />}
+      />
     </Routes>
   </BrowserRouter>
 );
