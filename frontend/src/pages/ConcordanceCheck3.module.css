@@ -19,6 +19,10 @@
   display: none;
 }
 
+.visible {
+  display: block;
+}
+
 .iconRed {
   fill: red;
 }
@@ -35,6 +39,18 @@
 }
 .thumbsUpDown {
   margin-left: 10px;
+}
+
+.thumbsFeedbackArea {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.thumbsFeedbackTextInput input {
+  background-color: white !important;
+}
+.sendButton {
+  margin-top: 10px;
 }
 
 .aiBoxContent {

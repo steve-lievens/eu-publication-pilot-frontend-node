@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   AILabel,
   AILabelContent,
+  Button,
   Heading,
   Accordion,
   AccordionItem,
@@ -28,6 +29,7 @@ import styles from "./ConcordanceCheck3.module.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { Marker } from "react-mark.js";
+import { v4 as uuidv4 } from "uuid";
 
 interface Ruling {
   evaluation: boolean;
@@ -41,6 +43,11 @@ interface Difference {
   originaltextlang2: string;
   explanation: string;
   ruling?: boolean;
+  showFeedback?: boolean;
+  thumbsUp?: boolean;
+  thumbsDown?: boolean;
+  thumbsDownSent?: boolean;
+  feedbackSent?: boolean;
 }
 
 interface DifferencesData {
@@ -117,12 +124,41 @@ const ConcordanceCheck3b: React.FC = () => {
   const [docData, setDocData] = useState<DocumentData>(dataInit);
   const [highlightedPara, setHighlightedPara] = useState<number | null>(null);
   const [analysisDone, setAnalysisDone] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult[]>([]);
+  const [analysisResults, setAnalysisResults] = useState<AnalysisResult[]>([]);
   const [loadingTitle, setLoadingTitle] = useState<string>("Analyzing ...");
+  const [sessionKey, setSessionKey] = useState<string>(uuidv4());
 
   const paragraphRef = useRef<(HTMLDivElement | null)[]>([]);
 
   console.log("ConcordanceCheck3 data:", dataInit);
+
+  const createNewConcordanceRecord = async (nrOfAnalysis: number) => {
+    console.log("INFO: Starting creation of db record for this check");
+
+    // Send the feedback to the backend by calling the /writeConcordanceFeedback endpoint
+    let inputData = {
+      _id: sessionKey,
+      docA: docData.docA,
+      docB: docData.docB,
+      paragraphCount: docData.paragraphsA.length,
+      analysisCount: nrOfAnalysis,
+      timestamp: new Date().toISOString(),
+    };
+    let formData = JSON.stringify(inputData);
+    console.log("Sending feedback data to backend:", formData);
+    try {
+      const response = await axios.post("/writeConcordanceRecord", formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      console.log("Feedback response:", response.data);
+    } catch (error) {
+      console.error("Error sending feedback:", error);
+    } finally {
+    }
+  };
 
   const judgeParaDiff = async (resultAnalysis: Object): Promise<Ruling> => {
     console.log("Judging paragraph result:", resultAnalysis);
@@ -220,6 +256,7 @@ const ConcordanceCheck3b: React.FC = () => {
   };
   const analyzeParagraphs = async () => {
     const results = [];
+    let analysisCount = 0;
     for (let i = 0; i < docData.paragraphsA.length; i++) {
       console.log("INFO: Starting analysis of paragraph ", i + 1);
       const result = await analyzeParagraph(
@@ -242,6 +279,13 @@ const ConcordanceCheck3b: React.FC = () => {
 
           // Add the ruling to the result
           result.diffs.differences[i].ruling = ruling.evaluation;
+          result.diffs.differences[i].showFeedback = false;
+          result.diffs.differences[i].thumbsUp = false;
+          result.diffs.differences[i].thumbsDown = false;
+          result.diffs.differences[i].thumbsDownSent = false;
+          result.diffs.differences[i].feedbackSent = false;
+
+          analysisCount++;
         }
 
         // Set the analysisReady to processed, no diffs
@@ -289,8 +333,12 @@ const ConcordanceCheck3b: React.FC = () => {
         // Set the analysisReady to processed, no diffs
         docData.analysisReady[i] = 1;
       }
-      setAnalysisResult([...results]);
+      setAnalysisResults([...results]);
     }
+
+    // Also create a new concordance record in the database
+    console.log("INFO: Creating new concordance record in the database");
+    createNewConcordanceRecord(analysisCount);
 
     setLoadingTitle("No differences found");
   };
@@ -321,6 +369,149 @@ const ConcordanceCheck3b: React.FC = () => {
     setHighlightedPara(idx);
   };
 
+  const handleThumbsDown =
+    (diff: Difference, diffNr: number, paraNr: number, diffIndex: number) =>
+    async () => {
+      console.log("Thumbs down clicked for paragraph", paraNr, diff);
+      console.log(docData.paragraphsA[paraNr - 1]);
+      console.log(docData.paragraphsB[paraNr - 1]);
+
+      // If thumbs up has been clicked before, ignore the thumbs down click
+      if (analysisResults[diffNr].diffs.differences[diffIndex].thumbsUp) {
+        console.log("Thumbs up already clicked, ignoring thumbs down");
+        return;
+      }
+
+      // If feedback has been sent before, ignore the thumbs up click
+      if (analysisResults[diffNr].diffs.differences[diffIndex].feedbackSent) {
+        console.log("Thumbs down feedback already sent, ignoring thumbs up");
+        return;
+      }
+
+      // Show the feedback input field if it's not shown, if it is shown, hide it
+      if (analysisResults[diffNr].diffs.differences[diffIndex].showFeedback) {
+        analysisResults[diffNr].diffs.differences[diffIndex].showFeedback =
+          false;
+      } else {
+        analysisResults[diffNr].diffs.differences[diffIndex].showFeedback =
+          true;
+      }
+
+      setAnalysisResults([...analysisResults]);
+    };
+  const handleThumbsUp =
+    (diff: Difference, diffNr: number, paraNr: number, diffIndex: number) =>
+    async () => {
+      console.log("Thumbs down clicked for paragraph", paraNr, diff);
+
+      // If thumbs down feedback has been sent before, ignore the thumbs up click
+      if (analysisResults[diffNr].diffs.differences[diffIndex].thumbsDownSent) {
+        console.log("Thumbs down feedback already sent, ignoring thumbs up");
+        return;
+      }
+
+      // If feedback has been sent before, ignore the thumbs up click
+      if (analysisResults[diffNr].diffs.differences[diffIndex].feedbackSent) {
+        console.log("Thumbs up feedback already sent, ignoring thumbs up");
+        return;
+      }
+
+      // Send the feedback to the backend by calling the /writeConcordanceFeedback endpoint
+      let inputData = {
+        sessionKey: sessionKey,
+        feedbacktype: "thumbsUp",
+        docA: docData.docA,
+        docB: docData.docB,
+        LangA: docData.LangA,
+        LangB: docData.LangB,
+        paragraphNumber: paraNr,
+        paragraphA: docData.paragraphsA[paraNr - 1].para,
+        paragraphB: docData.paragraphsB[paraNr - 1].para,
+        difference: diff,
+        feedback: "User indicated thumbs up feedback",
+      };
+      let formData = JSON.stringify(inputData);
+      console.log("Sending feedback data to backend:", formData);
+      try {
+        const response = await axios.post(
+          "/writeConcordanceFeedback",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+        console.log("Feedback response:", response.data);
+      } catch (error) {
+        console.error("Error sending feedback:", error);
+      } finally {
+      }
+
+      // Mark that the thumbs up feedback has been given
+      analysisResults[diffNr].diffs.differences[diffIndex].thumbsUp = true;
+      analysisResults[diffNr].diffs.differences[diffIndex].feedbackSent = true;
+      setAnalysisResults([...analysisResults]);
+    };
+
+  const handleSendFeedback =
+    (diff: Difference, diffNr: number, paraNr: number, diffIndex: number) =>
+    async () => {
+      console.log("Send feedback clicked for paragraph", paraNr, diff);
+      console.log("diffIndex:", diffIndex);
+      console.log("Feedback text:");
+
+      // create the request body
+      const feedbackInput = (
+        document.getElementById(
+          "feedback-" + paraNr + "-" + diffIndex
+        ) as HTMLInputElement | null
+      )?.value;
+      console.log("Feedback input:", feedbackInput);
+
+      // Send the feedback to the backend by calling the /writeConcordanceFeedback endpoint
+      let inputData = {
+        sessionKey: sessionKey,
+        feedbacktype: "thumbsDown",
+        docA: docData.docA,
+        docB: docData.docB,
+        LangA: docData.LangA,
+        LangB: docData.LangB,
+        paragraphNumber: paraNr,
+        paragraphA: docData.paragraphsA[paraNr - 1].para,
+        paragraphB: docData.paragraphsB[paraNr - 1].para,
+        difference: diff,
+        feedback: feedbackInput,
+      };
+      let formData = JSON.stringify(inputData);
+      console.log("Sending feedback data to backend:", formData);
+      try {
+        const response = await axios.post(
+          "/writeConcordanceFeedback",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        );
+        console.log("Feedback response:", response.data);
+      } catch (error) {
+        console.error("Error sending feedback:", error);
+      } finally {
+      }
+
+      // Hide the feedback input field
+      analysisResults[diffNr].diffs.differences[diffIndex].showFeedback = false;
+      analysisResults[diffNr].diffs.differences[diffIndex].thumbsDownSent =
+        true;
+      analysisResults[diffNr].diffs.differences[diffIndex].feedbackSent = true;
+      setAnalysisResults([...analysisResults]);
+    };
+
+  // Abort if no data
   if (!docData) return <p>Error: no data.</p>;
 
   // Render both documents in a table, with each paragraph in a row
@@ -423,7 +614,11 @@ const ConcordanceCheck3b: React.FC = () => {
     });
   };
 
-  const renderDifferences = (diffs: DifferencesData, paraNr: number) => {
+  const renderDifferences = (
+    diffs: DifferencesData,
+    diffNr: number,
+    paraNr: number
+  ) => {
     // Return the differences nicely formatted
     return (
       <div>
@@ -457,9 +652,53 @@ const ConcordanceCheck3b: React.FC = () => {
                   <strong>Explanation:</strong> {diff.explanation}
                   <br />
                   <br />
-                  <div className={styles.thumbsUpDownArea}>
-                    <ThumbsUp className={styles.thumbsUpDown} />
-                    <ThumbsDown className={styles.thumbsUpDown} />
+                </div>
+                <div className={styles.thumbsUpDownArea}>
+                  <ThumbsUp
+                    onClick={handleThumbsUp(diff, diffNr, paraNr, index)}
+                    className={
+                      styles.thumbsUpDown +
+                      " " +
+                      (diff.thumbsUp ? " " + styles.iconGreen : "")
+                    }
+                  />
+                  <ThumbsDown
+                    onClick={handleThumbsDown(diff, diffNr, paraNr, index)}
+                    className={
+                      styles.thumbsUpDown +
+                      " " +
+                      (diff.thumbsDownSent ? " " + styles.iconRed : "")
+                    }
+                  />
+                </div>
+                <div
+                  className={diff.showFeedback ? styles.visible : styles.hidden}
+                >
+                  <div className={styles.thumbsFeedbackArea}>
+                    <FluidForm
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          //handleSendFeedback(diff, diffNr, paraNr, index)();
+                        }
+                      }}
+                    >
+                      <TextInput
+                        className={styles.thumbsFeedbackTextInput}
+                        type="text"
+                        labelText="Please provide your feedback"
+                        id={"feedback-" + paraNr + "-" + index}
+                        onClick={(e) => e.preventDefault()}
+                        onChange={(e) => e.preventDefault()}
+                      />
+                    </FluidForm>
+                    <Button
+                      className={styles.sendButton}
+                      size="sm"
+                      onClick={handleSendFeedback(diff, diffNr, paraNr, index)}
+                    >
+                      Send
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -510,8 +749,8 @@ const ConcordanceCheck3b: React.FC = () => {
           <div className={styles.accordionContainer}>
             <div className={styles.discrepanciesContainer}>
               <Accordion className={styles.accordion}>
-                {analysisResult.length > 0 ? (
-                  analysisResult.map((result, index) => (
+                {analysisResults.length > 0 ? (
+                  analysisResults.map((result, index) => (
                     <AccordionItem
                       title={`Paragraph ${result.paraNumber} Differences`}
                       open={true}
@@ -522,7 +761,11 @@ const ConcordanceCheck3b: React.FC = () => {
                         scrollToDiv(result.paraNumber);
                       }}
                     >
-                      {renderDifferences(result.diffs, result.paraNumber)}
+                      {renderDifferences(
+                        result.diffs,
+                        index,
+                        result.paraNumber
+                      )}
                     </AccordionItem>
                   ))
                 ) : (

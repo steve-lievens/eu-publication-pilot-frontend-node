@@ -29,6 +29,8 @@ const APP_NAME = process.env.APP_NAME;
 const CLOUDANT_URL = process.env.CLOUDANT_URL;
 const CLOUDANT_APIKEY = process.env.CLOUDANT_APIKEY;
 const CLOUDANT_CONCORDANCE_DB = process.env.CLOUDANT_CONCORDANCE_DB;
+const CLOUDANT_CONCORDANCE_FEEDBACK_DB =
+  process.env.CLOUDANT_CONCORDANCE_FEEDBACK_DB;
 const WATSONX_APIKEY = process.env.WATSONX_APIKEY;
 
 // --------------------------------------------------------------------------
@@ -39,6 +41,10 @@ console.log("INFO: Here we go ! Starting up the app !!!", APP_NAME);
 console.log("INFO: CLOUDANT_URL", CLOUDANT_URL);
 console.log("INFO: CLOUDANT_APIKEY", "*******");
 console.log("INFO: CLOUDANT_CONCORDANCE_DB", CLOUDANT_CONCORDANCE_DB);
+console.log(
+  "INFO: CLOUDANT_CONCORDANCE_FEEDBACK_DB",
+  CLOUDANT_CONCORDANCE_FEEDBACK_DB
+);
 console.log("INFO: WATSONX_APIKEY", "*******");
 // --------------------------------------------------------------------------
 // Setup the express server
@@ -90,14 +96,44 @@ app.get("/concordance-check-3", (req, res) => {
 // --------------------------------------------------------------------------
 // REST API : write concordance data to the cloudant db
 // --------------------------------------------------------------------------
-app.post("/writeConcordance", jsonParser, async function (req, res) {
-  console.log("INFO: Writing concordance data to Cloudant DB");
+app.post("/writeConcordanceFeedback", jsonParser, async function (req, res) {
+  console.log("INFO: Writing concordance feedback data to Cloudant DB");
 
   // Check if the request body is empty
   if (!req.body || Object.keys(req.body).length === 0) {
     console.error("ERROR: Request body is empty");
     return res.status(400).json({ error: "Request body is empty" });
   }
+
+  // What's in the body ?
+  console.log("INFO: Request body:", JSON.stringify(req.body, null, 2));
+
+  const client = initCloudantClient();
+
+  try {
+    // Add the document to the Cloudant database
+    await addDocToCloudant(client, CLOUDANT_CONCORDANCE_FEEDBACK_DB, req.body);
+    res.status(200).json({ message: "Document added successfully" });
+  } catch (error) {
+    console.error("ERROR: Failed to add document to Cloudant", error);
+    res.status(500).json({ error: "Failed to add document to Cloudant" });
+  }
+});
+
+// --------------------------------------------------------------------------
+// REST API : write concordance data to the cloudant db
+// --------------------------------------------------------------------------
+app.post("/writeConcordanceRecord", jsonParser, async function (req, res) {
+  console.log("INFO: Writing concordance record to Cloudant DB");
+
+  // Check if the request body is empty
+  if (!req.body || Object.keys(req.body).length === 0) {
+    console.error("ERROR: Request body is empty");
+    return res.status(400).json({ error: "Request body is empty" });
+  }
+
+  // What's in the body ?
+  console.log("INFO: Request body:", JSON.stringify(req.body, null, 2));
 
   const client = initCloudantClient();
 
