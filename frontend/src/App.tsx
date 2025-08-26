@@ -9,7 +9,7 @@ import ConcordanceCheck2 from "./pages/ConcordanceCheck2";
 import ConcordanceCheck3 from "./pages/ConcordanceCheck3";
 import ConcordanceCheck3b from "./pages/ConcordanceCheck3b";
 
-const appVersion = "1.6.1";
+const appVersion = "1.6.2";
 
 const App: React.FC = () => (
   <BrowserRouter>

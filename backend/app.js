@@ -92,6 +92,21 @@ app.get("/concordance-check-2", (req, res) => {
 app.get("/concordance-check-3", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 });
+// --------------------------------------------------------------------------
+// REST API : get all concordance tests from the cloudant db
+// --------------------------------------------------------------------------
+app.get("/getAllConcordanceTests", async function (req, res) {
+  console.log("INFO: Getting all concordance tests from Cloudant DB");
+  const client = initCloudantClient();
+  try {
+    const allDocs = await getAllDocsFromDb(client, CLOUDANT_CONCORDANCE_DB);
+    // Return only the docs array
+    res.status(200).json(allDocs.rows.map((row) => row.doc));
+  } catch (error) {
+    console.error("ERROR: Failed to get documents from Cloudant", error);
+    res.status(500).json({ error: "Failed to get documents from Cloudant" });
+  }
+});
 
 // --------------------------------------------------------------------------
 // REST API : write concordance data to the cloudant db
