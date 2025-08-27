@@ -1,5 +1,4 @@
 .aiLayer {
-  position: absolute;
   top: 180px;
   bottom: 0;
   width: clamp(200px, 40vw, 600px);

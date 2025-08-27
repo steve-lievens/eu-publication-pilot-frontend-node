@@ -92,6 +92,7 @@ app.get("/concordance-check-2", (req, res) => {
 app.get("/concordance-check-3", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
 });
+
 // --------------------------------------------------------------------------
 // REST API : get all concordance tests from the cloudant db
 // --------------------------------------------------------------------------
@@ -105,6 +106,39 @@ app.get("/getAllConcordanceTests", async function (req, res) {
   } catch (error) {
     console.error("ERROR: Failed to get documents from Cloudant", error);
     res.status(500).json({ error: "Failed to get documents from Cloudant" });
+  }
+});
+
+// --------------------------------------------------------------------------
+// REST API : get concordance test details from the cloudant db
+// Input : ?<feedbackId>
+// --------------------------------------------------------------------------
+app.get("/getConcordanceTestDetails", async function (req, res) {
+  const feedbackId = req.query.feedbackId;
+  console.log(
+    "INFO: Getting concordance test details for id ",
+    feedbackId,
+    " from Cloudant DB"
+  );
+  if (!feedbackId) {
+    console.error("ERROR: feedbackId query parameter is missing");
+    return res
+      .status(400)
+      .json({ error: "feedbackId query parameter is missing" });
+  }
+  const client = initCloudantClient();
+  try {
+    const doc = await getDocsFromDbByProperty(
+      client,
+      CLOUDANT_CONCORDANCE_FEEDBACK_DB,
+      "sessionKey",
+      feedbackId
+    );
+    console.log(doc);
+    res.status(200).json(doc);
+  } catch (error) {
+    console.error("ERROR: Failed to get document from Cloudant", error);
+    res.status(500).json({ error: "Failed to get document from Cloudant" });
   }
 });
 
@@ -579,6 +613,37 @@ async function getDocFromDbByKey(client, db_name, key) {
     .getDocument({
       db: db_name,
       docId: key,
+    })
+    .then((response) => {
+      //console.log(response.result);
+      createDocumentResponse = response.result;
+    })
+    .catch((error) => {
+      console.log("ERROR: error from DB " + error);
+    });
+
+  return createDocumentResponse;
+}
+
+// --------------------------------------------------------------------------
+// Helper : get all docs from cloudant db that match a certain key
+// input : property name and value
+// --------------------------------------------------------------------------
+async function getDocsFromDbByProperty(client, db_name, propName, propValue) {
+  let createDocumentResponse = {};
+
+  const selector = {};
+  selector[propName] = { $eq: propValue };
+  console.log(
+    "INFO: Searching db with selector ",
+    JSON.stringify(selector, null, 2)
+  );
+
+  // get all document
+  await client
+    .postFind({
+      db: db_name,
+      selector: selector,
     })
     .then((response) => {
       //console.log(response.result);

@@ -189,191 +189,201 @@ const UploadFiles: React.FC = () => {
   };
 
   return (
-    <Grid fullWidth className={styles.uploaderGrid}>
-      <Loading
-        withOverlay={true}
-        active={loading}
-        description="Analyzing documents..."
-      ></Loading>
-      <Column className={styles.uploadColumn} lg={10} md={8} sm={4}>
-        <Tile className={styles.uploadTile}>
-          <Heading className={styles.tileTitle}>Upload Documents</Heading>
-          <p className={styles.tileInstructions}>
-            Please start by selecting your documents ...
-          </p>
-          <Grid>
-            <Column lg={5} md={4} sm={2}>
-              <p className={styles.uploaderLabel}>Primary document</p>
-              <p className={styles.uploaderNote}>Max file size is 500kb...</p>
-              <FileUploaderDropContainer
-                labelText={
-                  primaryFile
-                    ? primaryFile.name
-                    : "Drag and drop or click to upload"
-                }
-                multiple={false}
-                onAddFiles={handlePrimaryUpload}
-                className={primaryFile ? styles.hasFile : ""}
-              />
-              <Dropdown
-                id="primary-language"
-                titleText="Primary document language"
-                label="Select language"
-                items={languageOptions}
-                itemToString={(item) => (item ? item.text : "")}
-                onChange={({
-                  selectedItem,
-                }: OnChangeData<{ id: string; text: string }>) =>
-                  selectedItem && setPrimaryLanguage(selectedItem.id)
-                }
-                selectedItem={languageOptions.find(
-                  (item) => item.id === primaryLanguage
-                )}
-                className={styles.dropdown}
-              />
-            </Column>
-            <Column lg={5} md={4} sm={2}>
-              <p className={styles.uploaderLabel}>Secondary document</p>
-              <p className={styles.uploaderNote}>Max file size is 500kb...</p>
-              <FileUploaderDropContainer
-                labelText={
-                  secondaryFile
-                    ? secondaryFile.name
-                    : "Drag and drop or click to upload"
-                }
-                multiple={false}
-                onAddFiles={handleSecondaryUpload}
-                className={secondaryFile ? styles.hasFile : ""}
-              />
-              <Dropdown
-                id="secondary-language"
-                titleText="Secondary document language"
-                label="Select language"
-                items={languageOptions}
-                itemToString={(item) => (item ? item.text : "")}
-                onChange={({
-                  selectedItem,
-                }: OnChangeData<{ id: string; text: string }>) =>
-                  selectedItem && setSecondaryLanguage(selectedItem.id)
-                }
-                selectedItem={languageOptions.find(
-                  (item) => item.id === secondaryLanguage
-                )}
-                className={styles.dropdown}
-              />
-            </Column>
-          </Grid>
-          <Grid className={styles.institutionGrid}>
-            <Column lg={10} md={8} sm={4}>
-              <Dropdown
-                id="institution"
-                titleText="Institution"
-                label="Select institution"
-                items={institutionOptions}
-                itemToString={(item) => (item ? item : "")}
-                onChange={({ selectedItem }: OnChangeData<string>) =>
-                  selectedItem && setInstitution(selectedItem)
-                }
-                selectedItem={institution}
-                className={styles.dropdown}
-              />
-            </Column>
-          </Grid>
-          <Grid className={styles.startAnalysisGrid}>
-            <Column lg={5} md={4} sm={2}>
-              <RadioButtonGroup
-                legendText="Select approach for analysis"
-                name="radio-button-vertical-group"
-                defaultSelected="approach3"
-                orientation="vertical"
-                onChange={(value) => {
-                  if (typeof value === "string") setApproach(value);
-                }}
-              >
-                <RadioButton
-                  labelText="Extract and Compare - All items but dates"
-                  value="approach1"
-                  id="radio-1"
-                />
-                <RadioButton
-                  labelText="LLM as a judge - Dates and Cases"
-                  value="approach2"
-                  id="radio-2"
-                />
-                <RadioButton
-                  labelText="Unique prompt - All numbers V2"
-                  value="approach3"
-                  id="radio-3"
-                  checked
-                />
-              </RadioButtonGroup>
-            </Column>
-            <Column lg={5} md={4} sm={2}>
-              <Button
-                className={styles.analysisStartButton}
-                onClick={handleStartAnalysisButton()}
-                disabled={
-                  !primaryFile ||
-                  !secondaryFile ||
-                  primaryLanguage === secondaryLanguage ||
-                  loading
-                }
-              >
-                {loading ? "Analyzing..." : "Start Analysis"}
-              </Button>
-            </Column>
-          </Grid>
+    <div className={styles.pageWrapper}>
+      <div className={styles.introSection}>
+        <Grid fullWidth className={styles.uploaderGrid}>
+          <Loading
+            withOverlay={true}
+            active={loading}
+            description="Analyzing documents..."
+          ></Loading>
+          <Column className={styles.uploadColumn} lg={10} md={8} sm={4}>
+            <Tile className={styles.uploadTile}>
+              <Heading className={styles.tileTitle}>Upload Documents</Heading>
+              <p className={styles.tileInstructions}>
+                Please start by selecting your documents ...
+              </p>
+              <Grid>
+                <Column lg={5} md={4} sm={2}>
+                  <p className={styles.uploaderLabel}>Primary document</p>
+                  <p className={styles.uploaderNote}>
+                    Max file size is 500kb...
+                  </p>
+                  <FileUploaderDropContainer
+                    labelText={
+                      primaryFile
+                        ? primaryFile.name
+                        : "Drag and drop or click to upload"
+                    }
+                    multiple={false}
+                    onAddFiles={handlePrimaryUpload}
+                    className={primaryFile ? styles.hasFile : ""}
+                  />
+                  <Dropdown
+                    id="primary-language"
+                    titleText="Primary document language"
+                    label="Select language"
+                    items={languageOptions}
+                    itemToString={(item) => (item ? item.text : "")}
+                    onChange={({
+                      selectedItem,
+                    }: OnChangeData<{ id: string; text: string }>) =>
+                      selectedItem && setPrimaryLanguage(selectedItem.id)
+                    }
+                    selectedItem={languageOptions.find(
+                      (item) => item.id === primaryLanguage
+                    )}
+                    className={styles.dropdown}
+                  />
+                </Column>
+                <Column lg={5} md={4} sm={2}>
+                  <p className={styles.uploaderLabel}>Secondary document</p>
+                  <p className={styles.uploaderNote}>
+                    Max file size is 500kb...
+                  </p>
+                  <FileUploaderDropContainer
+                    labelText={
+                      secondaryFile
+                        ? secondaryFile.name
+                        : "Drag and drop or click to upload"
+                    }
+                    multiple={false}
+                    onAddFiles={handleSecondaryUpload}
+                    className={secondaryFile ? styles.hasFile : ""}
+                  />
+                  <Dropdown
+                    id="secondary-language"
+                    titleText="Secondary document language"
+                    label="Select language"
+                    items={languageOptions}
+                    itemToString={(item) => (item ? item.text : "")}
+                    onChange={({
+                      selectedItem,
+                    }: OnChangeData<{ id: string; text: string }>) =>
+                      selectedItem && setSecondaryLanguage(selectedItem.id)
+                    }
+                    selectedItem={languageOptions.find(
+                      (item) => item.id === secondaryLanguage
+                    )}
+                    className={styles.dropdown}
+                  />
+                </Column>
+              </Grid>
+              <Grid className={styles.institutionGrid}>
+                <Column lg={10} md={8} sm={4}>
+                  <Dropdown
+                    id="institution"
+                    titleText="Institution"
+                    label="Select institution"
+                    items={institutionOptions}
+                    itemToString={(item) => (item ? item : "")}
+                    onChange={({ selectedItem }: OnChangeData<string>) =>
+                      selectedItem && setInstitution(selectedItem)
+                    }
+                    selectedItem={institution}
+                    className={styles.dropdown}
+                  />
+                </Column>
+              </Grid>
+              <Grid className={styles.startAnalysisGrid}>
+                <Column lg={5} md={4} sm={2}>
+                  <RadioButtonGroup
+                    legendText="Select approach for analysis"
+                    name="radio-button-vertical-group"
+                    defaultSelected="approach3"
+                    orientation="vertical"
+                    onChange={(value) => {
+                      if (typeof value === "string") setApproach(value);
+                    }}
+                  >
+                    <RadioButton
+                      labelText="Extract and Compare - All items but dates"
+                      value="approach1"
+                      id="radio-1"
+                    />
+                    <RadioButton
+                      labelText="LLM as a judge - Dates and Cases"
+                      value="approach2"
+                      id="radio-2"
+                    />
+                    <RadioButton
+                      labelText="Unique prompt - All numbers V2"
+                      value="approach3"
+                      id="radio-3"
+                      checked
+                    />
+                  </RadioButtonGroup>
+                </Column>
+                <Column lg={5} md={4} sm={2}>
+                  <Button
+                    className={styles.analysisStartButton}
+                    onClick={handleStartAnalysisButton()}
+                    disabled={
+                      !primaryFile ||
+                      !secondaryFile ||
+                      primaryLanguage === secondaryLanguage ||
+                      loading
+                    }
+                  >
+                    {loading ? "Analyzing..." : "Start Analysis"}
+                  </Button>
+                </Column>
+              </Grid>
 
-          <div className={styles.analysisButton}>
-            <Button
-              onClick={handleStartAnalysis(false)}
-              disabled={
-                !primaryFile ||
-                !secondaryFile ||
-                primaryLanguage === secondaryLanguage ||
-                loading
-              }
-            >
-              {loading
-                ? "Analyzing..."
-                : "Extract and Compare - All items but dates"}
-            </Button>
-          </div>
-          <div className={styles.analysisButton}>
-            <Button
-              className={styles.analysisButton}
-              onClick={handleStartAnalysis(true)}
-              disabled={
-                !primaryFile ||
-                !secondaryFile ||
-                primaryLanguage === secondaryLanguage ||
-                loading
-              }
-            >
-              {loading ? "Analyzing..." : "LLM as a judge - Dates and Cases"}
-            </Button>
-          </div>
+              <div className={styles.analysisButton}>
+                <Button
+                  onClick={handleStartAnalysis(false)}
+                  disabled={
+                    !primaryFile ||
+                    !secondaryFile ||
+                    primaryLanguage === secondaryLanguage ||
+                    loading
+                  }
+                >
+                  {loading
+                    ? "Analyzing..."
+                    : "Extract and Compare - All items but dates"}
+                </Button>
+              </div>
+              <div className={styles.analysisButton}>
+                <Button
+                  className={styles.analysisButton}
+                  onClick={handleStartAnalysis(true)}
+                  disabled={
+                    !primaryFile ||
+                    !secondaryFile ||
+                    primaryLanguage === secondaryLanguage ||
+                    loading
+                  }
+                >
+                  {loading
+                    ? "Analyzing..."
+                    : "LLM as a judge - Dates and Cases"}
+                </Button>
+              </div>
 
-          <div className={styles.analysisButton3}>
-            <Button
-              className={styles.analysisButton}
-              onClick={handleStartAnalysis3(true)}
-              disabled={
-                !primaryFile ||
-                !secondaryFile ||
-                primaryLanguage === secondaryLanguage ||
-                loading
-              }
-            >
-              {loading ? "Analyzing..." : "Unique prompt - All numbers V2"}
-            </Button>
-          </div>
-          {loading && (
-            <Loading description="Processing files" withOverlay={true} />
-          )}
-        </Tile>
-      </Column>
-    </Grid>
+              <div className={styles.analysisButton3}>
+                <Button
+                  className={styles.analysisButton}
+                  onClick={handleStartAnalysis3(true)}
+                  disabled={
+                    !primaryFile ||
+                    !secondaryFile ||
+                    primaryLanguage === secondaryLanguage ||
+                    loading
+                  }
+                >
+                  {loading ? "Analyzing..." : "Unique prompt - All numbers V2"}
+                </Button>
+              </div>
+              {loading && (
+                <Loading description="Processing files" withOverlay={true} />
+              )}
+            </Tile>
+          </Column>
+        </Grid>
+      </div>
+    </div>
   );
 };
 

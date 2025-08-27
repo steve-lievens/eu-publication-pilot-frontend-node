@@ -21,10 +21,14 @@ const StartAnalysis: React.FC = () => {
       </div>
 
       <main className={styles.mainContent}>
-        <UploadFiles></UploadFiles>
-        <Column lg={6} md={0} sm={0} className={styles.aiColumn}>
-          <WatsonxBox />
-        </Column>
+        <Grid fullWidth className={styles.uploaderGrid}>
+          <Column className={styles.uploadColumn} lg={14} md={8} sm={4}>
+            <UploadFiles />
+          </Column>
+          <Column lg={2} md={0} sm={0} className={styles.aiColumn}>
+            <WatsonxBox />
+          </Column>
+        </Grid>
       </main>
     </div>
   );

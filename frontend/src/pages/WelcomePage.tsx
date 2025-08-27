@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Column, Heading, Button } from "@carbon/react";
 import WatsonxBox from "../components/WatsonxBox";
-import FeedbackList from "./FeedbackList";
+import ConcordanceFeedbackList from "./ConcordanceFeedbackList";
 import styles from "./WelcomePage.module.css";
 
 const WelcomePage: React.FC = () => (
@@ -33,7 +33,7 @@ const WelcomePage: React.FC = () => (
       <Grid fullWidth className={styles.uploaderGrid}>
         {/* LEFT COLUMN */}
         <Column className={styles.uploadColumn} lg={14} md={8} sm={4}>
-          <FeedbackList />
+          <ConcordanceFeedbackList />
         </Column>
         <Column lg={2} md={0} sm={0} className={styles.aiColumn}>
           <WatsonxBox />

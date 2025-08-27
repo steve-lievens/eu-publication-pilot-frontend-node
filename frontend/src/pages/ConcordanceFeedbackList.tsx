@@ -1,5 +1,6 @@
 // This component will display all Concordance test sessions that have been run
 import React, { useEffect, useState } from "react";
+
 import {
   Grid,
   Column,
@@ -12,14 +13,14 @@ import {
   TableBody,
   TableCell,
   Button,
-  Heading,
 } from "@carbon/react";
 import { Link } from "react-router-dom";
-import styles from "./FeedbackList.module.css";
+import styles from "./ConcordanceFeedbackList.module.css";
 
-export default function ConcordanceList() {
+export default function ConcordanceFeedbackList() {
   const [concordanceTests, setConcordanceTests] = useState([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchConcordanceTests = async () => {
       try {
@@ -48,8 +49,13 @@ export default function ConcordanceList() {
   ];
   const rows = concordanceTests.map((test: any) => ({
     timestamp: new Date(test.timestamp).toLocaleString("NL-be", {
-      timeZone: "America/New_York",
+      timeZone: "Europe/Brussels",
       hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
     }),
     docA: test.docA,
     docB: test.docB,
@@ -58,7 +64,7 @@ export default function ConcordanceList() {
     appVersion: test.appVersion,
     id: test._id,
     actions: (
-      <Link to={`/concordance/${test.id}`}>
+      <Link to={`/feedback/${test._id}`}>
         <Button size="sm" kind="tertiary">
           View Details
         </Button>
@@ -87,7 +93,7 @@ export default function ConcordanceList() {
             ) : (
               <DataTable rows={rows} headers={headers} isSortable>
                 {({ rows, headers, getTableProps }) => (
-                  <TableContainer title="Concordance Test Sessions">
+                  <TableContainer title=" ">
                     <Table {...getTableProps()}>
                       <TableHead>
                         <TableRow>

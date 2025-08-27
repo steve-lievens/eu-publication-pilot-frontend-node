@@ -1,0 +1,12 @@
+.placeholder {
+  margin-top: 20px;
+  font-style: italic;
+}
+
+.detailContainer {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
