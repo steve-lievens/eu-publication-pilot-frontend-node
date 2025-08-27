@@ -47,6 +47,38 @@ export default function ConcordanceFeedbackList() {
     { key: "appVersion", header: "Version" },
     { key: "actions", header: "Actions" },
   ];
+
+  const rows = concordanceTests
+    .slice() // avoid mutating state
+    .sort(
+      (a: any, b: any) =>
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    )
+    .map((test: any) => ({
+      timestamp: new Date(test.timestamp).toLocaleString("NL-be", {
+        timeZone: "Europe/Brussels",
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }),
+      docA: test.docA,
+      docB: test.docB,
+      paragraphCount: test.paragraphCount,
+      analysisCount: test.analysisCount,
+      appVersion: test.appVersion,
+      id: test._id,
+      actions: (
+        <Link to={`/feedback/${test._id}`}>
+          <Button size="sm" kind="tertiary">
+            View Details
+          </Button>
+        </Link>
+      ),
+    }));
+  /*
   const rows = concordanceTests.map((test: any) => ({
     timestamp: new Date(test.timestamp).toLocaleString("NL-be", {
       timeZone: "Europe/Brussels",
@@ -71,7 +103,7 @@ export default function ConcordanceFeedbackList() {
       </Link>
     ),
   }));
-
+*/
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.introSection}>

@@ -11,7 +11,6 @@ import {
   TableBody,
   TableCell,
   Button,
-  Heading,
   Grid,
   Column,
 } from "@carbon/react";
@@ -44,7 +43,7 @@ export default function FeedbackList() {
       }
     };
     fetchConcordanceTests();
-  }, []);
+  }, [feedbackId]);
 
   const onButtonDetail = (test: any) => {
     console.log("View Details clicked for test:", test);
@@ -58,7 +57,29 @@ export default function FeedbackList() {
     { key: "feedback", header: "Feedback" },
     { key: "actions", header: "Actions" },
   ];
-
+  const rows = concordanceTests
+    .slice() // avoid mutating state
+    .sort((a: any, b: any) => {
+      // Put "thumbsDown" feedbacktype first
+      if (a.feedbacktype === "thumbsDown" && b.feedbacktype !== "thumbsDown")
+        return -1;
+      if (a.feedbacktype !== "thumbsDown" && b.feedbacktype === "thumbsDown")
+        return 1;
+      // If feedbacktype is the same, sort by paragraphNumber
+      return a.paragraphNumber - b.paragraphNumber;
+    })
+    .map((test: any) => ({
+      id: test._id,
+      feedbacktype: test.feedbacktype,
+      paragraphNumber: test.paragraphNumber,
+      feedback: test.feedback,
+      actions: (
+        <Button size="sm" kind="tertiary" onClick={() => onButtonDetail(test)}>
+          View Details
+        </Button>
+      ),
+    }));
+  /*
   const rows = concordanceTests.map((test: any) => ({
     id: test._id,
     feedbacktype: test.feedbacktype,
@@ -71,6 +92,7 @@ export default function FeedbackList() {
       </Button>
     ),
   }));
+  */
 
   return (
     <div className={styles.pageWrapper}>
