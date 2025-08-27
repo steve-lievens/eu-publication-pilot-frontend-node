@@ -10,7 +10,7 @@ import ConcordanceCheck3 from "./pages/ConcordanceCheck3";
 import ConcordanceCheck3b from "./pages/ConcordanceCheck3b";
 import FeedbackList from "./pages/ViewFeedback";
 
-const appVersion = "1.7.1";
+const appVersion = "1.7.2";
 
 const App: React.FC = () => (
   <BrowserRouter>

@@ -14,6 +14,7 @@ import {
   Grid,
   Column,
 } from "@carbon/react";
+import { ThumbsUp, ThumbsDown } from "@carbon/react/icons";
 import styles from "./ViewFeedback.module.css"; // Import the CSS module
 import ConcordanceDetail from "../components/ConcordanceDetail";
 
@@ -79,20 +80,6 @@ export default function FeedbackList() {
         </Button>
       ),
     }));
-  /*
-  const rows = concordanceTests.map((test: any) => ({
-    id: test._id,
-    feedbacktype: test.feedbacktype,
-    paragraphNumber: test.paragraphNumber,
-    feedback: test.feedback,
-
-    actions: (
-      <Button size="sm" kind="tertiary" onClick={() => onButtonDetail(test)}>
-        View Details
-      </Button>
-    ),
-  }));
-  */
 
   return (
     <div className={styles.pageWrapper}>
@@ -120,7 +107,15 @@ export default function FeedbackList() {
                       {rows.map((row) => (
                         <TableRow key={row.id}>
                           {row.cells.map((cell) => (
-                            <TableCell key={cell.id}>{cell.value}</TableCell>
+                            <TableCell key={cell.id}>
+                              {cell.value === "thumbsDown" ? (
+                                <ThumbsDown fill="#da1e28" />
+                              ) : cell.value === "thumbsUp" ? (
+                                <ThumbsUp fill="rgb(0, 181, 0)" />
+                              ) : (
+                                cell.value
+                              )}
+                            </TableCell>
                           ))}
                         </TableRow>
                       ))}

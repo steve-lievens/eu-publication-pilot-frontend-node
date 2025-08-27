@@ -20,7 +20,7 @@ import {
 import {
   AiGovernanceTracked,
   AiGovernanceUntracked,
-  FilterEdit,
+  IbmLpa,
   Hourglass,
   ThumbsUp,
   ThumbsDown,
@@ -128,6 +128,7 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
   const [docData, setDocData] = useState<DocumentData>(dataInit);
   const [highlightedPara, setHighlightedPara] = useState<number | null>(null);
   const [analysisDone, setAnalysisDone] = useState(false);
+  const [analysisRunning, setAnalysisRunning] = useState(true);
   const [analysisResults, setAnalysisResults] = useState<AnalysisResult[]>([]);
   const [loadingTitle, setLoadingTitle] = useState<string>("Analyzing ...");
   const [sessionKey, setSessionKey] = useState<string>(uuidv4());
@@ -345,12 +346,17 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
     console.log("INFO: Creating new concordance record in the database");
     createNewConcordanceRecord(analysisCount);
 
+    setAnalysisRunning(false);
+
     setLoadingTitle("No differences found");
   };
 
   const memoizedAnalyzeParagraphs = useCallback(analyzeParagraphs, [
     docData.paragraphsA,
     docData.paragraphsB,
+    docData.LangA,
+    docData.LangB,
+    docData.analysisReady,
   ]);
 
   // This code start to run on page load
@@ -749,7 +755,11 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
           <Heading className={styles.outputTitle}>
             Concordance Output
             <span className={styles.filterIcon}>
-              <FilterEdit />
+              {analysisRunning ? (
+                <Hourglass fill="orange" />
+              ) : (
+                <IbmLpa fill="rgb(0, 181, 0)" />
+              )}
             </span>
           </Heading>
 
