@@ -20,6 +20,7 @@ import {
 import {
   AiGovernanceTracked,
   AiGovernanceUntracked,
+  CaretDown,
   IbmLpa,
   Hourglass,
   ThumbsUp,
@@ -84,9 +85,13 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
   const location = useLocation();
   const retData = location.state;
 
-  // Create an array of booleans (value false), size equal the amount of paragraphs
-  const analysisReady = Array(retData[0].para.length).fill(0);
+  // Calculate the max length of the paragraphs arrays
+  const maxLength = Math.max(retData[0].para.length, retData[1].para.length);
 
+  // Create an array of booleans (value false), size equal the amount of paragraphs
+  const analysisReady = Array(maxLength).fill(0);
+
+  // Initialize the state with the data from the previous page
   let dataInit = {
     docA: retData[0].file,
     docB: retData[1].file,
@@ -97,6 +102,25 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
     analysisReady: analysisReady,
   };
 
+  if (dataInit.paragraphsA.length !== dataInit.paragraphsB.length) {
+    console.info(
+      "INFO: Paragraphs count mismatch between documents, adjusting length"
+    );
+
+    // add empty paragraphs to the shorter document
+    while (dataInit.paragraphsA.length < maxLength) {
+      dataInit.paragraphsA.push({
+        para: "",
+        para_number: dataInit.paragraphsA.length + 1,
+      });
+    }
+    while (dataInit.paragraphsB.length < maxLength) {
+      dataInit.paragraphsB.push({
+        para: "",
+        para_number: dataInit.paragraphsB.length + 1,
+      });
+    }
+  }
   // based on the language input, swap the languages if necessary
   if (retData[2].primaryLanguage === "lv") {
     dataInit = {
@@ -128,14 +152,16 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
   const [docData, setDocData] = useState<DocumentData>(dataInit);
   const [highlightedPara, setHighlightedPara] = useState<number | null>(null);
   const [analysisDone, setAnalysisDone] = useState(false);
+  const [abortAnalysis, setAbortAnalysis] = useState(false);
   const [analysisRunning, setAnalysisRunning] = useState(true);
   const [analysisResults, setAnalysisResults] = useState<AnalysisResult[]>([]);
   const [loadingTitle, setLoadingTitle] = useState<string>("Analyzing ...");
   const [sessionKey, setSessionKey] = useState<string>(uuidv4());
 
   const paragraphRef = useRef<(HTMLDivElement | null)[]>([]);
+  const abortAnalysisRef = useRef(false);
 
-  console.log("ConcordanceCheck3 data:", dataInit);
+  console.log("ConcordanceCheck3 data:", docData);
 
   const createNewConcordanceRecord = async (nrOfAnalysis: number) => {
     console.log("INFO: Starting creation of db record for this check");
@@ -261,9 +287,17 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
     return resultData;
   };
   const analyzeParagraphs = async () => {
+    setLoadingTitle("Analyzing ...");
     const results = [];
     let analysisCount = 0;
     for (let i = 0; i < docData.paragraphsA.length; i++) {
+      // If we need to abort, break the loop
+      if (abortAnalysisRef.current) {
+        console.log("IMPORTANT !!!!: Analysis aborted by user");
+        clearAnalysisResults();
+        break;
+      }
+
       console.log("INFO: Starting analysis of paragraph ", i + 1);
       const result = await analyzeParagraph(
         docData.paragraphsA[i],
@@ -331,8 +365,6 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
         });
         docData.paragraphsB[i].highlights = highlightB.flat();
 
-        //setDocData(docData);
-
         console.log("INFO: Differences found for paragraph ", i + 1);
       } else {
         console.log("INFO: No differences found for paragraph ", i + 1);
@@ -359,6 +391,17 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
     docData.analysisReady,
   ]);
 
+  const restartAnalysis = () => {
+    console.log("User requested to restart analysis");
+    abortAnalysisRef.current = false;
+
+    clearAnalysisResults();
+    setAnalysisRunning(true);
+
+    memoizedAnalyzeParagraphs();
+    setAnalysisDone(true);
+  };
+
   // This code start to run on page load
   useEffect(() => {
     if (!analysisDone) {
@@ -368,6 +411,128 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
       setAnalysisDone(true);
     }
   }, [analysisDone, memoizedAnalyzeParagraphs]);
+
+  // To abort an analysis, we need to use a ref to keep track of the abort state
+  useEffect(() => {
+    abortAnalysisRef.current = abortAnalysis;
+  }, [abortAnalysis]);
+
+  const clearAnalysisResults = async () => {
+    console.log("User requested to clear analysis results");
+
+    setAnalysisResults([]);
+    setHighlightedPara(null);
+    docData.paragraphsA.forEach((para) => (para.highlights = []));
+    docData.paragraphsB.forEach((para) => (para.highlights = []));
+    docData.analysisReady = Array(docData.paragraphsB.length).fill(0);
+  };
+
+  const pushParagraphDown = (isDocA: boolean, paraIdx: number) => {
+    // Abort the analysis if running
+    console.log("IMPORTANT !!!!: User requested to push paragraph down");
+    setAbortAnalysis(true);
+    abortAnalysisRef.current = true;
+
+    let newParagraph = {
+      para: "",
+      para_number: 0,
+      highlights: [],
+    };
+
+    // Create a new docData object and insert a blank paragraph after the selected paragraph
+    let newDocData = {} as DocumentData;
+    newDocData.docA = docData.docA;
+    newDocData.docB = docData.docB;
+    newDocData.paragraphsA = [];
+    newDocData.paragraphsB = [];
+    newDocData.LangA = docData.LangA;
+    newDocData.LangB = docData.LangB;
+
+    if (isDocA) {
+      console.log(
+        "Pushing paragraph down in Doc A at position : ",
+        paraIdx + 1
+      );
+      for (let i = 0; i <= docData.paragraphsA.length; i++) {
+        if (i < paraIdx) {
+          // Copy the paragraph as is
+          newDocData.paragraphsA.push(docData.paragraphsA[i]);
+          newDocData.paragraphsA[i].highlights = [];
+        }
+        if (i === paraIdx) {
+          // Make a full copy of the newParagraph object
+          let emptyParagraph = { ...newParagraph };
+          // Insert a blank paragraph
+          emptyParagraph.para_number = paraIdx + 1;
+          newDocData.paragraphsA.push(emptyParagraph);
+          //newDocData.paragraphsA[i].para_number = i + 1;
+        }
+        if (i > paraIdx) {
+          // Copy the paragraph as is
+          newDocData.paragraphsA.push(docData.paragraphsA[i - 1]);
+
+          // Increase the paragraph number
+          newDocData.paragraphsA[i].para_number = i + 1;
+          newDocData.paragraphsA[i].highlights = [];
+        }
+      }
+
+      // Copy the paragraphsB as is
+      newDocData.paragraphsB = [...docData.paragraphsB];
+
+      // Also add an extra blank paragraph to Doc B to keep the numbering correct
+      newDocData.paragraphsB.push({ ...newParagraph });
+      newDocData.paragraphsB[newDocData.paragraphsA.length - 1].para_number =
+        newDocData.paragraphsA.length;
+    } else {
+      console.log(
+        "Pushing paragraph down in Doc B at position : ",
+        paraIdx + 1
+      );
+      for (let i = 0; i <= docData.paragraphsB.length; i++) {
+        if (i < paraIdx) {
+          // Copy the paragraph as is
+          newDocData.paragraphsB.push(docData.paragraphsB[i]);
+          newDocData.paragraphsB[i].highlights = [];
+        }
+        if (i === paraIdx) {
+          // Make a full copy of the newParagraph object
+          let emptyParagraph = { ...newParagraph };
+          // Insert a blank paragraph
+          emptyParagraph.para_number = paraIdx + 1;
+          newDocData.paragraphsB.push(emptyParagraph);
+        }
+        if (i > paraIdx) {
+          // Copy the paragraph as is
+          newDocData.paragraphsB.push(docData.paragraphsB[i - 1]);
+
+          // Increase the paragraph number
+          newDocData.paragraphsB[i].para_number = i + 1;
+          newDocData.paragraphsB[i].highlights = [];
+        }
+      }
+
+      // Copy the paragraphsA as is
+      newDocData.paragraphsA = [...docData.paragraphsA];
+
+      // Also add an extra blank paragraph to Doc A to keep the numbering correct
+      newDocData.paragraphsA.push({ ...newParagraph });
+      newDocData.paragraphsA[newDocData.paragraphsB.length - 1].para_number =
+        newDocData.paragraphsA.length;
+    }
+
+    // Clear the analysisReady array
+    newDocData.analysisReady = Array(newDocData.paragraphsB.length).fill(0);
+
+    // also clear all highglights in the newDocData
+    newDocData.paragraphsA.forEach((para) => (para.highlights = []));
+    newDocData.paragraphsB.forEach((para) => (para.highlights = []));
+
+    console.log("INFO: New paragraphs being set:", newDocData);
+    setDocData(newDocData);
+    console.log("INFO: Reset analysis state");
+    clearAnalysisResults();
+  };
 
   const scrollToDiv = (idx: number) => {
     console.log("Scrolling to paragraph:", idx);
@@ -538,16 +703,6 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
     paraRef: React.RefObject<(HTMLDivElement | null)[]>,
     highlightedPara: number | null
   ) => {
-    if (paragraphA.length !== paragraphB.length) {
-      console.error("Paragraphs count mismatch between documents");
-      return (
-        <TableRow>
-          <TableCell>
-            Error: Paragraphs count mismatch between documents.
-          </TableCell>
-        </TableRow>
-      );
-    }
     return paragraphA.map((para, index) => {
       //console.log("Rendering paragraph", para);
       return (
@@ -612,6 +767,9 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
               {para.para}
             </Marker>
           </TableCell>
+          <TableCell onClick={() => pushParagraphDown(true, index)}>
+            <CaretDown />
+          </TableCell>
           <TableCell className={styles.paraTableCell}>
             <Marker
               mark={paragraphB[index].highlights}
@@ -621,6 +779,9 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
             >
               {paragraphB[index].para}
             </Marker>
+          </TableCell>
+          <TableCell>
+            <CaretDown onClick={() => pushParagraphDown(false, index)} />
           </TableCell>
         </TableRow>
       );
@@ -724,9 +885,19 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
 
   return (
     <div>
-      <Heading className={styles.title}>
-        Comparing: {docData.docA} vs {docData.docB}
-      </Heading>
+      <Grid fullWidth>
+        <Column className={styles.title} lg={14} md={8} sm={4}>
+          {docData.docA} vs {docData.docB}
+        </Column>
+        <Column lg={2} md={8} sm={4}>
+          <Button
+            onClick={() => restartAnalysis()}
+            className={analysisRunning ? styles.hidden2 : ""}
+          >
+            Restart analysis
+          </Button>
+        </Column>
+      </Grid>
 
       <div className={styles.pageWrapper3}>
         <div className={styles.tableWrapper3}>
@@ -770,7 +941,7 @@ const ConcordanceCheck3b: React.FC<ConcordanceProps> = ({ version }) => {
                   analysisResults.map((result, index) => (
                     <AccordionItem
                       title={`Paragraph ${result.paraNumber} Differences`}
-                      open={true}
+                      open={false}
                       key={"AccordionItem" + index}
                       className={styles.accordionItem}
                       onClick={() => {
