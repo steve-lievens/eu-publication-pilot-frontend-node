@@ -93,11 +93,10 @@ app.get("/concordance-check-2", (req, res) => {
 });
 app.get("/concordance-check-3", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+});
 
 app.get("/testgen", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
-});
-
 });
 
 // --------------------------------------------------------------------------
