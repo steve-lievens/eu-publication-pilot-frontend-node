@@ -6,6 +6,8 @@ import {
   InlineNotification,
   Tile,
   Tag,
+  Select,
+  SelectItem,
 } from "@carbon/react";
 import axios from "axios";
 
@@ -45,7 +47,11 @@ interface GenResponse {
 const TestGenerator: React.FC = () => {
   const [numVariants, setNumVariants] = useState<number>(2);
 
-  // store examples as PAIRS; one add/remove affects both
+  // language pickers
+  const [languageA, setLanguageA] = useState<"English" | "German" | "Latvian">("English");
+  const [languageB, setLanguageB] = useState<"English" | "German" | "Latvian">("German");
+
+  // examples
   const [exampleAList, setExampleAList] = useState<string[]>([""]);
   const [exampleBList, setExampleBList] = useState<string[]>([""]);
 
@@ -62,7 +68,6 @@ const TestGenerator: React.FC = () => {
     setExampleAList((prev) => [...prev, ""]);
     setExampleBList((prev) => [...prev, ""]);
   };
-
   const removePair = () => {
     setExampleAList((prev) => (prev.length > 1 ? prev.slice(0, -1) : prev));
     setExampleBList((prev) => (prev.length > 1 ? prev.slice(0, -1) : prev));
@@ -89,7 +94,6 @@ const TestGenerator: React.FC = () => {
     setError(null);
     setResp(null);
     try {
-      // trim empties and keep alignment
       const A = exampleAList.map((s) => s.trim());
       const B = exampleBList.map((s) => s.trim());
       if (A.length !== B.length) {
@@ -99,6 +103,8 @@ const TestGenerator: React.FC = () => {
         num_variants: numVariants,
         exampleA: A,
         exampleB: B,
+        language_a: languageA, // NEW
+        language_b: languageB, // NEW
       };
       const { data } = await axios.post<GenResponse>("/generateTestFiles", payload);
       setResp(data);
@@ -116,8 +122,32 @@ const TestGenerator: React.FC = () => {
       <h2>Test File Generator</h2>
       <p>
         Add example paragraph pairs (one A with its matching B). Use the +/– buttons to add or remove pairs together.
-        Choose how many variants to generate.
+        Choose the languages and how many variants to generate.
       </p>
+
+      {/* Language selectors */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 12 }}>
+        <Select
+          id="languageA"
+          labelText="Language for Example A (source)"
+          value={languageA}
+          onChange={(e) => setLanguageA(e.target.value as any)}
+        >
+          <SelectItem value="English" text="English" />
+          <SelectItem value="German" text="German" />
+          <SelectItem value="Latvian" text="Latvian" />
+        </Select>
+        <Select
+          id="languageB"
+          labelText="Language for Example B (target)"
+          value={languageB}
+          onChange={(e) => setLanguageB(e.target.value as any)}
+        >
+          <SelectItem value="English" text="English" />
+          <SelectItem value="German" text="German" />
+          <SelectItem value="Latvian" text="Latvian" />
+        </Select>
+      </div>
 
       {/* unified add/remove controls */}
       <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
@@ -129,7 +159,7 @@ const TestGenerator: React.FC = () => {
         </Button>
       </div>
 
-      {/* grid with paired inputs per index */}
+      {/* paired inputs */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
         {exampleAList.map((_, i) => (
           <React.Fragment key={i}>
@@ -175,30 +205,19 @@ const TestGenerator: React.FC = () => {
       )}
 
       {resp && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 16,
-            marginTop: 24,
-          }}
-        >
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginTop: 24 }}>
           <Tile>
             <h4>Downloads</h4>
             <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
               <Button
                 kind="secondary"
-                onClick={() =>
-                  downloadBase64Docx(resp.docA.filename, resp.docA.base64)
-                }
+                onClick={() => downloadBase64Docx(resp.docA.filename, resp.docA.base64)}
               >
                 Download Document A
               </Button>
               <Button
                 kind="secondary"
-                onClick={() =>
-                  downloadBase64Docx(resp.docB.filename, resp.docB.base64)
-                }
+                onClick={() => downloadBase64Docx(resp.docB.filename, resp.docB.base64)}
               >
                 Download Document B
               </Button>
@@ -209,14 +228,7 @@ const TestGenerator: React.FC = () => {
             <h4>Expected errors (totals)</h4>
             {errs ? (
               <>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 8,
-                    flexWrap: "wrap",
-                    marginTop: 8,
-                  }}
-                >
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 8 }}>
                   <Tag type="red">money: {errs.money}</Tag>
                   <Tag type="cyan">dates: {errs.dates}</Tag>
                   <Tag type="purple">case_ref: {errs.case_reference}</Tag>

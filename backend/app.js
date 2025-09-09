@@ -1014,6 +1014,24 @@ function recomputeErrorTotals(groundTruth) {
   return { ...groundTruth, errors: { ...totals, all } };
 }
 
+function removeNoErrorEntries(groundTruth) {
+  if (!groundTruth || !Array.isArray(groundTruth.per_paragraph)) return groundTruth;
+
+  const cleanedParas = groundTruth.per_paragraph
+    .map(p => {
+      const errs = Array.isArray(p.errors) ? p.errors.filter(e => {
+        const desc = String(e?.description ?? "").toLowerCase();
+        return !desc.includes("no error");
+      }) : [];
+      return { ...p, errors: errs };
+    })
+    // drop paragraphs that have no (real) errors
+    .filter(p => p.errors.length > 0);
+
+  return { ...groundTruth, per_paragraph: cleanedParas };
+}
+
+
 // --------------------------------------------------------------------------
 // Helper : build a DOCX and return base64 + filename
 // --------------------------------------------------------------------------
@@ -1046,9 +1064,10 @@ async function buildDocxBase64(paragraphs, filenameHint = "document") {
 app.post("/generateTestFiles", jsonParser, async function (req, res) {
   try {
     const WATSONX_TESTGEN_URL =
-      "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/test_file_generation_v6/text/generation?version=2021-05-01";
+      "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/test_file_generation_v7/text/generation?version=2021-05-01";
 
-    const { num_variants, exampleA, exampleB } = req.body || {};
+    const { num_variants, exampleA, exampleB, language_a, language_b } = req.body || {};
+
     if (
       typeof num_variants !== "number" ||
       !Array.isArray(exampleA) ||
@@ -1062,10 +1081,12 @@ app.post("/generateTestFiles", jsonParser, async function (req, res) {
 
     //  Each prompt variable value MUST be a string
     const promptVariables = {
-      num_variants: String(num_variants),      // number -> string
-      exampleA: JSON.stringify(exampleA),      // array -> string
-      exampleB: JSON.stringify(exampleB),      // array -> string
-    };
+    num_variants: String(num_variants),
+    exampleA: JSON.stringify(exampleA),
+    exampleB: JSON.stringify(exampleB),
+    language_a: String(language_a || ""), 
+    language_b: String(language_b || ""), 
+  };
 
     const input = {
       parameters: {
@@ -1094,7 +1115,8 @@ app.post("/generateTestFiles", jsonParser, async function (req, res) {
     }
 
     //  Overwrite model-provided totals with computed, reliable ones
-    const recomputed = recomputeErrorTotals(groundTruth);
+    const filtered = removeNoErrorEntries(groundTruth);
+    const recomputed = recomputeErrorTotals(filtered);
 
     // filenaming
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
