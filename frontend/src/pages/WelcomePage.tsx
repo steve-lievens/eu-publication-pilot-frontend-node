@@ -23,7 +23,14 @@ const WelcomePage: React.FC = () => (
           </p>
         </Column>
         <Column lg={6} md={8} sm={4} className={styles.startButton}>
-          <Button href="/start">Start a new concordance check</Button>
+          <div className={styles.buttonRow}>
+          <Button href="/start" kind="primary">
+            Start a new concordance check
+          </Button>
+          <Button href="/testgen" kind="secondary">
+            Generate test files
+          </Button>
+        </div>
         </Column>
       </Grid>
     </div>

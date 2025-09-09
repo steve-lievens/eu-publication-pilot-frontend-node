@@ -28,6 +28,13 @@
   z-index: 1000;
 }
 
+.buttonRow {
+  display: flex;        
+  gap: 1rem;            
+  align-items: center;
+  flex-wrap: wrap;     
+}
+
 /* main content area that holds the two columns */
 .mainContent {
   padding: 2rem 1rem;
@@ -89,10 +96,6 @@
   color: #198038;
 }
 
-.startButton {
-  width: 100%;
-  max-width: 200px;
-}
 
 /* Styles for the right-hand column with the graphic */
 .graphicColumn {

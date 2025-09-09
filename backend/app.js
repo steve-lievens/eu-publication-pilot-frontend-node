@@ -12,6 +12,8 @@ const { CloudantV1 } = require("@ibm-cloud/cloudant");
 const FormData = require("form-data");
 const { Readable } = require("stream");
 const JSON5 = require("json5");
+const { Document, Packer, Paragraph } = require("docx");
+
 // --------------------------------------------------------------------------
 // Read environment variables
 // --------------------------------------------------------------------------
@@ -91,6 +93,11 @@ app.get("/concordance-check-2", (req, res) => {
 });
 app.get("/concordance-check-3", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+
+app.get("/testgen", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+});
+
 });
 
 // --------------------------------------------------------------------------
@@ -881,3 +888,225 @@ async function sendToWatsonx(url, input) {
     return {};
   }
 }
+
+
+async function sendToWatsonxV2(url, input) {
+  // 1) Get IAM token
+  const data = new URLSearchParams();
+  data.append("grant_type", "urn:ibm:params:oauth:grant-type:apikey");
+  data.append("apikey", WATSONX_APIKEY);
+  const access = await fetch("https://iam.cloud.ibm.com/identity/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: data.toString(),
+  }).then(r => r.json()).catch(err => ({ error: err }));
+
+  const token = access?.access_token;
+  if (!token) {
+    throw new Error("Failed to obtain IAM token");
+  }
+
+  // 2) Call deployment
+  const watsonxReply = await fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(input),
+  }).then(r => r.json()).catch(err => ({ error: err }));
+
+  console.log("INFO: FULL watsonx reply", watsonxReply);
+
+  // 3) Extract the first valid JSON object from generated_text
+  const raw = watsonxReply?.results?.[0]?.generated_text ?? "";
+  if (!raw) return {};
+
+  const cleaned = String(raw)
+    // trim obvious tail markers
+    .replace(/<\|eom_id\|>/g, "")
+    .trim();
+
+  // prefer a fenced ```json block if present
+  const fence = cleaned.match(/```json\s*([\s\S]*?)\s*```/i);
+  if (fence) {
+    try {
+      return JSON5.parse(fence[1]);
+    } catch (e) {
+      // fall through to generic extractor
+    }
+  }
+
+  // generic: scan for the first balanced JSON object and parse it
+  const parsed = extractFirstJsonObject(cleaned);
+  if (parsed) return parsed;
+
+  // last chance: keep your previous first{..}last} trimming (may still fail)
+  let sloppy = cleaned;
+  const first = sloppy.indexOf("{");
+  if (first !== -1) sloppy = sloppy.slice(first);
+  const last = sloppy.lastIndexOf("}");
+  if (last !== -1) sloppy = sloppy.slice(0, last + 1);
+
+  try {
+    return JSON5.parse(sloppy);
+  } catch (err) {
+    console.log("ERROR: Failed to parse JSON", err);
+    return { error: String(err), rawReply: cleaned };
+  }
+
+  // ---- helper ----
+  function extractFirstJsonObject(text) {
+    // iterate over each '{', try to find its matching '}' and parse the slice
+    for (let start = text.indexOf("{"); start !== -1; start = text.indexOf("{", start + 1)) {
+      let depth = 0, inStr = false, quote = null, esc = false;
+      for (let i = start; i < text.length; i++) {
+        const ch = text[i];
+        if (inStr) {
+          if (esc) { esc = false; continue; }
+          if (ch === "\\") { esc = true; continue; }
+          if (ch === quote) { inStr = false; quote = null; continue; }
+          continue;
+        }
+        if (ch === '"' || ch === "'") { inStr = true; quote = ch; continue; }
+        if (ch === "{") depth++;
+        else if (ch === "}") {
+          depth--;
+          if (depth === 0) {
+            const candidate = text.slice(start, i + 1);
+            try {
+              return JSON5.parse(candidate);
+            } catch {
+              break; // try next '{'
+            }
+          }
+        }
+      }
+    }
+    return null;
+  }
+}
+
+// Recompute per-entity totals from ground_truth.per_paragraph
+function recomputeErrorTotals(groundTruth) {
+  const ENTITIES = [
+    "money",
+    "dates",
+    "case_reference",
+    "article_number",
+    "directives_and_regulation_numbers",
+  ];
+
+  const totals = Object.fromEntries(ENTITIES.map(k => [k, 0]));
+  let all = 0;
+
+  const items = groundTruth?.per_paragraph ?? [];
+  for (const p of items) {
+    const errs = p?.errors ?? [];
+    for (const e of errs) {
+      const key = String(e?.entity || "").trim();
+      if (ENTITIES.includes(key)) {
+        totals[key] += 1;
+        all += 1;
+      }
+    }
+  }
+  return { ...groundTruth, errors: { ...totals, all } };
+}
+
+// --------------------------------------------------------------------------
+// Helper : build a DOCX and return base64 + filename
+// --------------------------------------------------------------------------
+async function buildDocxBase64(paragraphs, filenameHint = "document") {
+  const doc = new Document({
+    sections: [
+      {
+        properties: {},
+        children: paragraphs.flatMap((p, idx) => {
+          const nodes = [new Paragraph(p || "")];
+          if (idx < paragraphs.length - 1) nodes.push(new Paragraph("")); // blank line between paras
+          return nodes;
+        }),
+      },
+    ],
+  });
+  const buffer = await Packer.toBuffer(doc);
+  return { filename: `${filenameHint}.docx`, base64: buffer.toString("base64") };
+}
+
+
+
+
+
+
+
+// --------------------------------------------------------------------------
+// new route: calls your deployed prompt and returns docx + ground_truth
+// --------------------------------------------------------------------------
+app.post("/generateTestFiles", jsonParser, async function (req, res) {
+  try {
+    const WATSONX_TESTGEN_URL =
+      "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/test_file_generation_v6/text/generation?version=2021-05-01";
+
+    const { num_variants, exampleA, exampleB } = req.body || {};
+    if (
+      typeof num_variants !== "number" ||
+      !Array.isArray(exampleA) ||
+      !Array.isArray(exampleB)
+    ) {
+      return res.status(400).json({
+        error:
+          "Invalid payload. Expect { num_variants: number, exampleA: string[], exampleB: string[] }",
+      });
+    }
+
+    //  Each prompt variable value MUST be a string
+    const promptVariables = {
+      num_variants: String(num_variants),      // number -> string
+      exampleA: JSON.stringify(exampleA),      // array -> string
+      exampleB: JSON.stringify(exampleB),      // array -> string
+    };
+
+    const input = {
+      parameters: {
+      // decoding_method: "greedy",
+      // temperature: 0,
+      stop_sequences: ["<|eom_id|>", "```", "\n\n\n"],
+      max_new_tokens: 8192,
+      
+
+       
+        prompt_variables: promptVariables,
+      },
+    };
+
+    const result = await sendToWatsonxV2(WATSONX_TESTGEN_URL, input);
+
+    const documentA = result?.document_a;
+    const documentB = result?.document_b;
+    const groundTruth = result?.ground_truth;
+
+    if (!Array.isArray(documentA) || !Array.isArray(documentB) || !groundTruth) {
+      return res.status(502).json({
+        error: "Unexpected LLM output structure.",
+        raw: result,
+      });
+    }
+
+    //  Overwrite model-provided totals with computed, reliable ones
+    const recomputed = recomputeErrorTotals(groundTruth);
+
+    // filenaming
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const baseName = `testset_${num_variants}variants_${timestamp}`;
+
+    const docA = await buildDocxBase64(documentA, `${baseName}_A`);
+    const docB = await buildDocxBase64(documentB, `${baseName}_B`);
+
+    return res.json({ docA, docB, ground_truth: recomputed });
+  } catch (err) {
+    console.error("ERROR: /generateTestFiles failed:", err);
+    return res.status(500).json({ error: String(err) });
+  }
+});

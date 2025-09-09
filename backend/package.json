@@ -15,6 +15,7 @@
   "dependencies": {
     "@ibm-cloud/cloudant": "^0.12.7",
     "body-parser": "^1.19.2",
+    "docx": "^9.5.1",
     "dotenv-defaults": "^5.0.0",
     "express": "^4.17.3",
     "findhit-proxywrap": "^0.3.12",
