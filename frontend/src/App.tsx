@@ -9,6 +9,7 @@ import ConcordanceCheck2 from "./pages/ConcordanceCheck2";
 import ConcordanceCheck3 from "./pages/ConcordanceCheck3";
 import ConcordanceCheck3b from "./pages/ConcordanceCheck3b";
 import FeedbackList from "./pages/ViewFeedback";
+import TestGenerator from "./pages/TestGenerator";
 
 const appVersion = "1.8.2";
 
@@ -23,6 +24,7 @@ const App: React.FC = () => (
       <Route path="/concordance-check-2" element={<ConcordanceCheck2 />} />
       <Route path="/concordance-check-3" element={<ConcordanceCheck3 />} />
       <Route path="/feedback/:feedbackId" element={<FeedbackList />} />
+      <Route path="/testgen" element={<TestGenerator />} />
       <Route
         path="/concordance-check-3b"
         element={<ConcordanceCheck3b version={appVersion} />}
