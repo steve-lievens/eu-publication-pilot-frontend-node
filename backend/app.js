@@ -339,11 +339,11 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv_v3/text/generation?version=2021-05-01";
 
   const backendENDEV3ML =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de_ml_v3/text/generation?version=2021-05-01";
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de_lama_v1/text/generation?version=2021-05-01";
   const backendENLVV3ML =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv_ml_v3/text/generation?version=2021-05-01";
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv_lama_v1/text/generation?version=2021-05-01";
   const backendDELVV3ML =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv_ml_v3/text/generation?version=2021-05-01";
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv_lama_v1/text/generation?version=2021-05-01";
 
   // Use the language parameters to decide which backend to use
   const primLang = req.body.primLang;
@@ -888,7 +888,6 @@ async function sendToWatsonx(url, input) {
   }
 }
 
-
 async function sendToWatsonxV2(url, input) {
   // 1) Get IAM token
   const data = new URLSearchParams();
@@ -898,7 +897,9 @@ async function sendToWatsonxV2(url, input) {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: data.toString(),
-  }).then(r => r.json()).catch(err => ({ error: err }));
+  })
+    .then((r) => r.json())
+    .catch((err) => ({ error: err }));
 
   const token = access?.access_token;
   if (!token) {
@@ -914,7 +915,9 @@ async function sendToWatsonxV2(url, input) {
       Authorization: "Bearer " + token,
     },
     body: JSON.stringify(input),
-  }).then(r => r.json()).catch(err => ({ error: err }));
+  })
+    .then((r) => r.json())
+    .catch((err) => ({ error: err }));
 
   console.log("INFO: FULL watsonx reply", watsonxReply);
 
@@ -958,17 +961,38 @@ async function sendToWatsonxV2(url, input) {
   // ---- helper ----
   function extractFirstJsonObject(text) {
     // iterate over each '{', try to find its matching '}' and parse the slice
-    for (let start = text.indexOf("{"); start !== -1; start = text.indexOf("{", start + 1)) {
-      let depth = 0, inStr = false, quote = null, esc = false;
+    for (
+      let start = text.indexOf("{");
+      start !== -1;
+      start = text.indexOf("{", start + 1)
+    ) {
+      let depth = 0,
+        inStr = false,
+        quote = null,
+        esc = false;
       for (let i = start; i < text.length; i++) {
         const ch = text[i];
         if (inStr) {
-          if (esc) { esc = false; continue; }
-          if (ch === "\\") { esc = true; continue; }
-          if (ch === quote) { inStr = false; quote = null; continue; }
+          if (esc) {
+            esc = false;
+            continue;
+          }
+          if (ch === "\\") {
+            esc = true;
+            continue;
+          }
+          if (ch === quote) {
+            inStr = false;
+            quote = null;
+            continue;
+          }
           continue;
         }
-        if (ch === '"' || ch === "'") { inStr = true; quote = ch; continue; }
+        if (ch === '"' || ch === "'") {
+          inStr = true;
+          quote = ch;
+          continue;
+        }
         if (ch === "{") depth++;
         else if (ch === "}") {
           depth--;
@@ -997,7 +1021,7 @@ function recomputeErrorTotals(groundTruth) {
     "directives_and_regulation_numbers",
   ];
 
-  const totals = Object.fromEntries(ENTITIES.map(k => [k, 0]));
+  const totals = Object.fromEntries(ENTITIES.map((k) => [k, 0]));
   let all = 0;
 
   const items = groundTruth?.per_paragraph ?? [];
@@ -1015,22 +1039,24 @@ function recomputeErrorTotals(groundTruth) {
 }
 
 function removeNoErrorEntries(groundTruth) {
-  if (!groundTruth || !Array.isArray(groundTruth.per_paragraph)) return groundTruth;
+  if (!groundTruth || !Array.isArray(groundTruth.per_paragraph))
+    return groundTruth;
 
   const cleanedParas = groundTruth.per_paragraph
-    .map(p => {
-      const errs = Array.isArray(p.errors) ? p.errors.filter(e => {
-        const desc = String(e?.description ?? "").toLowerCase();
-        return !desc.includes("no error");
-      }) : [];
+    .map((p) => {
+      const errs = Array.isArray(p.errors)
+        ? p.errors.filter((e) => {
+            const desc = String(e?.description ?? "").toLowerCase();
+            return !desc.includes("no error");
+          })
+        : [];
       return { ...p, errors: errs };
     })
     // drop paragraphs that have no (real) errors
-    .filter(p => p.errors.length > 0);
+    .filter((p) => p.errors.length > 0);
 
   return { ...groundTruth, per_paragraph: cleanedParas };
 }
-
 
 // --------------------------------------------------------------------------
 // Helper : build a DOCX and return base64 + filename
@@ -1049,14 +1075,11 @@ async function buildDocxBase64(paragraphs, filenameHint = "document") {
     ],
   });
   const buffer = await Packer.toBuffer(doc);
-  return { filename: `${filenameHint}.docx`, base64: buffer.toString("base64") };
+  return {
+    filename: `${filenameHint}.docx`,
+    base64: buffer.toString("base64"),
+  };
 }
-
-
-
-
-
-
 
 // --------------------------------------------------------------------------
 // new route: calls your deployed prompt and returns docx + ground_truth
@@ -1066,7 +1089,8 @@ app.post("/generateTestFiles", jsonParser, async function (req, res) {
     const WATSONX_TESTGEN_URL =
       "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/test_file_generation_v7/text/generation?version=2021-05-01";
 
-    const { num_variants, exampleA, exampleB, language_a, language_b } = req.body || {};
+    const { num_variants, exampleA, exampleB, language_a, language_b } =
+      req.body || {};
 
     if (
       typeof num_variants !== "number" ||
@@ -1081,22 +1105,20 @@ app.post("/generateTestFiles", jsonParser, async function (req, res) {
 
     //  Each prompt variable value MUST be a string
     const promptVariables = {
-    num_variants: String(num_variants),
-    exampleA: JSON.stringify(exampleA),
-    exampleB: JSON.stringify(exampleB),
-    language_a: String(language_a || ""), 
-    language_b: String(language_b || ""), 
-  };
+      num_variants: String(num_variants),
+      exampleA: JSON.stringify(exampleA),
+      exampleB: JSON.stringify(exampleB),
+      language_a: String(language_a || ""),
+      language_b: String(language_b || ""),
+    };
 
     const input = {
       parameters: {
-      // decoding_method: "greedy",
-      // temperature: 0,
-      stop_sequences: ["<|eom_id|>", "```", "\n\n\n"],
-      max_new_tokens: 8192,
-      
+        // decoding_method: "greedy",
+        // temperature: 0,
+        stop_sequences: ["<|eom_id|>", "```", "\n\n\n"],
+        max_new_tokens: 8192,
 
-       
         prompt_variables: promptVariables,
       },
     };
@@ -1107,7 +1129,11 @@ app.post("/generateTestFiles", jsonParser, async function (req, res) {
     const documentB = result?.document_b;
     const groundTruth = result?.ground_truth;
 
-    if (!Array.isArray(documentA) || !Array.isArray(documentB) || !groundTruth) {
+    if (
+      !Array.isArray(documentA) ||
+      !Array.isArray(documentB) ||
+      !groundTruth
+    ) {
       return res.status(502).json({
         error: "Unexpected LLM output structure.",
         raw: result,
