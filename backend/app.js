@@ -8,7 +8,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const os = require("os");
-const { CloudantV1 } = require("@ibm-cloud/cloudant");
+const { CloudantV1, IamAuthenticator } = require("@ibm-cloud/cloudant");
 const FormData = require("form-data");
 const { Readable } = require("stream");
 const JSON5 = require("json5");
@@ -45,7 +45,7 @@ console.log("INFO: CLOUDANT_APIKEY", "*******");
 console.log("INFO: CLOUDANT_CONCORDANCE_DB", CLOUDANT_CONCORDANCE_DB);
 console.log(
   "INFO: CLOUDANT_CONCORDANCE_FEEDBACK_DB",
-  CLOUDANT_CONCORDANCE_FEEDBACK_DB
+  CLOUDANT_CONCORDANCE_FEEDBACK_DB,
 );
 console.log("INFO: WATSONX_APIKEY", "*******");
 // --------------------------------------------------------------------------
@@ -124,7 +124,7 @@ app.get("/getConcordanceTestDetails", async function (req, res) {
   console.log(
     "INFO: Getting concordance test details for id ",
     feedbackId,
-    " from Cloudant DB"
+    " from Cloudant DB",
   );
   if (!feedbackId) {
     console.error("ERROR: feedbackId query parameter is missing");
@@ -138,7 +138,7 @@ app.get("/getConcordanceTestDetails", async function (req, res) {
       client,
       CLOUDANT_CONCORDANCE_FEEDBACK_DB,
       "sessionKey",
-      feedbackId
+      feedbackId,
     );
     console.log(doc);
     res.status(200).json(doc);
@@ -212,7 +212,7 @@ app.get("/proxybackend", async function (req, res) {
   try {
     // Replace the URL below with your actual backend API endpoint
     const response = await fetch(
-      "https://eu-pub.1yqyg3g5f8e4.eu-de.codeengine.appdomain.cloud/graph/compare-documents"
+      "https://eu-pub.1yqyg3g5f8e4.eu-de.codeengine.appdomain.cloud/graph/compare-documents",
     );
     const data = await response.json();
     res.json(data);
@@ -242,7 +242,7 @@ app.post("/proxybackend", async function (req, res) {
         },
         body: req, // Stream the incoming request body directly
         duplex: "half",
-      }
+      },
     );
 
     // Forward the backend response status and headers
@@ -280,7 +280,7 @@ app.get("/getEnvironment", function (req, res) {
     client_ip: req.ip,
   };
   console.log(
-    "INFO: Service getEnvironment returning : " + JSON.stringify(hostobj)
+    "INFO: Service getEnvironment returning : " + JSON.stringify(hostobj),
   );
 
   // get all request info from the client
@@ -310,7 +310,7 @@ app.get("/getEnvironment", function (req, res) {
 });
 
 // --------------------------------------------------------------------------
-// REST API : retrieve all docs from the cloudant db
+// REST API : Analyze 2 paragraphs
 // --------------------------------------------------------------------------
 app.post("/analyzeParas", jsonParser, async function (req, res) {
   console.log("INFO: Starting analyzeParas with input : ", req.body);
@@ -331,19 +331,12 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
   const backendDELV =
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv/text/generation?version=2021-05-01";
 
-  const backendENDEV2 =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de_v3/text/generation?version=2021-05-01";
-  const backendENLVV2 =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv_v3/text/generation?version=2021-05-01";
-  const backendDELVV2 =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv_v3/text/generation?version=2021-05-01";
-
   const backendENDEV3ML =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de_lama_v1/text/generation?version=2021-05-01";
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/comparepara_en_de/text/generation?version=2021-05-01";
   const backendENLVV3ML =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv_lama_v1/text/generation?version=2021-05-01";
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/comparepara_en_lv/text/generation?version=2021-05-01";
   const backendDELVV3ML =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv_lama_v1/text/generation?version=2021-05-01";
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/comparepara_de_lv/text/generation?version=2021-05-01";
 
   // Use the language parameters to decide which backend to use
   const primLang = req.body.primLang;
@@ -399,70 +392,15 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
 });
 
 // --------------------------------------------------------------------------
-// REST API : retrieve all docs from the cloudant db
+// REST API : judge the paragraph differences
 // --------------------------------------------------------------------------
 app.post("/judgeParaDiffs", jsonParser, async function (req, res) {
   console.log("INFO: Starting judgeParaDiffs with input : ", req.body);
 
   //let isV2 = false;
   let backendUrl =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/judge_llm_v1/text/generation?version=2021-05-01";
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/simplejudge/text/generation?version=2021-05-01";
 
-  /*
-  // check for v2
-  if (req.body.v2) {
-    isV2 = true;
-  }
-
-  // Possible backends
-  const backendENDE =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de/text/generation?version=2021-05-01";
-  const backendENLV =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv/text/generation?version=2021-05-01";
-  const backendDELV =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv/text/generation?version=2021-05-01";
-  const backendENDEV2 =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_de_v2/text/generation?version=2021-05-01";
-  //const backendENLVV2 =
-  ("https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv_v2/text/generation?version=2021-05-01");
-  const backendENLVV2 =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_en_lv_v3/text/generation?version=2021-05-01";
-  const backendDELVV2 =
-    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/allentities_de_lv_v2/text/generation?version=2021-05-01";
-
-  // Use the language parameters to decide which backend to use
-  const primLang = req.body.primLang;
-  const secLang = req.body.secLang;
-
-  if (isV2) {
-    backendUrl = backendENDEV2;
-    if (primLang === "en" && secLang === "de") {
-      console.log("INFO: Calling backend for en->de V2");
-      backendUrl = backendENDEV2;
-    }
-    if (primLang === "en" && secLang === "lv") {
-      console.log("INFO: Calling backend for en->lv V2");
-      backendUrl = backendENLVV2;
-    }
-    if (primLang === "de" && secLang === "lv") {
-      console.log("INFO: Calling backend for de->lv V2");
-      backendUrl = backendDELVV2;
-    }
-  } else {
-    if (primLang === "en" && secLang === "de") {
-      console.log("INFO: Calling backend for en->de");
-      backendUrl = backendENDE;
-    }
-    if (primLang === "en" && secLang === "lv") {
-      console.log("INFO: Calling backend for en->lv");
-      backendUrl = backendENLV;
-    }
-    if (primLang === "de" && secLang === "lv") {
-      console.log("INFO: Calling backend for de->lv");
-      backendUrl = backendDELV;
-    }
-  }
-*/
   // Create a new body
   let newBody = {
     parameters: {
@@ -579,7 +517,10 @@ function getCurrentDate() {
 // --------------------------------------------------------------------------
 function initCloudantClient() {
   const client = CloudantV1.newInstance({
-    serviceName: "CLOUDANT",
+    authenticator: new IamAuthenticator({
+      apikey: CLOUDANT_APIKEY,
+    }),
+    serviceUrl: CLOUDANT_URL,
   });
 
   return client;
@@ -642,7 +583,7 @@ async function getDocsFromDbByProperty(client, db_name, propName, propValue) {
   selector[propName] = { $eq: propValue };
   console.log(
     "INFO: Searching db with selector ",
-    JSON.stringify(selector, null, 2)
+    JSON.stringify(selector, null, 2),
   );
 
   // get all document
@@ -788,7 +729,7 @@ function searchCloudant(keys, params, languageCode, resolve) {
         "INFO : Searching for key in : ",
         item,
         ", language : ",
-        languageCode
+        languageCode,
       );
       await singleSearchCloudant(item);
       i++;

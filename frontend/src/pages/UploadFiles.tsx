@@ -44,7 +44,7 @@ const UploadFiles: React.FC = () => {
 
   const handlePrimaryUpload = (
     _event: React.SyntheticEvent,
-    { addedFiles }: { addedFiles: File[] }
+    { addedFiles }: { addedFiles: File[] },
   ) => {
     const file = addedFiles[0];
     console.log("Primary file chosen:", file);
@@ -66,7 +66,7 @@ const UploadFiles: React.FC = () => {
 
   const handleSecondaryUpload = (
     _event: React.SyntheticEvent,
-    { addedFiles }: { addedFiles: File[] }
+    { addedFiles }: { addedFiles: File[] },
   ) => {
     const file = addedFiles[0];
     console.log("Secondary file chosen:", file);
@@ -96,7 +96,7 @@ const UploadFiles: React.FC = () => {
     setLoading(true);
 
     let backendUrl =
-      "https://eu-pub.1yqyg3g5f8e4.eu-de.codeengine.appdomain.cloud/parse-documents";
+      "https://eu-pub-office-backend.25pp3i7kk1wq.eu-de.codeengine.appdomain.cloud/parse-documents";
 
     const formData1 = new FormData();
     formData1.append("files", primaryFile);
@@ -231,7 +231,7 @@ const UploadFiles: React.FC = () => {
                       selectedItem && setPrimaryLanguage(selectedItem.id)
                     }
                     selectedItem={languageOptions.find(
-                      (item) => item.id === primaryLanguage
+                      (item) => item.id === primaryLanguage,
                     )}
                     className={styles.dropdown}
                   />
@@ -263,7 +263,7 @@ const UploadFiles: React.FC = () => {
                       selectedItem && setSecondaryLanguage(selectedItem.id)
                     }
                     selectedItem={languageOptions.find(
-                      (item) => item.id === secondaryLanguage
+                      (item) => item.id === secondaryLanguage,
                     )}
                     className={styles.dropdown}
                   />
