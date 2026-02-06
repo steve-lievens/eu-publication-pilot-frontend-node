@@ -22,7 +22,7 @@ export default function ConcordanceFeedbackList() {
   const [loading, setLoading] = useState(true);
 
   // Helper function to truncate long text
-  const truncateText = (text: string, maxLength: number = 50): string => {
+  const truncateText = (text: string, maxLength: number = 40): string => {
     if (!text || text.length <= maxLength) return text;
     return text.substring(0, maxLength) + "...";
   };
