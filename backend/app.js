@@ -337,7 +337,14 @@ app.post("/analyzeParas", jsonParser, async function (req, res) {
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/comparepara_en_lv/text/generation?version=2021-05-01";
   const backendDELVV3ML =
     "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/comparepara_de_lv/text/generation?version=2021-05-01";
-
+  /*
+  const backendENDEV3ML =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/comparepara_en_de_g4/text/generation?version=2021-05-01";
+  const backendENLVV3ML =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/comparepara_en_lv_g4/text/generation?version=2021-05-01";
+  const backendDELVV3ML =
+    "https://eu-de.ml.cloud.ibm.com/ml/v1/deployments/comparepara_de_lv_g4/text/generation?version=2021-05-01";
+*/
   // Use the language parameters to decide which backend to use
   const primLang = req.body.primLang;
   const secLang = req.body.secLang;

@@ -11,7 +11,7 @@ import ConcordanceCheck3b from "./pages/ConcordanceCheck3b";
 import FeedbackList from "./pages/ViewFeedback";
 import TestGenerator from "./pages/TestGenerator";
 
-const appVersion = "1.8.4";
+const appVersion = "1.8.5";
 
 const App: React.FC = () => (
   <BrowserRouter>

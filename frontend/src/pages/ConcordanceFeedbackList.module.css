@@ -2,3 +2,9 @@
   z-index: 1000;
   position: relative;
 }
+
+.truncatedCell {
+  display: inline-block;
+  max-width: 100%;
+  cursor: help;
+}

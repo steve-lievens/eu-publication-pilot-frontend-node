@@ -21,6 +21,12 @@ export default function ConcordanceFeedbackList() {
   const [concordanceTests, setConcordanceTests] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Helper function to truncate long text
+  const truncateText = (text: string, maxLength: number = 50): string => {
+    if (!text || text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + "...";
+  };
+
   useEffect(() => {
     const fetchConcordanceTests = async () => {
       try {
@@ -52,7 +58,7 @@ export default function ConcordanceFeedbackList() {
     .slice() // avoid mutating state
     .sort(
       (a: any, b: any) =>
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
     )
     .map((test: any) => ({
       timestamp: new Date(test.timestamp).toLocaleString("NL-be", {
@@ -64,8 +70,16 @@ export default function ConcordanceFeedbackList() {
         month: "2-digit",
         year: "numeric",
       }),
-      docA: test.docA,
-      docB: test.docB,
+      docA: (
+        <span title={test.docA} className={styles.truncatedCell}>
+          {truncateText(test.docA)}
+        </span>
+      ),
+      docB: (
+        <span title={test.docB} className={styles.truncatedCell}>
+          {truncateText(test.docB)}
+        </span>
+      ),
       paragraphCount: test.paragraphCount,
       analysisCount: test.analysisCount,
       appVersion: test.appVersion,
